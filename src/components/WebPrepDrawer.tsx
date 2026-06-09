@@ -8,16 +8,16 @@ interface Props {
 const rowStyle: React.CSSProperties = {
   display: 'flex',
   alignItems: 'center',
-  minHeight: 52,
+  minHeight: 62,
   borderBottom: '1px solid var(--gray-100)',
 };
 
 const labelStyle: React.CSSProperties = {
   width: 110,
   flexShrink: 0,
-  fontSize: 15,
+  fontSize: 16,
   color: 'var(--text)',
-  paddingLeft: 16,
+  paddingLeft: 18,
 };
 
 function InnerField({ label, fieldKey, item, onChange }: {
@@ -37,10 +37,10 @@ function InnerField({ label, fieldKey, item, onChange }: {
           flex: 1,
           border: 'none',
           background: 'transparent',
-          fontSize: 15,
+          fontSize: 16,
           outline: 'none',
-          paddingRight: 16,
-          minHeight: 44,
+          paddingRight: 18,
+          minHeight: 50,
           color: 'var(--text)',
         }}
       />
@@ -57,9 +57,9 @@ export function WebPrepDrawer({ item, onChange }: Props) {
       overflow: 'hidden',
     }}>
       <summary style={{
-        padding: '0 16px',
-        minHeight: 52,
-        fontSize: 15,
+        padding: '0 18px',
+        minHeight: 62,
+        fontSize: 16,
         fontWeight: 500,
         color: 'var(--text)',
         cursor: 'pointer',
@@ -77,7 +77,7 @@ export function WebPrepDrawer({ item, onChange }: Props) {
 
       <div style={{ borderTop: '1px solid var(--gray-100)' }}>
         {/* Description */}
-        <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--gray-100)' }}>
+        <div style={{ padding: '14px 18px', borderBottom: '1px solid var(--gray-100)' }}>
           <textarea
             value={item.description ?? ''}
             onChange={e => onChange({ description: e.target.value })}
@@ -87,7 +87,7 @@ export function WebPrepDrawer({ item, onChange }: Props) {
               width: '100%',
               border: 'none',
               background: 'transparent',
-              fontSize: 15,
+              fontSize: 16,
               outline: 'none',
               resize: 'none',
               color: 'var(--text)',

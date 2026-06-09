@@ -47,18 +47,18 @@ function ChevronDown() {
 const rowStyle: React.CSSProperties = {
   display: 'flex',
   alignItems: 'center',
-  minHeight: 52,
+  minHeight: 62,
   borderBottom: '1px solid var(--gray-100)',
   position: 'relative',
 };
 
 const labelStyle: React.CSSProperties = {
-  width: 120,
+  width: 130,
   flexShrink: 0,
-  fontSize: 15,
+  fontSize: 16,
   color: 'var(--text)',
   fontWeight: 400,
-  paddingLeft: 16,
+  paddingLeft: 18,
 };
 
 function TextField({
@@ -89,11 +89,11 @@ function TextField({
           flex: 1,
           border: 'none',
           background: 'transparent',
-          fontSize: 15,
+          fontSize: 16,
           outline: 'none',
-          paddingRight: 16,
+          paddingRight: 18,
           color: 'var(--text)',
-          minHeight: 44,
+          minHeight: 50,
         }}
       />
     </div>
@@ -130,10 +130,11 @@ function SelectField({
             appearance: 'none',
             WebkitAppearance: 'none',
             color: value ? 'var(--text)' : 'var(--gray-500)',
-            paddingRight: 32,
-            minHeight: 44,
+            paddingRight: 36,
+            minHeight: 50,
             cursor: 'pointer',
             width: '100%',
+            fontSize: 16,
           }}
         >
           <option value="" disabled hidden>{label}</option>
@@ -237,16 +238,16 @@ export function IntakeForm({ item, onChange, onReset, onPhotoTap, onSave, onClon
       <div style={{
         flex: 1,
         overflowY: 'auto',
-        padding: '14px 16px',
-        paddingBottom: 'calc(var(--footer-height) + 20px)',
+        padding: '20px 16px',
+        paddingBottom: 'calc(var(--footer-height) + 24px)',
         display: 'flex',
         flexDirection: 'column',
-        gap: 14,
+        gap: 20,
       }}>
 
         {/* Donation banner */}
         <Card>
-          <div style={{ padding: '13px 16px', fontSize: 14, color: 'var(--text)' }}>
+          <div style={{ padding: '15px 18px', fontSize: 15, color: 'var(--text)' }}>
             Anonymous Drop Off Donation D44188 – 5/31/2026
           </div>
         </Card>
@@ -264,7 +265,7 @@ export function IntakeForm({ item, onChange, onReset, onPhotoTap, onSave, onClon
                 onClick={() => setItemType(type)}
                 style={{
                   flex: 1,
-                  padding: '14px 12px',
+                  padding: '18px 14px',
                   textAlign: 'left',
                   background: active ? 'var(--green)' : 'var(--white)',
                   color: active ? 'var(--white)' : 'var(--text)',
@@ -272,12 +273,12 @@ export function IntakeForm({ item, onChange, onReset, onPhotoTap, onSave, onClon
                   borderRadius: 'var(--radius)',
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: 4,
-                  minHeight: 72,
+                  gap: 6,
+                  minHeight: 88,
                 }}
               >
-                <span style={{ fontWeight: 700, fontSize: 15 }}>{title}</span>
-                <span style={{ fontSize: 12, opacity: active ? 0.8 : 0.6, lineHeight: 1.35 }}>{sub}</span>
+                <span style={{ fontWeight: 700, fontSize: 16 }}>{title}</span>
+                <span style={{ fontSize: 13, opacity: active ? 0.85 : 0.6, lineHeight: 1.4 }}>{sub}</span>
               </button>
             );
           })}
@@ -290,14 +291,14 @@ export function IntakeForm({ item, onChange, onReset, onPhotoTap, onSave, onClon
             background: 'transparent',
             border: '2px dashed var(--green)',
             borderRadius: 'var(--radius)',
-            minHeight: 110,
+            minHeight: 130,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
             color: item.photo ? 'var(--green)' : 'var(--gray-500)',
-            fontSize: 14,
-            gap: 8,
+            fontSize: 15,
+            gap: 10,
             width: '100%',
           }}
         >
@@ -323,13 +324,13 @@ export function IntakeForm({ item, onChange, onReset, onPhotoTap, onSave, onClon
                   flex: 1,
                   border: 'none',
                   background: 'transparent',
-                  fontSize: 15,
+                  fontSize: 16,
                   outline: 'none',
                   appearance: 'none',
                   WebkitAppearance: 'none',
                   color: item.colorMaterial ? 'var(--text)' : 'var(--gray-500)',
-                  paddingRight: 32,
-                  minHeight: 44,
+                  paddingRight: 36,
+                  minHeight: 50,
                   cursor: 'pointer',
                   width: '100%',
                 }}
@@ -346,8 +347,8 @@ export function IntakeForm({ item, onChange, onReset, onPhotoTap, onSave, onClon
 
         {/* Condition chips */}
         <div>
-          <div style={{ fontSize: 14, color: 'var(--text)', marginBottom: 10, fontWeight: 500 }}>Condition</div>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+          <div style={{ fontSize: 15, color: 'var(--text)', marginBottom: 12, fontWeight: 500 }}>Condition</div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
             {CONDITIONS.map(tag => {
               const active = (item.condition ?? []).includes(tag);
               return (
@@ -355,8 +356,8 @@ export function IntakeForm({ item, onChange, onReset, onPhotoTap, onSave, onClon
                   key={tag}
                   onClick={() => toggleCondition(tag)}
                   style={{
-                    padding: '8px 18px',
-                    fontSize: 14,
+                    padding: '10px 20px',
+                    fontSize: 15,
                     background: 'var(--white)',
                     color: active ? 'var(--green)' : 'var(--text)',
                     border: active ? '1.5px solid var(--green)' : '1.5px solid var(--gray-300)',
@@ -376,7 +377,7 @@ export function IntakeForm({ item, onChange, onReset, onPhotoTap, onSave, onClon
           <TextField label="Quantity" fieldKey="quantity" item={item} onChange={onChange} type="number" />
           <div style={{ ...rowStyle, borderBottom: 'none' }}>
             <span style={labelStyle}>Price</span>
-            <span style={{ fontSize: 15, color: 'var(--gray-500)' }}>$</span>
+            <span style={{ fontSize: 16, color: 'var(--gray-500)' }}>$</span>
             <input
               type="number"
               inputMode="decimal"
@@ -386,11 +387,11 @@ export function IntakeForm({ item, onChange, onReset, onPhotoTap, onSave, onClon
                 flex: 1,
                 border: 'none',
                 background: 'transparent',
-                fontSize: 15,
+                fontSize: 16,
                 outline: 'none',
-                paddingRight: 16,
+                paddingRight: 18,
                 color: 'var(--text)',
-                minHeight: 44,
+                minHeight: 50,
                 marginLeft: 2,
               }}
             />
@@ -398,7 +399,7 @@ export function IntakeForm({ item, onChange, onReset, onPhotoTap, onSave, onClon
         </Card>
 
         {/* Notes */}
-        <Card style={{ padding: '12px 16px' }}>
+        <Card style={{ padding: '14px 18px' }}>
           <textarea
             value={item.notes ?? ''}
             onChange={e => onChange({ notes: e.target.value })}
@@ -408,11 +409,11 @@ export function IntakeForm({ item, onChange, onReset, onPhotoTap, onSave, onClon
               width: '100%',
               border: 'none',
               background: 'transparent',
-              fontSize: 15,
+              fontSize: 16,
               outline: 'none',
               resize: 'none',
               color: 'var(--text)',
-              lineHeight: 1.5,
+              lineHeight: 1.6,
             }}
           />
         </Card>
