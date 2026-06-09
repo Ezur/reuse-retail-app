@@ -1,16 +1,15 @@
 :root {
-  --green: #27500A;
-  --gold: #BA7517;
-  --cream: #F6F5F0;
+  --green: #085420;
+  --cream: #F5F3EE;
   --white: #ffffff;
-  --gray-100: #f0efeb;
+  --black: #111111;
+  --gray-100: #efefec;
   --gray-300: #d1d0cb;
   --gray-500: #9a9890;
-  --gray-700: #5a5955;
-  --text: #1a1a18;
-  --radius: 8px;
+  --text: #111111;
+  --radius: 10px;
   --header-height: 60px;
-  --footer-height: 72px;
+  --footer-height: 68px;
 }
 
 *, *::before, *::after {

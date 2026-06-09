@@ -5,67 +5,111 @@ interface Props {
   onChange: (patch: Partial<ItemRecord>) => void;
 }
 
-export function WebPrepDrawer({ item, onChange }: Props) {
-  const field = (label: string, key: keyof ItemRecord) => (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '8px 0', borderBottom: '1px solid var(--gray-100)' }}>
-      <label style={{ width: 90, fontSize: 13, color: 'var(--gray-700)', flexShrink: 0 }}>{label}</label>
+const rowStyle: React.CSSProperties = {
+  display: 'flex',
+  alignItems: 'center',
+  minHeight: 52,
+  borderBottom: '1px solid var(--gray-100)',
+};
+
+const labelStyle: React.CSSProperties = {
+  width: 110,
+  flexShrink: 0,
+  fontSize: 15,
+  color: 'var(--text)',
+  paddingLeft: 16,
+};
+
+function InnerField({ label, fieldKey, item, onChange }: {
+  label: string;
+  fieldKey: keyof ItemRecord;
+  item: Partial<ItemRecord>;
+  onChange: (p: Partial<ItemRecord>) => void;
+}) {
+  return (
+    <div style={rowStyle}>
+      <span style={labelStyle}>{label}</span>
       <input
         type="text"
-        value={(item[key] as string) ?? ''}
-        onChange={e => onChange({ [key]: e.target.value })}
+        value={(item[fieldKey] as string) ?? ''}
+        onChange={e => onChange({ [fieldKey]: e.target.value })}
         style={{
           flex: 1,
           border: 'none',
           background: 'transparent',
           fontSize: 15,
-          padding: '4px 0',
           outline: 'none',
-          minHeight: 36,
+          paddingRight: 16,
+          minHeight: 44,
+          color: 'var(--text)',
         }}
       />
     </div>
   );
+}
 
+export function WebPrepDrawer({ item, onChange }: Props) {
   return (
-    <details style={{ background: 'var(--gray-100)', borderRadius: 'var(--radius)', overflow: 'hidden' }}>
+    <details style={{
+      background: 'var(--white)',
+      borderRadius: 'var(--radius)',
+      border: '1px solid var(--gray-100)',
+      overflow: 'hidden',
+    }}>
       <summary style={{
-        padding: '14px 16px',
-        fontSize: 14,
-        fontWeight: 600,
-        color: 'var(--gray-700)',
+        padding: '0 16px',
+        minHeight: 52,
+        fontSize: 15,
+        fontWeight: 500,
+        color: 'var(--text)',
         cursor: 'pointer',
         listStyle: 'none',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
         userSelect: 'none',
-        minHeight: 44,
       }}>
         <span>Web Prep</span>
-        <span style={{ fontSize: 11, fontWeight: 400, color: 'var(--gray-500)' }}>For web listing only ▾</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
       </summary>
-      <div style={{ padding: '0 16px 12px', background: 'var(--white)' }}>
-        <div style={{ marginBottom: 8 }}>
-          <label style={{ fontSize: 13, color: 'var(--gray-700)', display: 'block', marginBottom: 4 }}>Description</label>
+
+      <div style={{ borderTop: '1px solid var(--gray-100)' }}>
+        {/* Description */}
+        <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--gray-100)' }}>
           <textarea
             value={item.description ?? ''}
             onChange={e => onChange({ description: e.target.value })}
             rows={3}
+            placeholder="Description"
             style={{
               width: '100%',
-              border: '1px solid var(--gray-300)',
-              borderRadius: 4,
-              padding: 8,
+              border: 'none',
+              background: 'transparent',
               fontSize: 15,
-              resize: 'vertical',
-              background: 'var(--white)',
+              outline: 'none',
+              resize: 'none',
+              color: 'var(--text)',
+              lineHeight: 1.5,
             }}
           />
         </div>
-        {field('Weight', 'weight')}
-        {field('Length', 'length')}
-        {field('Width', 'width')}
-        {field('Height', 'height')}
+        <InnerField label="Weight"  fieldKey="weight" item={item} onChange={onChange} />
+        <InnerField label="Length"  fieldKey="length" item={item} onChange={onChange} />
+        <InnerField label="Width"   fieldKey="width"  item={item} onChange={onChange} />
+        <div style={{ ...rowStyle, borderBottom: 'none' }}>
+          <span style={labelStyle}>Height</span>
+          <input
+            type="text"
+            value={item.height ?? ''}
+            onChange={e => onChange({ height: e.target.value })}
+            style={{
+              flex: 1, border: 'none', background: 'transparent',
+              fontSize: 15, outline: 'none', paddingRight: 16, minHeight: 44, color: 'var(--text)',
+            }}
+          />
+        </div>
       </div>
     </details>
   );
