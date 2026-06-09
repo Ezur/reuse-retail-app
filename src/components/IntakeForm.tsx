@@ -125,7 +125,7 @@ function SelectField({
             flex: 1,
             border: 'none',
             background: 'transparent',
-            fontSize: 15,
+            fontSize: 16,
             outline: 'none',
             appearance: 'none',
             WebkitAppearance: 'none',
@@ -134,7 +134,6 @@ function SelectField({
             minHeight: 50,
             cursor: 'pointer',
             width: '100%',
-            fontSize: 16,
           }}
         >
           <option value="" disabled hidden>{label}</option>
