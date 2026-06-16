@@ -9,17 +9,6 @@ const baseFont: React.CSSProperties = {
   fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
 };
 
-function ArrowDropDown({ open }: { open: boolean }) {
-  return (
-    <svg
-      width="24" height="24" viewBox="0 0 24 24" fill="none"
-      style={{ transform: open ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}
-    >
-      <path d="M7 10L12 15L17 10H7Z" fill="#000000"/>
-    </svg>
-  );
-}
-
 function FieldRow({ label, fieldKey, item, onChange }: {
   label: string;
   fieldKey: keyof ItemRecord;
