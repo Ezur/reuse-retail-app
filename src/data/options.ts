@@ -34,6 +34,18 @@ export const BRANDS = [
   'Other',
 ];
 
+export const MODEL_STYLES = [
+  'Single',
+  'Double',
+  'Standard',
+  'Deluxe',
+  'Modern',
+  'Traditional',
+  'Rustic',
+  'Industrial',
+  'Other',
+];
+
 export const COLORS_MATERIALS = [
   'Beige',
   'Black',

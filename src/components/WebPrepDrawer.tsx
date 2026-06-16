@@ -5,43 +5,52 @@ interface Props {
   onChange: (patch: Partial<ItemRecord>) => void;
 }
 
-const rowStyle: React.CSSProperties = {
-  display: 'flex',
-  alignItems: 'center',
-  minHeight: 62,
-  borderBottom: '1px solid var(--gray-100)',
+const baseFont: React.CSSProperties = {
+  fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
 };
 
-const labelStyle: React.CSSProperties = {
-  width: 110,
-  flexShrink: 0,
-  fontSize: 16,
-  color: 'var(--text)',
-  paddingLeft: 18,
-};
+function ArrowDropDown({ open }: { open: boolean }) {
+  return (
+    <svg
+      width="24" height="24" viewBox="0 0 24 24" fill="none"
+      style={{ transform: open ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}
+    >
+      <path d="M7 10L12 15L17 10H7Z" fill="#000000"/>
+    </svg>
+  );
+}
 
-function InnerField({ label, fieldKey, item, onChange }: {
+function FieldRow({ label, fieldKey, item, onChange }: {
   label: string;
   fieldKey: keyof ItemRecord;
   item: Partial<ItemRecord>;
   onChange: (p: Partial<ItemRecord>) => void;
 }) {
   return (
-    <div style={rowStyle}>
-      <span style={labelStyle}>{label}</span>
+    <div style={{
+      background: 'var(--white)',
+      height: 44,
+      display: 'flex',
+      alignItems: 'center',
+      paddingLeft: 16,
+      paddingRight: 16,
+      flexShrink: 0,
+    }}>
       <input
         type="text"
+        placeholder={label}
         value={(item[fieldKey] as string) ?? ''}
         onChange={e => onChange({ [fieldKey]: e.target.value })}
         style={{
           flex: 1,
           border: 'none',
           background: 'transparent',
-          fontSize: 16,
+          fontSize: 14,
+          fontWeight: 500,
+          color: 'var(--black)',
           outline: 'none',
-          paddingRight: 18,
-          minHeight: 50,
-          color: 'var(--text)',
+          minHeight: '100%',
+          ...baseFont,
         }}
       />
     </div>
@@ -51,62 +60,63 @@ function InnerField({ label, fieldKey, item, onChange }: {
 export function WebPrepDrawer({ item, onChange }: Props) {
   return (
     <details style={{
-      background: 'var(--white)',
+      background: 'var(--light-grey)',
+      border: '1px solid var(--border)',
       borderRadius: 'var(--radius)',
-      border: '1px solid var(--gray-100)',
-      overflow: 'hidden',
+      width: '100%',
     }}>
-      <summary style={{
-        padding: '0 18px',
-        minHeight: 62,
-        fontSize: 16,
-        fontWeight: 500,
-        color: 'var(--text)',
-        cursor: 'pointer',
-        listStyle: 'none',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        userSelect: 'none',
-      }}>
-        <span>Web Prep</span>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-          <polyline points="6 9 12 15 18 9"/>
+      {/* Use a render trick to get open state for chevron rotation */}
+      <summary
+        style={{
+          padding: 16,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          listStyle: 'none',
+          cursor: 'pointer',
+          userSelect: 'none',
+          minHeight: 44,
+        }}
+      >
+        <span style={{ fontSize: 14, fontWeight: 500, color: 'var(--black)', ...baseFont }}>
+          Web Prep
+        </span>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M7 10L12 15L17 10H7Z" fill="#000000"/>
         </svg>
       </summary>
 
-      <div style={{ borderTop: '1px solid var(--gray-100)' }}>
-        {/* Description */}
-        <div style={{ padding: '14px 18px', borderBottom: '1px solid var(--gray-100)' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10, paddingLeft: 0, paddingRight: 0, paddingBottom: 0 }}>
+        <FieldRow label="Weight"      fieldKey="weight"      item={item} onChange={onChange} />
+        <FieldRow label="Length"      fieldKey="length"      item={item} onChange={onChange} />
+        <FieldRow label="Width"       fieldKey="width"       item={item} onChange={onChange} />
+        <FieldRow label="Height"      fieldKey="height"      item={item} onChange={onChange} />
+        <div style={{
+          background: 'var(--white)',
+          minHeight: 102,
+          display: 'flex',
+          alignItems: 'flex-start',
+          paddingLeft: 16,
+          paddingRight: 16,
+          paddingTop: 12,
+          paddingBottom: 12,
+        }}>
           <textarea
+            placeholder="Description"
             value={item.description ?? ''}
             onChange={e => onChange({ description: e.target.value })}
-            rows={3}
-            placeholder="Description"
             style={{
-              width: '100%',
+              flex: 1,
               border: 'none',
               background: 'transparent',
-              fontSize: 16,
+              fontSize: 14,
+              fontWeight: 500,
+              color: 'var(--black)',
               outline: 'none',
               resize: 'none',
-              color: 'var(--text)',
-              lineHeight: 1.5,
-            }}
-          />
-        </div>
-        <InnerField label="Weight"  fieldKey="weight" item={item} onChange={onChange} />
-        <InnerField label="Length"  fieldKey="length" item={item} onChange={onChange} />
-        <InnerField label="Width"   fieldKey="width"  item={item} onChange={onChange} />
-        <div style={{ ...rowStyle, borderBottom: 'none' }}>
-          <span style={labelStyle}>Height</span>
-          <input
-            type="text"
-            value={item.height ?? ''}
-            onChange={e => onChange({ height: e.target.value })}
-            style={{
-              flex: 1, border: 'none', background: 'transparent',
-              fontSize: 15, outline: 'none', paddingRight: 16, minHeight: 44, color: 'var(--text)',
+              minHeight: 78,
+              width: '100%',
+              ...baseFont,
             }}
           />
         </div>

@@ -1,106 +1,84 @@
 import { ItemRecord, ItemType, ConditionTag } from '../types';
 import { WebPrepDrawer } from './WebPrepDrawer';
-import { CATEGORIES, BRANDS, COLORS_MATERIALS } from '../data/options';
+import { CATEGORIES, COLORS_MATERIALS, BRANDS, MODEL_STYLES } from '../data/options';
 
 const CONDITIONS: ConditionTag[] = ['Antique', 'Vintage', 'Salvaged', 'Refurbished', 'Surplus'];
 
-// ─── Icon components ──────────────────────────────────────────────────────────
+// ── Icons ──────────────────────────────────────────────────────────────────────
 
 function CameraIcon() {
   return (
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-      <circle cx="12" cy="13" r="4"/>
+    <svg width="20" height="16" viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M7.5 0L5.585 2H2C0.9 2 0 2.9 0 4V14C0 15.1 0.9 16 2 16H18C19.1 16 20 15.1 20 14V4C20 2.9 19.1 2 18 2H14.415L12.5 0H7.5ZM10 13C7.79 13 6 11.21 6 9C6 6.79 7.79 5 10 5C12.21 5 14 6.79 14 9C14 11.21 12.21 13 10 13Z" fill="#a2a2a2"/>
+    </svg>
+  );
+}
+
+function ArrowDropDown() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M7 10L12 15L17 10H7Z" fill="#000000"/>
+    </svg>
+  );
+}
+
+function XmarkIcon() {
+  return (
+    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M9 1L1 9M1 1L9 9" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
     </svg>
   );
 }
 
 function CloneIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="8" y="8" width="13" height="13" rx="2"/>
-      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+    <svg width="13" height="15" viewBox="0 0 13 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="3" y="3" width="9" height="11" rx="1" stroke="white" strokeWidth="1.5"/>
+      <path d="M1 1h7v1H2v9H1V1z" fill="white"/>
     </svg>
   );
 }
 
 function SaveIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-      <polyline points="17 8 12 3 7 8"/>
-      <line x1="12" y1="3" x2="12" y2="15"/>
+    <svg width="13" height="18" viewBox="0 0 13 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M6.5 1V13M1 8L6.5 13L12 8M1 17H12" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   );
 }
 
-function ChevronDown() {
+function ProfileIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-      <polyline points="6 9 12 15 18 9"/>
+    <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="17" cy="17" r="17" fill="#d9d9d9"/>
+      <circle cx="17" cy="13" r="5" fill="#9a9890"/>
+      <ellipse cx="17" cy="26" rx="9" ry="6" fill="#9a9890"/>
     </svg>
   );
 }
 
-// ─── Field row components ─────────────────────────────────────────────────────
+// ── Field card container ───────────────────────────────────────────────────────
 
-const rowStyle: React.CSSProperties = {
-  display: 'flex',
-  alignItems: 'center',
-  minHeight: 62,
-  borderBottom: '1px solid var(--gray-100)',
-  position: 'relative',
-};
-
-const labelStyle: React.CSSProperties = {
-  width: 130,
-  flexShrink: 0,
-  fontSize: 16,
-  color: 'var(--text)',
-  fontWeight: 400,
-  paddingLeft: 18,
-};
-
-function TextField({
-  label,
-  fieldKey,
-  item,
-  onChange,
-  type = 'text',
-  prefix,
-}: {
-  label: string;
-  fieldKey: keyof ItemRecord;
-  item: Partial<ItemRecord>;
-  onChange: (p: Partial<ItemRecord>) => void;
-  type?: string;
-  prefix?: string;
-}) {
+function FieldCard({ children }: { children: React.ReactNode }) {
   return (
-    <div style={rowStyle}>
-      <span style={labelStyle}>{label}</span>
-      {prefix && <span style={{ fontSize: 15, color: 'var(--gray-500)', marginRight: 2 }}>{prefix}</span>}
-      <input
-        type={type}
-        inputMode={type === 'number' ? 'decimal' : 'text'}
-        value={(item[fieldKey] as string) ?? ''}
-        onChange={e => onChange({ [fieldKey]: e.target.value })}
-        style={{
-          flex: 1,
-          border: 'none',
-          background: 'transparent',
-          fontSize: 16,
-          outline: 'none',
-          paddingRight: 18,
-          color: 'var(--text)',
-          minHeight: 50,
-        }}
-      />
+    <div style={{
+      background: 'var(--light-grey)',
+      border: '1px solid var(--border)',
+      borderRadius: 'var(--radius)',
+      padding: 16,
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 10,
+      width: '100%',
+    }}>
+      {children}
     </div>
   );
 }
 
-function SelectField({
+// ── Individual field rows ──────────────────────────────────────────────────────
+
+function SelectRow({
   label,
   fieldKey,
   options,
@@ -115,55 +93,139 @@ function SelectField({
 }) {
   const value = (item[fieldKey] as string) ?? '';
   return (
-    <div style={rowStyle}>
-      <span style={labelStyle}>{label}</span>
-      <div style={{ flex: 1, position: 'relative', display: 'flex', alignItems: 'center' }}>
-        <select
-          value={value}
-          onChange={e => onChange({ [fieldKey]: e.target.value })}
-          style={{
-            flex: 1,
-            border: 'none',
-            background: 'transparent',
-            fontSize: 16,
-            outline: 'none',
-            appearance: 'none',
-            WebkitAppearance: 'none',
-            color: value ? 'var(--text)' : 'var(--gray-500)',
-            paddingRight: 36,
-            minHeight: 50,
-            cursor: 'pointer',
-            width: '100%',
-          }}
-        >
-          <option value="" disabled hidden>{label}</option>
-          {options.map(o => <option key={o} value={o}>{o}</option>)}
-        </select>
-        <span style={{ position: 'absolute', right: 14, pointerEvents: 'none', color: 'var(--gray-500)', display: 'flex' }}>
-          <ChevronDown />
-        </span>
-      </div>
+    <div style={{
+      background: 'var(--white)',
+      height: 44,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingLeft: 16,
+      paddingRight: 16,
+      position: 'relative',
+      flexShrink: 0,
+    }}>
+      <select
+        value={value}
+        onChange={e => onChange({ [fieldKey]: e.target.value })}
+        style={{
+          position: 'absolute',
+          inset: 0,
+          opacity: 0,
+          width: '100%',
+          height: '100%',
+          cursor: 'pointer',
+          zIndex: 1,
+        }}
+      >
+        <option value="" disabled hidden>{label}</option>
+        {options.map(o => <option key={o} value={o}>{o}</option>)}
+      </select>
+      <span style={{
+        fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
+        fontSize: 14,
+        fontWeight: 500,
+        color: value ? 'var(--black)' : 'var(--black)',
+        flexShrink: 0,
+      }}>
+        {value || label}
+      </span>
+      <ArrowDropDown />
     </div>
   );
 }
 
-// ─── Card wrapper ─────────────────────────────────────────────────────────────
-
-function Card({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {
+function TextRow({
+  label,
+  fieldKey,
+  item,
+  onChange,
+  type = 'text',
+}: {
+  label: string;
+  fieldKey: keyof ItemRecord;
+  item: Partial<ItemRecord>;
+  onChange: (p: Partial<ItemRecord>) => void;
+  type?: string;
+}) {
   return (
     <div style={{
       background: 'var(--white)',
-      borderRadius: 'var(--radius)',
-      overflow: 'hidden',
-      border: '1px solid var(--gray-100)',
-      ...style,
+      height: 44,
+      display: 'flex',
+      alignItems: 'center',
+      paddingLeft: 16,
+      paddingRight: 16,
+      flexShrink: 0,
     }}>
-      {children}
+      <input
+        type={type}
+        inputMode={type === 'number' ? 'decimal' : 'text'}
+        placeholder={label}
+        value={(item[fieldKey] as string) ?? ''}
+        onChange={e => onChange({ [fieldKey]: e.target.value })}
+        style={{
+          flex: 1,
+          border: 'none',
+          background: 'transparent',
+          fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
+          fontSize: 14,
+          fontWeight: 500,
+          color: 'var(--black)',
+          outline: 'none',
+          minHeight: '100%',
+        }}
+      />
     </div>
   );
 }
 
-// ─── Main component ───────────────────────────────────────────────────────────
+function StyledTextRow({
+  label,
+  fieldKey,
+  item,
+  onChange,
+  type = 'text',
+}: {
+  label: string;
+  fieldKey: keyof ItemRecord;
+  item: Partial<ItemRecord>;
+  onChange: (p: Partial<ItemRecord>) => void;
+  type?: string;
+}) {
+  return (
+    <div style={{
+      background: 'var(--white)',
+      height: 48,
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      justifyContent: 'center',
+      paddingLeft: 16,
+      paddingRight: 16,
+      flexShrink: 0,
+    }}>
+      <input
+        type={type}
+        inputMode={type === 'number' ? 'decimal' : 'text'}
+        placeholder={label}
+        value={(item[fieldKey] as string) ?? ''}
+        onChange={e => onChange({ [fieldKey]: e.target.value })}
+        style={{
+          border: 'none',
+          background: 'transparent',
+          fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
+          fontSize: 14,
+          fontWeight: 500,
+          color: 'var(--black)',
+          outline: 'none',
+          width: '100%',
+        }}
+      />
+    </div>
+  );
+}
+
+// ── Main component ─────────────────────────────────────────────────────────────
 
 interface Props {
   item: Partial<ItemRecord>;
@@ -171,10 +233,10 @@ interface Props {
   onReset: () => void;
   onPhotoTap: () => void;
   onSave: () => void;
-  onClone: () => void;
+  onDuplicate: () => void;
 }
 
-export function IntakeForm({ item, onChange, onReset, onPhotoTap, onSave, onClone }: Props) {
+export function IntakeForm({ item, onChange, onReset, onPhotoTap, onSave, onDuplicate }: Props) {
   const toggleCondition = (tag: ConditionTag) => {
     const current = item.condition ?? [];
     const next = current.includes(tag)
@@ -185,51 +247,74 @@ export function IntakeForm({ item, onChange, onReset, onPhotoTap, onSave, onClon
 
   const setItemType = (t: ItemType) => onChange({ itemType: t });
 
+  const baseFont: React.CSSProperties = {
+    fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
+  };
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', ...baseFont }}>
 
       {/* ── Header ── */}
       <header style={{
         background: 'var(--green)',
-        color: 'var(--white)',
         height: 'var(--header-height)',
         display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '0 16px',
+        alignItems: 'flex-end',
+        paddingTop: 42,
+        paddingBottom: 20,
+        paddingLeft: 32,
+        paddingRight: 32,
         flexShrink: 0,
         position: 'sticky',
         top: 0,
         zIndex: 10,
       }}>
-        <button
-          onClick={onReset}
-          style={{ color: 'var(--white)', fontSize: 15, display: 'flex', alignItems: 'center', gap: 6, opacity: 0.9 }}
-        >
-          ✕ Cancel
-        </button>
-
-        <span style={{ fontWeight: 700, fontSize: 16, letterSpacing: '0.01em' }}>
-          Warehouse Mode
-        </span>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+        <div style={{
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}>
+          {/* Cancel */}
           <button
-            onClick={onClone}
-            style={{ color: 'var(--white)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, opacity: 0.9 }}
-            title="Clone"
+            onClick={onReset}
+            style={{
+              color: 'var(--white)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
+              fontSize: 16,
+              fontWeight: 700,
+              width: 172,
+              ...baseFont,
+            }}
           >
-            <CloneIcon />
-            <span style={{ fontSize: 10 }}>Clone</span>
+            <XmarkIcon />
+            Cancel
           </button>
-          <button
-            onClick={onSave}
-            style={{ color: 'var(--white)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, opacity: 0.9 }}
-            title="Save"
-          >
-            <SaveIcon />
-            <span style={{ fontSize: 10 }}>Save</span>
-          </button>
+
+          {/* Title */}
+          <span style={{ color: 'var(--white)', fontSize: 20, fontWeight: 700, whiteSpace: 'nowrap' }}>
+            Warehouse Mode
+          </span>
+
+          {/* Clone + Save */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            <button
+              onClick={onDuplicate}
+              style={{ color: 'var(--white)', display: 'flex', alignItems: 'center', gap: 6, fontSize: 16, fontWeight: 700, padding: 10, ...baseFont }}
+            >
+              <CloneIcon />
+              Clone
+            </button>
+            <button
+              onClick={onSave}
+              style={{ color: 'var(--white)', display: 'flex', alignItems: 'center', gap: 6, fontSize: 16, fontWeight: 700, padding: 10, width: 71, ...baseFont }}
+            >
+              <SaveIcon />
+              Save
+            </button>
+          </div>
         </div>
       </header>
 
@@ -237,187 +322,142 @@ export function IntakeForm({ item, onChange, onReset, onPhotoTap, onSave, onClon
       <div style={{
         flex: 1,
         overflowY: 'auto',
-        padding: '20px 16px',
-        paddingBottom: 'calc(var(--footer-height) + 24px)',
+        background: 'var(--cream)',
+        paddingLeft: 32,
+        paddingRight: 32,
+        paddingTop: 12,
+        paddingBottom: 'calc(var(--footer-height) + 12px)',
         display: 'flex',
         flexDirection: 'column',
-        gap: 20,
+        gap: 24,
       }}>
 
-        {/* Donation banner */}
-        <Card>
-          <div style={{ padding: '15px 18px', fontSize: 15, color: 'var(--text)' }}>
-            Anonymous Drop Off Donation D44188 – 5/31/2026
+        {/* ── Donation card ── */}
+        <div style={{
+          background: 'var(--white)',
+          padding: 12,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 8,
+          width: '100%',
+        }}>
+          <ProfileIcon />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <p style={{ fontSize: 18, margin: 0 }}>
+              <span style={{ fontWeight: 700 }}>Donor: </span>
+              <span style={{ fontWeight: 500 }}>Anonymous Drop Off Donation</span>
+            </p>
+            <p style={{ fontSize: 14, margin: 0 }}>
+              <span style={{ fontWeight: 700 }}>Donation#:</span>
+              <span style={{ fontWeight: 500 }}> 44188</span>
+            </p>
+            <p style={{ fontSize: 14, margin: 0 }}>
+              <span style={{ fontWeight: 700 }}>Date:</span>
+              <span style={{ fontWeight: 500 }}> 5/31/2026</span>
+            </p>
           </div>
-        </Card>
+        </div>
 
-        {/* Stock / Unique selector */}
-        <div style={{ display: 'flex', gap: 10 }}>
-          {([
-            { type: 'stock' as ItemType, title: 'Stock Item', sub: 'Same item type, shared barcode — e.g. white toilet, interior panel door' },
-            { type: 'unique' as ItemType, title: 'Unique Item', sub: 'One-of-a-kind, individual barcode — e.g. vintage chair, branded door' },
-          ]).map(({ type, title, sub }) => {
-            const active = item.itemType === type;
+        {/* ── Stock / Unique ── */}
+        <div style={{ display: 'flex', gap: 18, height: 64, width: '100%' }}>
+          {(['stock', 'unique'] as ItemType[]).map(t => {
+            const active = item.itemType === t;
             return (
               <button
-                key={type}
-                onClick={() => setItemType(type)}
+                key={t}
+                onClick={() => setItemType(t)}
                 style={{
                   flex: 1,
-                  padding: '18px 14px',
-                  textAlign: 'left',
                   background: active ? 'var(--green)' : 'var(--white)',
-                  color: active ? 'var(--white)' : 'var(--text)',
-                  border: active ? '2px solid var(--green)' : '1.5px solid var(--gray-300)',
+                  border: `1px solid ${active ? 'var(--green)' : 'var(--border)'}`,
                   borderRadius: 'var(--radius)',
                   display: 'flex',
-                  flexDirection: 'column',
-                  gap: 6,
-                  minHeight: 88,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: 14,
+                  fontWeight: 500,
+                  color: active ? 'var(--white)' : 'var(--black)',
+                  ...baseFont,
                 }}
               >
-                <span style={{ fontWeight: 700, fontSize: 16 }}>{title}</span>
-                <span style={{ fontSize: 13, opacity: active ? 0.85 : 0.6, lineHeight: 1.4 }}>{sub}</span>
+                {t === 'stock' ? 'Stock Item' : 'Unique Item'}
               </button>
             );
           })}
         </div>
 
-        {/* Photo */}
+        {/* ── Photo ── */}
         <button
           onClick={onPhotoTap}
           style={{
-            background: 'transparent',
-            border: '2px dashed var(--green)',
-            borderRadius: 'var(--radius)',
-            minHeight: 130,
+            background: 'var(--white)',
+            border: '3px dashed var(--dark-grey)',
+            width: '100%',
+            height: 121,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            color: item.photo ? 'var(--green)' : 'var(--gray-500)',
-            fontSize: 15,
-            gap: 10,
-            width: '100%',
+            gap: 12,
+            cursor: 'pointer',
+            flexShrink: 0,
           }}
         >
           <CameraIcon />
-          <span style={{ fontWeight: 500 }}>
+          <span style={{ fontSize: 14, fontWeight: 500, color: 'var(--black)', ...baseFont }}>
             {item.photo ? 'Photo attached — tap to retake' : 'Add Photo'}
           </span>
         </button>
 
-        {/* Field group 1: descriptors */}
-        <Card>
-          <SelectField label="Category"        fieldKey="category"      options={CATEGORIES}       item={item} onChange={onChange} />
-          <TextField   label="Item Name"       fieldKey="name"          item={item} onChange={onChange} />
-          <SelectField label="Brand"           fieldKey="brand"         options={BRANDS}           item={item} onChange={onChange} />
-          <TextField   label="Model / Style"   fieldKey="modelStyle"    item={item} onChange={onChange} />
-          <div style={{ ...rowStyle, borderBottom: 'none' }}>
-            <span style={labelStyle}>Color / Material</span>
-            <div style={{ flex: 1, position: 'relative', display: 'flex', alignItems: 'center' }}>
-              <select
-                value={(item.colorMaterial as string) ?? ''}
-                onChange={e => onChange({ colorMaterial: e.target.value })}
-                style={{
-                  flex: 1,
-                  border: 'none',
-                  background: 'transparent',
-                  fontSize: 16,
-                  outline: 'none',
-                  appearance: 'none',
-                  WebkitAppearance: 'none',
-                  color: item.colorMaterial ? 'var(--text)' : 'var(--gray-500)',
-                  paddingRight: 36,
-                  minHeight: 50,
-                  cursor: 'pointer',
-                  width: '100%',
-                }}
-              >
-                <option value="" disabled hidden>Color / Material</option>
-                {COLORS_MATERIALS.map(o => <option key={o} value={o}>{o}</option>)}
-              </select>
-              <span style={{ position: 'absolute', right: 14, pointerEvents: 'none', color: 'var(--gray-500)', display: 'flex' }}>
-                <ChevronDown />
-              </span>
+        {/* ── Field group 1: Category / Item Name / Color+Material ── */}
+        <FieldCard>
+          <SelectRow label="Category"        fieldKey="category"      options={CATEGORIES}      item={item} onChange={onChange} />
+          <TextRow   label="Item Name"       fieldKey="name"          item={item} onChange={onChange} />
+          <SelectRow label="Color / Material" fieldKey="colorMaterial" options={COLORS_MATERIALS} item={item} onChange={onChange} />
+        </FieldCard>
+
+        {/* ── Field group 2: Quantity / Price / Units ── */}
+        <FieldCard>
+          <StyledTextRow label="Quantity" fieldKey="quantity" item={item} onChange={onChange} type="number" />
+          <StyledTextRow label="Price"    fieldKey="price"    item={item} onChange={onChange} type="number" />
+          <StyledTextRow label="Units"    fieldKey="units"    item={item} onChange={onChange} />
+        </FieldCard>
+
+        {/* ── Field group 3: Brand / Model+Style / Condition ── */}
+        <FieldCard>
+          <SelectRow label="Brand"        fieldKey="brand"      options={BRANDS}       item={item} onChange={onChange} />
+          <SelectRow label="Model / Style" fieldKey="modelStyle" options={MODEL_STYLES}  item={item} onChange={onChange} />
+
+          {/* Condition */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10, paddingTop: 10 }}>
+            <p style={{ fontSize: 14, fontWeight: 500, margin: 0, ...baseFont }}>Condition</p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+              {CONDITIONS.map(tag => {
+                const active = (item.condition ?? []).includes(tag);
+                return (
+                  <button
+                    key={tag}
+                    onClick={() => toggleCondition(tag)}
+                    style={{
+                      padding: '8px 16px',
+                      fontSize: 14,
+                      fontWeight: active ? 600 : 400,
+                      background: active ? 'var(--green)' : 'var(--white)',
+                      color: active ? 'var(--white)' : 'var(--black)',
+                      border: `1px solid ${active ? 'var(--green)' : 'var(--border)'}`,
+                      borderRadius: 999,
+                      ...baseFont,
+                    }}
+                  >
+                    {tag}
+                  </button>
+                );
+              })}
             </div>
           </div>
-        </Card>
+        </FieldCard>
 
-        {/* Condition chips */}
-        <div>
-          <div style={{ fontSize: 15, color: 'var(--text)', marginBottom: 12, fontWeight: 500 }}>Condition</div>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
-            {CONDITIONS.map(tag => {
-              const active = (item.condition ?? []).includes(tag);
-              return (
-                <button
-                  key={tag}
-                  onClick={() => toggleCondition(tag)}
-                  style={{
-                    padding: '10px 20px',
-                    fontSize: 15,
-                    background: 'var(--white)',
-                    color: active ? 'var(--green)' : 'var(--text)',
-                    border: active ? '1.5px solid var(--green)' : '1.5px solid var(--gray-300)',
-                    borderRadius: 999,
-                    fontWeight: active ? 600 : 400,
-                  }}
-                >
-                  {tag}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Field group 2: quantity + price */}
-        <Card>
-          <TextField label="Quantity" fieldKey="quantity" item={item} onChange={onChange} type="number" />
-          <div style={{ ...rowStyle, borderBottom: 'none' }}>
-            <span style={labelStyle}>Price</span>
-            <span style={{ fontSize: 16, color: 'var(--gray-500)' }}>$</span>
-            <input
-              type="number"
-              inputMode="decimal"
-              value={(item.price as string) ?? ''}
-              onChange={e => onChange({ price: e.target.value })}
-              style={{
-                flex: 1,
-                border: 'none',
-                background: 'transparent',
-                fontSize: 16,
-                outline: 'none',
-                paddingRight: 18,
-                color: 'var(--text)',
-                minHeight: 50,
-                marginLeft: 2,
-              }}
-            />
-          </div>
-        </Card>
-
-        {/* Notes */}
-        <Card style={{ padding: '14px 18px' }}>
-          <textarea
-            value={item.notes ?? ''}
-            onChange={e => onChange({ notes: e.target.value })}
-            placeholder="Notes"
-            rows={3}
-            style={{
-              width: '100%',
-              border: 'none',
-              background: 'transparent',
-              fontSize: 16,
-              outline: 'none',
-              resize: 'none',
-              color: 'var(--text)',
-              lineHeight: 1.6,
-            }}
-          />
-        </Card>
-
-        {/* Web Prep */}
+        {/* ── Web Prep ── */}
         <WebPrepDrawer item={item} onChange={onChange} />
 
       </div>
@@ -429,25 +469,42 @@ export function IntakeForm({ item, onChange, onReset, onPhotoTap, onSave, onClon
         left: 0,
         right: 0,
         height: 'var(--footer-height)',
-        background: 'var(--green)',
+        background: 'var(--white)',
         display: 'flex',
-        alignItems: 'center',
-        padding: '0 16px',
+        alignItems: 'flex-start',
+        gap: 20,
+        paddingTop: 18,
+        paddingBottom: 19,
+        paddingLeft: 55,
+        paddingRight: 55,
         zIndex: 10,
       }}>
-        <button
-          onClick={() => console.log('Print label', item)}
-          style={{
-            flex: 1,
-            background: 'transparent',
-            color: 'var(--white)',
-            fontWeight: 600,
-            fontSize: 17,
-            letterSpacing: '0.01em',
-          }}
-        >
-          Print label
-        </button>
+        {[
+          { label: 'Duplicate', action: onDuplicate },
+          { label: 'Save',      action: onSave },
+          { label: 'Print label', action: () => console.log('Print label', item) },
+        ].map(({ label, action }) => (
+          <button
+            key={label}
+            onClick={action}
+            style={{
+              flex: 1,
+              height: 63,
+              background: 'var(--mid-grey)',
+              color: 'var(--black)',
+              fontSize: 16,
+              fontWeight: 500,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              border: 'none',
+              borderRadius: 0,
+              ...baseFont,
+            }}
+          >
+            {label}
+          </button>
+        ))}
       </footer>
 
     </div>

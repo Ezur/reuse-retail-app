@@ -20,6 +20,7 @@ function App() {
       name: item.name ?? '',
       price: item.price ?? '',
       quantity: item.quantity ?? '',
+      units: item.units ?? '',
       brand: item.brand ?? '',
       modelStyle: item.modelStyle ?? '',
       colorMaterial: item.colorMaterial ?? '',
@@ -36,7 +37,7 @@ function App() {
     setItem(emptyItem());
   };
 
-  const handleClone = () => {
+  const handleDuplicate = () => {
     setItem(prev => ({
       ...emptyItem(),
       itemType: prev.itemType,
@@ -59,7 +60,7 @@ function App() {
         onReset={() => setItem(emptyItem())}
         onPhotoTap={() => setPhotoOpen(true)}
         onSave={handleSave}
-        onClone={handleClone}
+        onDuplicate={handleDuplicate}
       />
       {photoOpen && <PhotoModal onClose={handlePhotoClose} />}
     </div>

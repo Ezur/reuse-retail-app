@@ -20,6 +20,7 @@ export interface ItemRecord {
   modelStyle: string;
   colorMaterial: string;
   condition: ConditionTag[];
+  units: string;
   notes: string;
   description: string;
   weight: string;
