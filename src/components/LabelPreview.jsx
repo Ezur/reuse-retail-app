@@ -1,10 +1,4 @@
-import { ItemRecord } from '../types';
-
-interface Props {
-  item: Partial<ItemRecord>;
-}
-
-export function LabelPreview({ item }: Props) {
+export function LabelPreview({ item }) {
   return (
     <div style={{
       border: '2px dashed var(--gray-300)',

@@ -1,8 +1,4 @@
-interface Props {
-  onClose: (photo?: string) => void;
-}
-
-export function PhotoModal({ onClose }: Props) {
+export function PhotoModal({ onClose }) {
   return (
     <div style={{
       position: 'fixed',

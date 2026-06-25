@@ -1,20 +1,8 @@
-import { ItemRecord } from '../types';
-
-interface Props {
-  item: Partial<ItemRecord>;
-  onChange: (patch: Partial<ItemRecord>) => void;
-}
-
-const baseFont: React.CSSProperties = {
+const baseFont = {
   fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
 };
 
-function FieldRow({ label, fieldKey, item, onChange }: {
-  label: string;
-  fieldKey: keyof ItemRecord;
-  item: Partial<ItemRecord>;
-  onChange: (p: Partial<ItemRecord>) => void;
-}) {
+function FieldRow({ label, fieldKey, item, onChange }) {
   return (
     <div style={{
       background: 'var(--white)',
@@ -28,7 +16,7 @@ function FieldRow({ label, fieldKey, item, onChange }: {
       <input
         type="text"
         placeholder={label}
-        value={(item[fieldKey] as string) ?? ''}
+        value={item[fieldKey] ?? ''}
         onChange={e => onChange({ [fieldKey]: e.target.value })}
         style={{
           flex: 1,
@@ -46,7 +34,7 @@ function FieldRow({ label, fieldKey, item, onChange }: {
   );
 }
 
-export function WebPrepDrawer({ item, onChange }: Props) {
+export function WebPrepDrawer({ item, onChange }) {
   return (
     <details style={{
       background: 'var(--light-grey)',
@@ -54,7 +42,6 @@ export function WebPrepDrawer({ item, onChange }: Props) {
       borderRadius: 'var(--radius)',
       width: '100%',
     }}>
-      {/* Use a render trick to get open state for chevron rotation */}
       <summary
         style={{
           padding: 16,

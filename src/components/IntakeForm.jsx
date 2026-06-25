@@ -1,8 +1,7 @@
-import { ItemRecord, ItemType, ConditionTag } from '../types';
 import { WebPrepDrawer } from './WebPrepDrawer';
 import { CATEGORIES, COLORS_MATERIALS, BRANDS, MODEL_STYLES } from '../data/options';
 
-const CONDITIONS: ConditionTag[] = ['Antique', 'Vintage', 'Salvaged', 'Refurbished', 'Surplus'];
+const CONDITIONS = ['Antique', 'Vintage', 'Salvaged', 'Refurbished', 'Surplus'];
 
 // ── Icons ──────────────────────────────────────────────────────────────────────
 
@@ -59,7 +58,7 @@ function ProfileIcon() {
 
 // ── Field card container ───────────────────────────────────────────────────────
 
-function FieldCard({ children }: { children: React.ReactNode }) {
+function FieldCard({ children }) {
   return (
     <div style={{
       background: 'var(--light-grey)',
@@ -78,20 +77,8 @@ function FieldCard({ children }: { children: React.ReactNode }) {
 
 // ── Individual field rows ──────────────────────────────────────────────────────
 
-function SelectRow({
-  label,
-  fieldKey,
-  options,
-  item,
-  onChange,
-}: {
-  label: string;
-  fieldKey: keyof ItemRecord;
-  options: string[];
-  item: Partial<ItemRecord>;
-  onChange: (p: Partial<ItemRecord>) => void;
-}) {
-  const value = (item[fieldKey] as string) ?? '';
+function SelectRow({ label, fieldKey, options, item, onChange }) {
+  const value = item[fieldKey] ?? '';
   return (
     <div style={{
       background: 'var(--white)',
@@ -124,7 +111,7 @@ function SelectRow({
         fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
         fontSize: 14,
         fontWeight: 500,
-        color: value ? 'var(--black)' : 'var(--black)',
+        color: 'var(--black)',
         flexShrink: 0,
       }}>
         {value || label}
@@ -134,19 +121,7 @@ function SelectRow({
   );
 }
 
-function TextRow({
-  label,
-  fieldKey,
-  item,
-  onChange,
-  type = 'text',
-}: {
-  label: string;
-  fieldKey: keyof ItemRecord;
-  item: Partial<ItemRecord>;
-  onChange: (p: Partial<ItemRecord>) => void;
-  type?: string;
-}) {
+function TextRow({ label, fieldKey, item, onChange, type = 'text' }) {
   return (
     <div style={{
       background: 'var(--white)',
@@ -161,7 +136,7 @@ function TextRow({
         type={type}
         inputMode={type === 'number' ? 'decimal' : 'text'}
         placeholder={label}
-        value={(item[fieldKey] as string) ?? ''}
+        value={item[fieldKey] ?? ''}
         onChange={e => onChange({ [fieldKey]: e.target.value })}
         style={{
           flex: 1,
@@ -179,19 +154,7 @@ function TextRow({
   );
 }
 
-function StyledTextRow({
-  label,
-  fieldKey,
-  item,
-  onChange,
-  type = 'text',
-}: {
-  label: string;
-  fieldKey: keyof ItemRecord;
-  item: Partial<ItemRecord>;
-  onChange: (p: Partial<ItemRecord>) => void;
-  type?: string;
-}) {
+function StyledTextRow({ label, fieldKey, item, onChange, type = 'text' }) {
   return (
     <div style={{
       background: 'var(--white)',
@@ -208,7 +171,7 @@ function StyledTextRow({
         type={type}
         inputMode={type === 'number' ? 'decimal' : 'text'}
         placeholder={label}
-        value={(item[fieldKey] as string) ?? ''}
+        value={item[fieldKey] ?? ''}
         onChange={e => onChange({ [fieldKey]: e.target.value })}
         style={{
           border: 'none',
@@ -227,17 +190,8 @@ function StyledTextRow({
 
 // ── Main component ─────────────────────────────────────────────────────────────
 
-interface Props {
-  item: Partial<ItemRecord>;
-  onChange: (patch: Partial<ItemRecord>) => void;
-  onReset: () => void;
-  onPhotoTap: () => void;
-  onSave: () => void;
-  onDuplicate: () => void;
-}
-
-export function IntakeForm({ item, onChange, onReset, onPhotoTap, onSave, onDuplicate }: Props) {
-  const toggleCondition = (tag: ConditionTag) => {
+export function IntakeForm({ item, onChange, onReset, onPhotoTap, onSave, onDuplicate }) {
+  const toggleCondition = (tag) => {
     const current = item.condition ?? [];
     const next = current.includes(tag)
       ? current.filter(c => c !== tag)
@@ -245,9 +199,9 @@ export function IntakeForm({ item, onChange, onReset, onPhotoTap, onSave, onDupl
     onChange({ condition: next });
   };
 
-  const setItemType = (t: ItemType) => onChange({ itemType: t });
+  const setItemType = (t) => onChange({ itemType: t });
 
-  const baseFont: React.CSSProperties = {
+  const baseFont = {
     fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
   };
 
@@ -360,7 +314,7 @@ export function IntakeForm({ item, onChange, onReset, onPhotoTap, onSave, onDupl
 
         {/* ── Stock / Unique ── */}
         <div style={{ display: 'flex', gap: 18, height: 64, width: '100%' }}>
-          {(['stock', 'unique'] as ItemType[]).map(t => {
+          {['stock', 'unique'].map(t => {
             const active = item.itemType === t;
             return (
               <button

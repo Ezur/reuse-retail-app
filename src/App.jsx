@@ -1,17 +1,17 @@
 import { useState } from 'react';
 import './App.css';
-import { ItemRecord, emptyItem } from './types';
+import { emptyItem } from './utils';
 import { IntakeForm } from './components/IntakeForm';
 import { PhotoModal } from './components/PhotoModal';
 
 function App() {
-  const [item, setItem] = useState<Partial<ItemRecord>>(emptyItem());
+  const [item, setItem] = useState(emptyItem());
   const [photoOpen, setPhotoOpen] = useState(false);
 
-  const patch = (p: Partial<ItemRecord>) => setItem(prev => ({ ...prev, ...p }));
+  const patch = (p) => setItem(prev => ({ ...prev, ...p }));
 
   const handleSave = () => {
-    const record: ItemRecord = {
+    const record = {
       id: crypto.randomUUID(),
       donationId: 'D44188',
       itemType: item.itemType ?? 'stock',
@@ -32,7 +32,7 @@ function App() {
       width: item.width ?? '',
       height: item.height ?? '',
     };
-    const existing: ItemRecord[] = JSON.parse(localStorage.getItem('rr_items') ?? '[]');
+    const existing = JSON.parse(localStorage.getItem('rr_items') ?? '[]');
     localStorage.setItem('rr_items', JSON.stringify([...existing, record]));
     setItem(emptyItem());
   };
@@ -47,7 +47,7 @@ function App() {
     }));
   };
 
-  const handlePhotoClose = (photo?: string) => {
+  const handlePhotoClose = (photo) => {
     if (photo) patch({ photo });
     setPhotoOpen(false);
   };
