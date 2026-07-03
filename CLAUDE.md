@@ -87,14 +87,14 @@ guide is not yet available.
 
 | Token Name | Hex | Usage |
 |---|---|---|
-| `--cj-primary` | TBD | Primary actions, active states |
-| `--cj-secondary` | TBD | Secondary actions, accents |
-| `--cj-background` | TBD | App background |
-| `--cj-surface` | TBD | Cards, modals, input backgrounds |
-| `--cj-text-primary` | TBD | Body text |
-| `--cj-text-secondary` | TBD | Labels, captions |
-| `--cj-error` | TBD | Error states |
-| `--cj-success` | TBD | Confirmation states |
+| `--cj-primary` | #085420 | Warehosue Mode, Primary actions, active states |
+| `--cj-secondary` | #D65737 | Retail Mode, Secondary actions, accents |
+| `--cj-background` | #FFFFFF | App background |
+| `--cj-surface` | #F5F3EE | Cards, modals, input backgrounds |
+| `--cj-text-primary` | #000000 | Body text |
+| `--cj-text-secondary` | #424242 | Labels, captions |
+| `--cj-error` | #DC0000 | Error states |
+| `--cj-success` | #C7EF4E | Confirmation states | (unsure if this should be the final choice)
 
 > **Action item for Elise:** Provide final hex codes to O2 before UI build begins.
 > All color tokens must pass WCAG 4.5:1 contrast ratio against their paired
@@ -175,7 +175,7 @@ Login Screen
 
 ### 7.2 Navigation Principles
 - Use **bottom tab navigation** for top-level mode switching (Warehouse / Retail)
-- Use **back navigation** (breadcrumb or back button) within flows — never trap
+- Use iOS native **back navigation** (breadcrumb or back button) within flows — never trap
   the user in a dead end
 - Warehouse Mode and Retail Mode are distinct contexts — switching between them
   should prompt confirmation if there is unsaved work in progress
@@ -281,7 +281,7 @@ Login Screen
 Present two options in this order (unique first, per Terry's v2 feedback):
 
 1. **Create Unique Item** (primary, visually prominent)
-2. **Use an Existing Stock Item** (secondary)
+2. **Use an Existing Stock Item** (secondary) Include a search bar and list out the third-level options below. 
 
 **If Stock Item is selected:**
 - Item name and price fields are **grayed out** (locked to the stock item's
