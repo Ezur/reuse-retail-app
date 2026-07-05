@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-const CJ_LOGO = 'https://www.figma.com/api/mcp/asset/1ed09e3d-bcdc-4a62-9e63-d3d2db4b3033';
+import CJ_LOGO from '../assets/construction_junction_logo_green.svg';
 
 // ── Icons ─────────────────────────────────────────────────────────────────────
 
