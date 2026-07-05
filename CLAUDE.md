@@ -2,24 +2,53 @@
 # CLAUDE.md — Reuse Retail App Rebuild
 **Project:** Construction Junction — Reuse Retail Application Rebuild  
 **Prepared for:** O2 (Developer Handoff)  
-**Document version:** 1.0  
-**Last updated:** July 2026
+**Document version:** 2.0
+**Last updated:** July 3 2026
 
 ---
 
+## Architectural Assumptions (Subject to Confirmation)
+
+The following decisions are recommendations made by the CMU team for prototype
+development and should be confirmed before implementation.
+
+- React Native
+- Ionic
+- Supabase
+- JavaScript
+
+## MVP Success Metrics
+
+The MVP should enable staff to:
+
+• Complete stock item intake in under 30 seconds
+• Complete unique item intake in under 2 minutes
+• Print labels without leaving the current workflow
+• Resume interrupted tasks without data loss
+• Require fewer mandatory fields than Reuse Retail v3.x
+
+Non-goals
+
+The rebuild is not attempting to:
+
+• Replace Salesforce
+• Replace Erply
+• Replace WooCommerce
+• Change CJ pricing strategy
+• Automate pricing decisions
+• Change warehouse business processes
+
 ## 1. Project Overview
 
-This document defines the design, technical, and behavioral guidelines for rebuilding
-the Reuse Retail application — a proprietary inventory intake and management tool used
-exclusively by Construction Junction (CJ) warehouse and retail staff.
+How to read this document:
+This document combines validated stakeholder requirements, prototype design decisions, and implementation recommendations identified during the CMU 2026 capstone project.
+Items marked as pending should be confirmed with Construction Junction before production implementation.
 
-The rebuild targets **iPadOS (primary)** and **iOS mobile (secondary)**. The app is
-used on CJ-owned tablets on the warehouse floor and dock. It must be fast, accessible,
-and operable by staff with varying levels of technical literacy in a loud, physically
-demanding environment.
+This document defines the design, technical, and behavioral guidelines for rebuilding the Reuse Retail application — a proprietary inventory intake and management tool used exclusively by Construction Junction (CJ) warehouse and retail staff.
 
-This document covers the **MVP scope only**. AI features, guest access, admin/manager
-views, and offline mode are explicitly out of scope for this build.
+The rebuild targets **iPadOS (primary)** and **iOS mobile (secondary)**. The app is used on CJ-owned tablets on the warehouse floor and dock. It must be fast, accessible, and operable by staff with varying levels of technical literacy in a loud, physically demanding environment.
+
+This document covers the **MVP scope only**. AI features, guest access, admin/manager views, and offline mode are explicitly out of scope for this build.
 
 ---
 
@@ -34,11 +63,7 @@ views, and offline mode are explicitly out of scope for this build.
 | Backend (MVP) | Supabase (mock backend — O2 to swap for Salesforce on production) |
 | Language | JavaScript (exact framework TBD — React Native is current working assumption) |
 
-> **Note for O2:** The Supabase connection is a mock backend for prototype validation
-> only. The production app will connect to CJ's existing Salesforce instance via their
-> proprietary Reuse Retail API layer. Do not architect the Supabase schema in a way
-> that would make the Salesforce swap difficult. Mirror Salesforce field naming
-> conventions wherever possible.
+> **Note for O2:** The Supabase connection is a mock backend for prototype validation only. The production app will connect to CJ's existing Salesforce instance via their proprietary Reuse Retail API layer. Do not architect the Supabase schema in a way that would make the Salesforce swap difficult. Mirror Salesforce field naming conventions wherever possible.
 
 ---
 
@@ -82,12 +107,11 @@ components should only be built when Ionic does not provide an appropriate equiv
 
 ### 4.2 Brand Colors
 Apply Construction Junction brand colors as the primary palette. Hex values below —
-confirm final values with project lead before development begins, as a full brand style
-guide is not yet available.
+confirm final values with project lead before development begins, as a full brand style guide is not yet available.
 
 | Token Name | Hex | Usage |
 |---|---|---|
-| `--cj-primary` | #085420 | Warehosue Mode, Primary actions, active states |
+| `--cj-primary` | #085420 | Warehouse Mode, Primary actions, active states |
 | `--cj-secondary` | #D65737 | Retail Mode, Secondary actions, accents |
 | `--cj-background` | #FFFFFF | App background |
 | `--cj-surface` | #F5F3EE | Cards, modals, input backgrounds |
@@ -96,9 +120,8 @@ guide is not yet available.
 | `--cj-error` | #DC0000 | Error states |
 | `--cj-success` | #C7EF4E | Confirmation states | (unsure if this should be the final choice)
 
-> **Action item for Elise:** Provide final hex codes to O2 before UI build begins.
-> All color tokens must pass WCAG 4.5:1 contrast ratio against their paired
-> background before use.
+> **Action item for CMU Team:** Provide final hex codes to O2 before UI build begins.
+> All color tokens must pass WCAG 4.5:1 contrast ratio against their paired background before use.
 
 ### 4.3 Typography
 Follow Apple HIG type scale. Use system fonts (SF Pro) unless CJ provides a brand
@@ -156,7 +179,26 @@ smaller than 12pt anywhere in the app.
 
 ## 7. App Structure and Navigation
 
-### 7.1 Screen Flow Overview
+## 7.1 System Flow
+
+As far as we understand, Reuse Retail is the intake layer that creates and updates inventory records in Salesforce. Salesforce remains the main system of record. Erply supports point-of-sale activity, and WooCommerce pulls selected Salesforce inventory records to the website.
+
+Dock / Warehouse Intake
+        |
+        v
+Reuse Retail App
+        |
+        v
+Salesforce
+System of Record for donations, reuse items, inventory records, donor traceability
+        |
+        |-----------------------> Erply POS
+        |                         Used for checkout, sales receipts, and inventory outflow
+        |
+        |-----------------------> WooCommerce / WordPress Website
+                                  Pulls selected web-ready items from Salesforce
+
+### 7.2 Screen Flow Overview
 
 ```
 Login Screen
@@ -173,13 +215,54 @@ Login Screen
                     └── Cycle Count
 ```
 
+
+### 7.3 Data Model Overview (Example)
+
+Donation
+   |
+   | 1:N
+   |
+Items
+   |
+   | 1:1
+   |
+Label
+
+Items
+   |
+   | optional
+   |
+Website
+
+Items
+   |
+   | sync
+   |
+Erply
+
+Donation
+   |
+Revenue Share
+
 ### 7.2 Navigation Principles
 - Use **bottom tab navigation** for top-level mode switching (Warehouse / Retail)
-- Use iOS native **back navigation** (breadcrumb or back button) within flows — never trap
-  the user in a dead end
+- Use iOS native **back navigation** (breadcrumb or back button) within flows — never trap the user in a dead end
 - Warehouse Mode and Retail Mode are distinct contexts — switching between them
   should prompt confirmation if there is unsaved work in progress
 - All multi-step flows must show a **step indicator** (e.g., Step 2 of 4)
+
+### Search Behavior
+
+Search interfaces should use native iOS/Ionic search components where possible to provide a familiar experience.
+
+Developers should confirm the searchable fields for each screen during implementation.
+
+Examples:
+
+• Donations: D-number, donor name
+• Categories: category, abbreviation
+• Stock Items: stock item name
+• Retail Inventory: item name and barcode
 
 ---
 
@@ -229,6 +312,16 @@ Login Screen
 - After selecting a primary category, drill into subcategory, then third-level
   options where applicable
 
+**Category Hierarchy Example (APP — Appliances)**
+
+The inventory taxonomy follows a three-level hierarchy:
+
+```
+Category
+    └── Subcategory
+            └── Stock Item
+```
+
 **Full Category List (Level 1):**
 
 | Code | Category Name |
@@ -269,9 +362,41 @@ Login Screen
 - APP, Wall Oven
 - APP, Washers and Dryers
 
+When a user selects **Appliances (APP)**, they are presented with the following subcategories and their associated stock items.
+
 **Example Third-Level (APP, Microwave):**
 - Countertop Microwave, Used, Small (ASIS): $15.99
 - Countertop Microwave, Used, Med/Larger (ASIS): $15.99
+
+**List for APP Appliances subcategory and stock items:**
+| Subcategory | Stock Items |
+|---|---|
+| **APP, Cooktop** | Cooktop – Electric (Good, ASIS) — $15.99<br>Cooktop – Electric (Best, ASIS) — $35.99<br>Cooktop – Gas (Good, ASIS) — $15.99<br>Cooktop – Gas (Best, ASIS) — $35.99 |
+| **APP, Dishwasher** | Dishwasher – Plastic Interior (Used, ASIS) — $15.99<br>Dishwasher – Stainless Steel Interior (Used, ASIS) — $25.99 |
+| **APP, Freezer** | No predefined stock items. Selecting this category should continue to the Unique Item workflow. |
+| **APP, Microwave** | Countertop Microwave, Used, Small (ASIS) — $15.99<br>Countertop Microwave, Used, Med/Larger (ASIS) — $25.99 |
+| **APP, Other APP** | No predefined stock items. |
+| **APP, Range** | No predefined stock items. |
+| **APP, Range Exhaust Hood** | Range Hood, Used (ASIS) — $15.99 |
+| **APP, Refrigerator** | Refrigerator, Bottom Freezer Refrigerator — $25.99<br>Refrigerator, Side by Side Refrigerator — $25.99<br>Refrigerator, Top Freezer Refrigerator — $25.99 |
+| **APP, Small Appliance** | Garbage Disposal (ASIS) — $10.99 |
+| **APP, Smalls/Not for Erply** | No predefined stock items. |
+| **APP, Wall Oven** | No predefined stock items. |
+| **APP, Washers and Dryers** | Washers and Dryers, Dryer — $25.99<br>Washers and Dryers, Washer — $25.99<br>Washers and Dryers, Washer and Dryer Set — $25.99 |
+
+### Stock Item Selection Behavior
+
+After selecting a subcategory:
+
+- If predefined stock items exist, display them in a searchable list.
+- Selecting a stock item automatically populates:
+
+  - Item name
+  - Default CJ price
+  - Category hierarchy
+
+- Staff cannot edit the predefined stock item name or price while using the Stock Item workflow.
+- If no stock items exist for the selected subcategory, automatically continue to the **Unique Item** workflow instead of displaying an empty list.
 
 > **Action item for O2:** Full subcategory and third-level data for all 21
 > categories must be provided by CJ before category selection can be built.
@@ -337,6 +462,15 @@ Present two options in this order (unique first, per Terry's v2 feedback):
 - UX inspiration: Face ID setup screen, mobile check deposit framing overlay
 - Multiple photos allowed — first photo is primary
 
+Open Questions
+
+The following remain to be validated during prototype testing:
+
+• Maximum number of photos (4? - all sides Front, Left, Right, Back)
+• Whether photos are required for all unique items
+• Preferred ordering of multiple photos
+• Whether staff should be guided through multiple recommended angles
+
 **Pricing**
 
 | Field | Required | Notes |
@@ -380,6 +514,17 @@ Present two options in this order (unique first, per Terry's v2 feedback):
 - Saving does not auto-print in the prototype — confirm with CJ whether
   auto-print on save should be the default in production
 
+*** Item Lifecycle**
+
+For MVP, items follow a simple lifecycle:
+
+New (unsaved)
+    ↓
+Saved
+    ↓
+Removed (future behavior to be confirmed)
+
+More complex inventory states are managed by Salesforce, Erply, and WooCommerce and are outside the scope of this rebuild.
 ---
 
 ### 8.4 Retail Mode
@@ -454,6 +599,17 @@ The following are explicitly **not** included in this build:
 - Direct web push to WooCommerce from the app
 - Erply / POS integration
 - Any Salesforce Lightning UI components — prototype uses Supabase mock only
+
+## Design Principles
+
+Throughout the rebuild, prioritize:
+
+• Speed over completeness
+• Consistency over flexibility
+• Minimal typing
+• Large touch targets
+• Interruptible workflows
+• Progressive disclosure
 
 ---
 
