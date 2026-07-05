@@ -1,53 +1,77 @@
+/* ── Ionic core ──────────────────────────────────────────────────────────── */
+@import '@ionic/react/css/core.css';
+@import '@ionic/react/css/normalize.css';
+@import '@ionic/react/css/structure.css';
+@import '@ionic/react/css/typography.css';
+
+/* ── CJ brand tokens ─────────────────────────────────────────────────────── */
 :root {
-  --green: #085420;
-  --cream: #F5F3EE;
-  --white: #ffffff;
-  --black: #000000;
-  --light-grey: #f0f0f0;
-  --mid-grey: #d9d9d9;
-  --dark-grey: #a2a2a2;
-  --border: #c5c5c5;
-  --text: #000000;
-  --radius: 3.6px;
-  --header-height: 109px;
-  --footer-height: 100px;
+  /* Brand palette */
+  --cj-primary:          #085420;
+  --cj-primary-shade:    #064318;
+  --cj-primary-tint:     #1e6b36;
+  --cj-secondary:        #D65737;
+  --cj-background:       #FFFFFF;
+  --cj-surface:          #F5F3EE;
+  --cj-text-primary:     #000000;
+  --cj-text-secondary:   #424242;
+  --cj-error:            #DC0000;
+  --cj-success:          #C7EF4E;
+  --cj-border:           #424242;
+  --cj-mid-grey:         #d9d9d9;
+  --cj-dark-grey:        #a2a2a2;
+
+  /* Legacy tokens (prototype components) */
+  --green:               var(--cj-primary);
+  --cream:               var(--cj-surface);
+  --white:               #ffffff;
+  --black:               #000000;
+  --light-grey:          #f0f0f0;
+  --mid-grey:            #d9d9d9;
+  --dark-grey:           #a2a2a2;
+  --border:              #c5c5c5;
+  --text:                #000000;
+  --radius:              4px;
+  --header-height:       109px;
+  --footer-height:       100px;
+
+  /* Ionic overrides — map Ionic tokens to CJ brand */
+  --ion-color-primary:         var(--cj-primary);
+  --ion-color-primary-shade:   var(--cj-primary-shade);
+  --ion-color-primary-tint:    var(--cj-primary-tint);
+  --ion-background-color:      var(--cj-background);
+  --ion-text-color:            var(--cj-text-primary);
+  --ion-font-family:           'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  --ion-toolbar-background:    var(--cj-primary);
+  --ion-toolbar-color:         #ffffff;
 }
 
+/* ── Base reset ──────────────────────────────────────────────────────────── */
 *, *::before, *::after {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 html, body, #root {
   height: 100%;
   width: 100%;
-  overflow-x: hidden;
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: var(--ion-font-family);
   font-size: 16px;
-  background: var(--cream);
-  color: var(--text);
+  background: var(--cj-background);
+  color: var(--cj-text-primary);
   -webkit-tap-highlight-color: transparent;
   -webkit-font-smoothing: antialiased;
 }
 
 button {
   font-family: inherit;
-  font-size: inherit;
   cursor: pointer;
-  border: none;
-  background: none;
-  min-height: 44px;
-  min-width: 44px;
   touch-action: manipulation;
-  border-radius: var(--radius);
 }
 
 input, textarea, select {
   font-family: inherit;
   font-size: 16px;
-  min-height: 44px;
 }

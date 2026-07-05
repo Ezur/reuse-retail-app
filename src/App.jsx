@@ -1,70 +1,25 @@
-import { useState } from 'react';
-import './App.css';
-import { emptyItem } from './utils';
-import { IntakeForm } from './components/IntakeForm';
-import { PhotoModal } from './components/PhotoModal';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
+import LoginScreen from './screens/LoginScreen.jsx';
+import ModeSelectorScreen from './screens/ModeSelectorScreen.jsx';
 
-function App() {
-  const [item, setItem] = useState(emptyItem());
-  const [photoOpen, setPhotoOpen] = useState(false);
-
-  const patch = (p) => setItem(prev => ({ ...prev, ...p }));
-
-  const handleSave = () => {
-    const record = {
-      id: crypto.randomUUID(),
-      donationId: 'D44188',
-      itemType: item.itemType ?? 'stock',
-      photo: item.photo,
-      category: item.category ?? '',
-      name: item.name ?? '',
-      price: item.price ?? '',
-      quantity: item.quantity ?? '',
-      units: item.units ?? '',
-      brand: item.brand ?? '',
-      modelStyle: item.modelStyle ?? '',
-      colorMaterial: item.colorMaterial ?? '',
-      condition: item.condition ?? [],
-      notes: item.notes ?? '',
-      description: item.description ?? '',
-      weight: item.weight ?? '',
-      length: item.length ?? '',
-      width: item.width ?? '',
-      height: item.height ?? '',
-    };
-    const existing = JSON.parse(localStorage.getItem('rr_items') ?? '[]');
-    localStorage.setItem('rr_items', JSON.stringify([...existing, record]));
-    setItem(emptyItem());
-  };
-
-  const handleDuplicate = () => {
-    setItem(prev => ({
-      ...emptyItem(),
-      itemType: prev.itemType,
-      category: prev.category,
-      brand: prev.brand,
-      condition: prev.condition,
-    }));
-  };
-
-  const handlePhotoClose = (photo) => {
-    if (photo) patch({ photo });
-    setPhotoOpen(false);
-  };
-
-  return (
-    <div style={{ height: '100dvh', overflow: 'hidden', position: 'relative' }}>
-      <IntakeForm
-        item={item}
-        onChange={patch}
-        onReset={() => setItem(emptyItem())}
-        onPhotoTap={() => setPhotoOpen(true)}
-        onSave={handleSave}
-        onDuplicate={handleDuplicate}
-      />
-      {photoOpen && <PhotoModal onClose={handlePhotoClose} />}
-    </div>
-  );
+// Placeholder stubs for screens not yet built
+function WarehouseScreen() {
+  return <div style={{ padding: 32, fontFamily: 'Inter, sans-serif' }}>Warehouse Mode — coming soon</div>;
+}
+function RetailScreen() {
+  return <div style={{ padding: 32, fontFamily: 'Inter, sans-serif' }}>Retail Mode — coming soon</div>;
 }
 
-export default App;
+export default function App() {
+  return (
+    <HashRouter>
+      <Routes>
+        <Route path="/"             element={<Navigate to="/login" replace />} />
+        <Route path="/login"        element={<LoginScreen />} />
+        <Route path="/mode-select"  element={<ModeSelectorScreen />} />
+        <Route path="/warehouse"    element={<WarehouseScreen />} />
+        <Route path="/retail"       element={<RetailScreen />} />
+      </Routes>
+    </HashRouter>
+  );
+}
