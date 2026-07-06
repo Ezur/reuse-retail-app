@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { mockSignIn } from '../lib/supabase';
 
-const CJ_LOGO = 'https://www.figma.com/api/mcp/asset/592c8679-b9ac-46d0-a8aa-7838efc13858';
+import CJ_LOGO from '../assets/construction_junction_logo_green.svg';
 
 function EyeIcon({ visible }) {
   return visible ? (
