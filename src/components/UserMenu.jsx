@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useDevice } from '../context/DeviceContext';
 
 function ChevronUp({ style }) {
   return (
@@ -11,6 +12,7 @@ function ChevronUp({ style }) {
 export default function UserMenu({ initials, onSignOut }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
+  const { openSettings } = useDevice();
 
   useEffect(() => {
     if (!open) return;
@@ -36,7 +38,7 @@ export default function UserMenu({ initials, onSignOut }) {
         flexDirection: 'column',
         minWidth: 120,
         zIndex: 20,
-        maxHeight: open ? 200 : 56,
+        maxHeight: open ? 280 : 56,
         transition: 'max-height 0.22s cubic-bezier(0.4, 0, 0.2, 1)',
       }}
     >
@@ -77,6 +79,29 @@ export default function UserMenu({ initials, onSignOut }) {
         display: 'flex',
         flexDirection: 'column',
       }}>
+        <div style={{ height: 1, background: '#f3f4f6', marginLeft: 8, marginRight: 8, marginBottom: 4 }} />
+        <button
+          onClick={() => { setOpen(false); openSettings(); }}
+          style={{
+            width: '100%',
+            height: 44,
+            background: 'transparent',
+            border: 'none',
+            fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
+            fontSize: 16,
+            fontWeight: 400,
+            color: '#000000',
+            cursor: 'pointer',
+            textAlign: 'center',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            paddingLeft: 12,
+            paddingRight: 12,
+          }}
+        >
+          Settings
+        </button>
         <div style={{ height: 1, background: '#f3f4f6', marginLeft: 8, marginRight: 8, marginBottom: 4 }} />
         <button
           onClick={() => { setOpen(false); onSignOut(); }}

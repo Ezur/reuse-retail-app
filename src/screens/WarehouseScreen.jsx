@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLayout } from '../hooks/useLayout';
 
 import CJ_LOGO from '../assets/construction_junction_logo_white.svg';
 import UserMenu from '../components/UserMenu';
@@ -461,6 +462,7 @@ function BottomNav({ onHome, onScanQr, onNewDonor }) {
 
 export default function WarehouseScreen() {
   const navigate = useNavigate();
+  const { maxWidth, headerHeight, px } = useLayout();
   const [search, setSearch] = useState('');
   const [showQrModal, setShowQrModal] = useState(false);
   const [showNewDonorModal, setShowNewDonorModal] = useState(false);
@@ -488,7 +490,7 @@ export default function WarehouseScreen() {
       )}
 
       {/* ── Header ── */}
-      <header style={styles.header}>
+      <header style={{ ...styles.header, height: headerHeight, paddingLeft: px, paddingRight: px }}>
         <button onClick={() => navigate('/mode-select')} style={styles.backBtn}>
           <span style={styles.backArrow}>←</span>
           <span style={styles.backLabel}>Back</span>
@@ -500,7 +502,7 @@ export default function WarehouseScreen() {
       </header>
 
       {/* ── Main content ── */}
-      <main style={styles.main}>
+      <main style={{ ...styles.main, maxWidth, padding: `16px ${px}px 24px` }}>
 
         <h1 style={styles.pageTitle}>List of Donors</h1>
 

@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 import CJ_LOGO from '../assets/construction_junction_logo_green.svg';
 import UserMenu from '../components/UserMenu';
+import { useLayout } from '../hooks/useLayout';
 
 // ── Icons ─────────────────────────────────────────────────────────────────────
 
@@ -49,6 +50,7 @@ function ChevronRight({ color }) {
 
 export default function ModeSelectorScreen() {
   const navigate = useNavigate();
+  const { isMobile, maxWidth, headerHeight, px, fontSize } = useLayout();
 
   // In production these come from the auth session; mocked for prototype
   const userInitials = 'JS';
@@ -60,7 +62,7 @@ export default function ModeSelectorScreen() {
     <div style={styles.page}>
 
       {/* ── Header ── */}
-      <header style={styles.header}>
+      <header style={{ ...styles.header, height: headerHeight, paddingLeft: px, paddingRight: px }}>
         <img src={CJ_LOGO} alt="Construction Junction" style={styles.logo} />
         {/* Spacer reserves button-sized space; UserMenu floats absolutely over page */}
         <div style={{ width: 120, height: 56, flexShrink: 0, position: 'relative' }}>
@@ -69,11 +71,11 @@ export default function ModeSelectorScreen() {
       </header>
 
       {/* ── Main content ── */}
-      <main style={styles.main}>
+      <main style={{ ...styles.main, maxWidth, paddingLeft: isMobile ? 24 : 56, paddingRight: isMobile ? 24 : 56, gap: isMobile ? 32 : 64, paddingTop: isMobile ? 32 : 64 }}>
 
         {/* Greeting */}
         <div style={styles.greeting}>
-          <h1 style={styles.welcomeTitle}>Welcome, {userName}</h1>
+          <h1 style={{ ...styles.welcomeTitle, fontSize: fontSize.welcome }}>Welcome, {userName}</h1>
           <p style={styles.welcomeSubtitle}>What task are you working on today?</p>
         </div>
 
@@ -81,35 +83,35 @@ export default function ModeSelectorScreen() {
         <div style={styles.cardList}>
 
           {/* Item Intake — Warehouse / Loading Dock */}
-          <button onClick={() => navigate('/warehouse')} style={{ ...styles.card, borderColor: '#085420' }}>
-            <div style={styles.cardIcon}>
+          <button onClick={() => navigate('/warehouse')} style={{ ...styles.card, borderColor: '#085420', height: isMobile ? 'auto' : 255, minHeight: isMobile ? 100 : undefined, paddingTop: isMobile ? 20 : 64, paddingBottom: isMobile ? 20 : 64, paddingLeft: isMobile ? 20 : 32, paddingRight: isMobile ? 20 : 32 }}>
+            <div style={{ ...styles.cardIcon, width: isMobile ? 48 : 72, height: isMobile ? 48 : 72 }}>
               <ItemIntakeIcon />
             </div>
-            <div style={styles.cardText}>
+            <div style={{ ...styles.cardText, paddingLeft: isMobile ? 16 : 32, paddingRight: isMobile ? 16 : 32, gap: isMobile ? 6 : 16 }}>
               <div>
-                <p style={{ ...styles.cardTitle, color: '#085420' }}>Item Intake</p>
+                <p style={{ ...styles.cardTitle, color: '#085420', fontSize: fontSize.cardTitle, whiteSpace: isMobile ? 'normal' : 'nowrap' }}>Item Intake</p>
                 <p style={{ ...styles.cardSubtitle, color: '#085420' }}>LOADING DOCK</p>
               </div>
               <p style={styles.cardDesc}>Receive new donations and log items.</p>
             </div>
-            <div style={styles.cardArrow}>
+            <div style={{ ...styles.cardArrow, width: isMobile ? 32 : 100 }}>
               <ChevronRight color="#085420" />
             </div>
           </button>
 
           {/* Manage Inventory — Retail / Sales Floor */}
-          <button onClick={() => navigate('/retail')} style={{ ...styles.card, borderColor: '#D65737' }}>
-            <div style={styles.cardIcon}>
+          <button onClick={() => navigate('/retail')} style={{ ...styles.card, borderColor: '#D65737', height: isMobile ? 'auto' : 255, minHeight: isMobile ? 100 : undefined, paddingTop: isMobile ? 20 : 64, paddingBottom: isMobile ? 20 : 64, paddingLeft: isMobile ? 20 : 32, paddingRight: isMobile ? 20 : 32 }}>
+            <div style={{ ...styles.cardIcon, width: isMobile ? 48 : 72, height: isMobile ? 48 : 72 }}>
               <ManageInventoryIcon />
             </div>
-            <div style={styles.cardText}>
+            <div style={{ ...styles.cardText, paddingLeft: isMobile ? 16 : 32, paddingRight: isMobile ? 16 : 32, gap: isMobile ? 6 : 16 }}>
               <div>
-                <p style={{ ...styles.cardTitle, color: '#D65737' }}>Manage Inventory</p>
+                <p style={{ ...styles.cardTitle, color: '#D65737', fontSize: fontSize.cardTitle, whiteSpace: isMobile ? 'normal' : 'nowrap' }}>Manage Inventory</p>
                 <p style={{ ...styles.cardSubtitle, color: '#D65737' }}>SALES FLOOR</p>
               </div>
               <p style={styles.cardDesc}>Update prices for items out on the floor.</p>
             </div>
-            <div style={styles.cardArrow}>
+            <div style={{ ...styles.cardArrow, width: isMobile ? 32 : 100 }}>
               <ChevronRight color="#D65737" />
             </div>
           </button>

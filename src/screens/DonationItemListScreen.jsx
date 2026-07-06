@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useLayout } from '../hooks/useLayout';
 
 import CJ_LOGO from '../assets/construction_junction_logo_white.svg';
 import AnonymousDonorAvatar from '../assets/AnonymousDonorAvatar.svg';
@@ -295,10 +296,10 @@ function TableControls({ total, page, totalPages, rowsPerPage, onPage }) {
 
 // ── Bottom nav ────────────────────────────────────────────────────────────────
 
-function BottomNav({ onHome, onScanQr, onNewDonation }) {
+function BottomNav({ onHome, onScanQr, onNewDonation, maxWidth }) {
   return (
     <div style={styles.bottomNav}>
-      <div style={styles.bottomNavInner}>
+      <div style={{ ...styles.bottomNavInner, maxWidth }}>
         <button onClick={onHome} style={styles.navBtn}>
           <HomeIcon />
           <span style={styles.navBtnLabel}>Home</span>
@@ -323,6 +324,7 @@ function BottomNav({ onHome, onScanQr, onNewDonation }) {
 export default function DonationItemListScreen() {
   const navigate = useNavigate();
   const { id } = useParams();
+  const { maxWidth, headerHeight, px } = useLayout();
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const [showNewItemFlow, setShowNewItemFlow] = useState(false);
@@ -343,7 +345,7 @@ export default function DonationItemListScreen() {
   return (
     <div style={styles.page}>
       {/* ── Header ── */}
-      <header style={styles.header}>
+      <header style={{ ...styles.header, height: headerHeight, paddingLeft: px, paddingRight: px }}>
         <button onClick={() => navigate(-1)} style={styles.backBtn}>
           <span style={styles.backArrow}>←</span>
           <span style={styles.backLabel}>Back</span>
@@ -355,7 +357,7 @@ export default function DonationItemListScreen() {
       </header>
 
       {/* ── Main content ── */}
-      <main style={styles.main}>
+      <main style={{ ...styles.main, maxWidth, padding: `16px ${px}px 24px` }}>
 
         <h1 style={styles.pageTitle}>List of Items</h1>
 
@@ -436,10 +438,21 @@ export default function DonationItemListScreen() {
         onHome={() => navigate('/mode-select')}
         onScanQr={() => {}}
         onNewDonation={() => setShowNewItemFlow(true)}
+        maxWidth={maxWidth}
       />
 
       {showNewItemFlow && (
-        <NewItemFlow onClose={() => setShowNewItemFlow(false)} />
+        <NewItemFlow
+          onDismiss={() => setShowNewItemFlow(false)}
+          onCancel={() => {
+            setShowNewItemFlow(false);
+            navigate(`/donor/${id}/item/new`);
+          }}
+          onComplete={(data) => {
+            setShowNewItemFlow(false);
+            navigate(`/donor/${id}/item/new`, { state: data });
+          }}
+        />
       )}
     </div>
   );
