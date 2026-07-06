@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import CJ_LOGO from '../assets/construction_junction_logo_green.svg';
+import UserMenu from '../components/UserMenu';
 
 // ── Icons ─────────────────────────────────────────────────────────────────────
 
@@ -45,65 +45,6 @@ function ChevronRight({ color }) {
   );
 }
 
-function ChevronUp() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M18 15L12 9L6 15" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
-  );
-}
-
-// ── User menu dropdown ────────────────────────────────────────────────────────
-
-function UserMenu({ initials, onSignOut }) {
-  const [open, setOpen] = useState(false);
-  const ref = useRef(null);
-
-  // Close when clicking outside
-  useEffect(() => {
-    if (!open) return;
-    const handler = (e) => {
-      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
-    };
-    document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
-  }, [open]);
-
-  return (
-    <div ref={ref} style={{ position: 'relative', flexShrink: 0 }}>
-      {/* Trigger button */}
-      <button
-        onClick={() => setOpen(v => !v)}
-        aria-label="User menu"
-        aria-expanded={open}
-        style={{
-          ...styles.initialsBtn,
-          paddingRight: open ? 10 : 16,
-          gap: open ? 6 : 0,
-        }}
-      >
-        {initials}
-        {open && <ChevronUp />}
-      </button>
-
-      {/* Dropdown */}
-      {open && (
-        <div style={styles.dropdown}>
-          {/* Divider */}
-          <div style={styles.dropdownDivider} />
-          {/* Sign Out */}
-          <button
-            onClick={() => { setOpen(false); onSignOut(); }}
-            style={styles.signOutBtn}
-          >
-            Sign Out
-          </button>
-        </div>
-      )}
-    </div>
-  );
-}
-
 // ── Main component ────────────────────────────────────────────────────────────
 
 export default function ModeSelectorScreen() {
@@ -121,7 +62,10 @@ export default function ModeSelectorScreen() {
       {/* ── Header ── */}
       <header style={styles.header}>
         <img src={CJ_LOGO} alt="Construction Junction" style={styles.logo} />
-        <UserMenu initials={userInitials} onSignOut={handleSignOut} />
+        {/* Spacer reserves button-sized space; UserMenu floats absolutely over page */}
+        <div style={{ width: 120, height: 56, flexShrink: 0, position: 'relative' }}>
+          <UserMenu initials={userInitials} onSignOut={handleSignOut} />
+        </div>
       </header>
 
       {/* ── Main content ── */}
@@ -217,60 +161,6 @@ const styles = {
     height: 52,
     width: 'auto',
     objectFit: 'contain',
-  },
-  initialsBtn: {
-    height: 56,
-    minWidth: 56,
-    paddingLeft: 16,
-    border: '1.27px solid #d9d9d9',
-    borderRadius: 12,
-    background: '#ffffff',
-    fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
-    fontSize: 18,
-    fontWeight: 400,
-    color: '#000000',
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  dropdown: {
-    position: 'absolute',
-    top: 'calc(100% + 4px)',
-    right: 0,
-    background: '#ffffff',
-    border: '1px solid #d9d9d9',
-    borderRadius: 12,
-    overflow: 'hidden',
-    zIndex: 100,
-    minWidth: 110,
-    boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
-    paddingTop: 8,
-    paddingBottom: 8,
-  },
-  dropdownDivider: {
-    height: 1,
-    background: '#f3f4f6',
-    marginLeft: 8,
-    marginRight: 8,
-    marginBottom: 4,
-  },
-  signOutBtn: {
-    width: '100%',
-    height: 44,
-    background: 'transparent',
-    border: 'none',
-    fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
-    fontSize: 16,
-    fontWeight: 400,
-    color: '#DC0000',
-    cursor: 'pointer',
-    textAlign: 'center',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingLeft: 12,
-    paddingRight: 12,
   },
   main: {
     flex: 1,
