@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import CJ_LOGO from '../assets/construction_junction_logo_green.svg';
@@ -44,14 +45,75 @@ function ChevronRight({ color }) {
   );
 }
 
+function ChevronUp() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M18 15L12 9L6 15" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+}
+
+// ── User menu dropdown ────────────────────────────────────────────────────────
+
+function UserMenu({ initials, onSignOut }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  // Close when clicking outside
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [open]);
+
+  return (
+    <div ref={ref} style={{ position: 'relative', flexShrink: 0 }}>
+      {/* Trigger button */}
+      <button
+        onClick={() => setOpen(v => !v)}
+        aria-label="User menu"
+        aria-expanded={open}
+        style={{
+          ...styles.initialsBtn,
+          paddingRight: open ? 10 : 16,
+          gap: open ? 6 : 0,
+        }}
+      >
+        {initials}
+        {open && <ChevronUp />}
+      </button>
+
+      {/* Dropdown */}
+      {open && (
+        <div style={styles.dropdown}>
+          {/* Divider */}
+          <div style={styles.dropdownDivider} />
+          {/* Sign Out */}
+          <button
+            onClick={() => { setOpen(false); onSignOut(); }}
+            style={styles.signOutBtn}
+          >
+            Sign Out
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ── Main component ────────────────────────────────────────────────────────────
 
 export default function ModeSelectorScreen() {
   const navigate = useNavigate();
 
-  // In production this comes from the auth session; mocked for prototype
+  // In production these come from the auth session; mocked for prototype
   const userInitials = 'JS';
   const userName = 'John';
+
+  const handleSignOut = () => navigate('/login');
 
   return (
     <div style={styles.page}>
@@ -59,9 +121,7 @@ export default function ModeSelectorScreen() {
       {/* ── Header ── */}
       <header style={styles.header}>
         <img src={CJ_LOGO} alt="Construction Junction" style={styles.logo} />
-        <button style={styles.initialsBtn} aria-label="User menu">
-          {userInitials}
-        </button>
+        <UserMenu initials={userInitials} onSignOut={handleSignOut} />
       </header>
 
       {/* ── Main content ── */}
@@ -162,7 +222,6 @@ const styles = {
     height: 56,
     minWidth: 56,
     paddingLeft: 16,
-    paddingRight: 16,
     border: '1.27px solid #d9d9d9',
     borderRadius: 12,
     background: '#ffffff',
@@ -174,6 +233,44 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  dropdown: {
+    position: 'absolute',
+    top: 'calc(100% + 4px)',
+    right: 0,
+    background: '#ffffff',
+    border: '1px solid #d9d9d9',
+    borderRadius: 12,
+    overflow: 'hidden',
+    zIndex: 100,
+    minWidth: 110,
+    boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+    paddingTop: 8,
+    paddingBottom: 8,
+  },
+  dropdownDivider: {
+    height: 1,
+    background: '#f3f4f6',
+    marginLeft: 8,
+    marginRight: 8,
+    marginBottom: 4,
+  },
+  signOutBtn: {
+    width: '100%',
+    height: 44,
+    background: 'transparent',
+    border: 'none',
+    fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
+    fontSize: 16,
+    fontWeight: 400,
+    color: '#DC0000',
+    cursor: 'pointer',
+    textAlign: 'center',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingLeft: 12,
+    paddingRight: 12,
   },
   main: {
     flex: 1,
