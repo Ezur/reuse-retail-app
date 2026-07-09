@@ -4,7 +4,19 @@ import { useLayout } from '../hooks/useLayout';
 import CJ_LOGO from '../assets/construction_junction_logo_white.svg';
 import AnonymousDonorAvatar from '../assets/AnonymousDonorAvatar.svg';
 import UserMenu from '../components/UserMenu';
+import BackButton from '../components/BackButton';
 import NewItemFlow from '../components/NewItemFlow';
+
+const CATEGORY_MAP = {
+  APP: 'Appliances', BML: 'Building Material and Lumber', CAB: 'Cabinets and Built-Ins',
+  CLO: 'Clothing', CNT: 'Countertops and Tabletops', DOR: 'Doors',
+  ELC: 'Hardware, Tools, Electrical and Misc', FLR: 'Flooring and Accessories',
+  GDN: 'Garden and Outdoor', GLS: 'Glass, Mirrors, and Glass Block',
+  HDW: 'Hardware, Tools, Electrical and Misc', HVA: 'Heating, Ventilation, A/C and Rads',
+  HOF: 'Home, Office and Commercial Furnishings', CJM: 'Junction Made',
+  LGT: 'Lighting', LBR: 'Lumber and Sheet Goods', PNT: 'Paint',
+  PLB: 'Plumbing', ROF: 'Roofing', TIL: 'Tile', WIN: 'Windows',
+};
 
 const DONOR_INFO = {
   name: 'Anonymous Donor Drop-Off',
@@ -22,7 +34,7 @@ const CONDITIONS = ['Like New', 'Good', 'Fair'];
 
 function HomeIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
       <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/>
       <path d="M9 21V12h6v9" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/>
     </svg>
@@ -31,7 +43,7 @@ function HomeIcon() {
 
 function CopyIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
       <rect x="9" y="9" width="13" height="13" rx="2" stroke="currentColor" strokeWidth="1.8"/>
       <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" strokeWidth="1.8"/>
     </svg>
@@ -40,7 +52,7 @@ function CopyIcon() {
 
 function SaveIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
       <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/>
       <polyline points="17 21 17 13 7 13 7 21" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/>
       <polyline points="7 3 7 8 15 8" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/>
@@ -50,7 +62,7 @@ function SaveIcon() {
 
 function PrintIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
       <polyline points="6 9 6 2 18 2 18 9" stroke="#fff" strokeWidth="1.8" strokeLinejoin="round"/>
       <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" stroke="#fff" strokeWidth="1.8" strokeLinejoin="round"/>
       <rect x="6" y="14" width="12" height="8" stroke="#fff" strokeWidth="1.8" strokeLinejoin="round"/>
@@ -114,20 +126,6 @@ function DonorSummaryCard({ info }) {
           </p>
         </div>
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexShrink: 0 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <BoxIcon />
-          <div>
-            <p style={{ fontFamily: "'Helvetica Neue', sans-serif", fontSize: 16, fontWeight: 700, color: '#000', margin: 0 }}>24</p>
-            <p style={{ fontFamily: "'Helvetica Neue', sans-serif", fontSize: 11, color: '#595959', margin: 0 }}>Total Items</p>
-          </div>
-        </div>
-        <div style={{ width: 1, height: 32, background: '#d9d9d9' }} />
-        <div>
-          <p style={{ fontFamily: "'Helvetica Neue', sans-serif", fontSize: 16, fontWeight: 700, color: '#000', margin: 0 }}>$412.36</p>
-          <p style={{ fontFamily: "'Helvetica Neue', sans-serif", fontSize: 11, color: '#595959', margin: 0 }}>Total Cost</p>
-        </div>
-      </div>
     </div>
   );
 }
@@ -185,37 +183,40 @@ function FieldLabel({ children, required }) {
   );
 }
 
-function InputField({ value, onChange, placeholder, readOnly, style }) {
+function InputField({ value, onChange, placeholder, readOnly, disabled, style }) {
   return (
     <input
       value={value}
       onChange={onChange}
       placeholder={placeholder}
-      readOnly={readOnly}
+      readOnly={readOnly || disabled}
+      disabled={disabled}
       style={{
         width: '100%', boxSizing: 'border-box',
         height: 44, border: '0.558px solid #d9d9d9', borderRadius: 8,
-        background: readOnly ? '#f5f5f5' : '#fff',
+        background: disabled ? '#f0f0f0' : readOnly ? '#f5f5f5' : '#fff',
         padding: '0 10px',
-        fontFamily: "'Inter', sans-serif", fontSize: 14, color: readOnly ? '#595959' : '#000',
-        outline: 'none',
+        fontFamily: "'Inter', sans-serif", fontSize: 14,
+        color: disabled ? '#a0a0a0' : '#000',
+        outline: 'none', cursor: disabled ? 'not-allowed' : undefined,
         ...style,
       }}
     />
   );
 }
 
-function SelectField({ value, onChange, options, placeholder }) {
+function SelectField({ value, onChange, options, placeholder, disabled }) {
   return (
     <select
       value={value}
       onChange={onChange}
+      disabled={disabled}
       style={{
         width: '100%', boxSizing: 'border-box',
         height: 44, border: '0.558px solid #d9d9d9', borderRadius: 8,
-        background: '#fff', padding: '0 10px',
-        fontFamily: "'Inter', sans-serif", fontSize: 14, color: '#000',
-        outline: 'none', cursor: 'pointer',
+        background: disabled ? '#f0f0f0' : '#fff', padding: '0 10px',
+        fontFamily: "'Inter', sans-serif", fontSize: 14, color: disabled ? '#a0a0a0' : '#000',
+        outline: 'none', cursor: disabled ? 'not-allowed' : 'pointer',
         appearance: 'none',
         backgroundImage: `url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23424242' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`,
         backgroundRepeat: 'no-repeat',
@@ -229,35 +230,43 @@ function SelectField({ value, onChange, options, placeholder }) {
   );
 }
 
-function CheckboxPill({ label, checked, onChange }) {
+function CheckboxPill({ label, checked, onChange, disabled }) {
   return (
     <label style={{
-      display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer',
-      border: `0.558px solid ${checked ? '#085420' : '#d9d9d9'}`,
+      display: 'flex', alignItems: 'center', gap: 6,
+      cursor: disabled ? 'not-allowed' : 'pointer',
+      border: `0.558px solid ${disabled ? '#e0e0e0' : checked ? '#085420' : '#d9d9d9'}`,
       borderRadius: 6, padding: '5px 10px', minHeight: 44,
-      background: checked ? '#e8f5e9' : '#fff',
+      background: disabled ? '#f0f0f0' : checked ? '#e8f5e9' : '#fff',
+      opacity: disabled ? 0.6 : 1,
     }}>
       <input
         type="checkbox"
         checked={checked}
         onChange={onChange}
-        style={{ width: 14, height: 14, accentColor: '#085420', cursor: 'pointer' }}
+        disabled={disabled}
+        style={{ width: 14, height: 14, accentColor: '#085420', cursor: disabled ? 'not-allowed' : 'pointer' }}
       />
-      <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, color: '#000', whiteSpace: 'nowrap' }}>{label}</span>
+      <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, color: disabled ? '#a0a0a0' : '#000', whiteSpace: 'nowrap' }}>{label}</span>
     </label>
   );
 }
 
-function RadioButton({ label, checked, onChange }) {
+function RadioButton({ label, checked, onChange, disabled }) {
   return (
-    <label style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', minHeight: 44 }}>
+    <label style={{
+      display: 'flex', alignItems: 'center', gap: 6,
+      cursor: disabled ? 'not-allowed' : 'pointer',
+      minHeight: 44, opacity: disabled ? 0.5 : 1,
+    }}>
       <input
         type="radio"
         checked={checked}
         onChange={onChange}
-        style={{ width: 16, height: 16, accentColor: '#085420', cursor: 'pointer' }}
+        disabled={disabled}
+        style={{ width: 16, height: 16, accentColor: '#085420', cursor: disabled ? 'not-allowed' : 'pointer' }}
       />
-      <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: '#000' }}>{label}</span>
+      <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: disabled ? '#a0a0a0' : '#000' }}>{label}</span>
     </label>
   );
 }
@@ -331,18 +340,21 @@ export default function InventoryFormScreen() {
   const { state } = useLocation();
   const { isMobile, maxWidth, headerHeight, px, fieldColumns } = useLayout();
 
-  const initType = state?.type || 'empty';
-  const initCategory = state?.category || null;
-  const initSubcategory = state?.subcategory || null;
-  const initStockItem = state?.stockItem || null;
+  const existingItem = state?.item || null;
+  const isEditing = !!existingItem;
 
-  const isStock = initType === 'stock';
+  const initType = state?.type || (existingItem ? 'donated' : 'empty');
+  const initCategory = state?.category || (existingItem?.category ? { code: existingItem.category, name: CATEGORY_MAP[existingItem.category] ?? existingItem.category } : null);
+  const initSubcategory = state?.subcategory || existingItem?.subcategory || null;
+  const initStockItem = state?.stockItem || null;
 
   // Category / type state (can change if user re-opens wizard)
   const [category, setCategory] = useState(initCategory);
   const [subcategory, setSubcategory] = useState(initSubcategory);
   const [itemType, setItemType] = useState(initType);
   const [stockItem, setStockItem] = useState(initStockItem);
+
+  const isStock = itemType === 'stock';
 
   // Form fields
   const [brand, setBrand] = useState(isStock ? 'N/A' : '');
@@ -351,8 +363,9 @@ export default function InventoryFormScreen() {
   const [specialChars, setSpecialChars] = useState([]);
   const [condition, setCondition] = useState('');
   const [description, setDescription] = useState(isStock ? 'N/A' : '');
-  const [price, setPrice] = useState(isStock && initStockItem?.price ? initStockItem.price : '');
-  const [qty, setQty] = useState('1');
+  const [price, setPrice] = useState(existingItem?.price ?? (isStock && initStockItem?.price ? initStockItem.price : ''));
+  const [qty, setQty] = useState(existingItem?.qty ? String(existingItem.qty) : '1');
+  const [qtyOf, setQtyOf] = useState('1');
   const [units, setUnits] = useState('Each');
   const [weight, setWeight] = useState('');
   const [length, setLength] = useState('');
@@ -365,6 +378,15 @@ export default function InventoryFormScreen() {
   // Wizard state
   const [showWizard, setShowWizard] = useState(false);
   const [wizardStartStep, setWizardStartStep] = useState('category');
+
+  // Print state
+  const [printState, setPrintState] = useState(null); // null | 'printing' | 'done'
+
+  const handlePrint = () => {
+    setPrintState('printing');
+    setTimeout(() => setPrintState('done'), 2000);
+    setTimeout(() => setPrintState(null), 3500);
+  };
 
   const itemName = buildItemName({ type: itemType, subcategory, stockItem, brand, modelStyle, color });
 
@@ -397,10 +419,7 @@ export default function InventoryFormScreen() {
     <div style={styles.page}>
       {/* Header */}
       <header style={{ ...styles.header, height: headerHeight, paddingLeft: px, paddingRight: px }}>
-        <button onClick={() => navigate(-1)} style={styles.backBtn}>
-          <span style={styles.backArrow}>←</span>
-          <span style={styles.backLabel}>Back</span>
-        </button>
+        <BackButton onClick={() => navigate(-1)} variant="cancel" />
         <img src={CJ_LOGO} alt="Construction Junction" style={styles.logo} />
         <div style={{ width: 120, height: 56, flexShrink: 0, position: 'relative' }}>
           <UserMenu initials="JS" onSignOut={() => navigate('/login')} />
@@ -409,7 +428,12 @@ export default function InventoryFormScreen() {
 
       {/* Main */}
       <main style={{ ...styles.main, maxWidth, padding: `16px ${px}px 24px` }}>
-        <h1 style={styles.pageTitle}>Inventory Form</h1>
+        <h1 style={styles.pageTitle}>{isEditing ? 'Edit Item' : 'Inventory Form'}</h1>
+        {isEditing && (
+          <p style={{ fontSize: 13, color: '#595959', margin: '-8px 0 12px', fontFamily: "'Helvetica Neue', sans-serif" }}>
+            {existingItem.name}
+          </p>
+        )}
 
         <DonorSummaryCard info={DONOR_INFO} />
 
@@ -448,27 +472,27 @@ export default function InventoryFormScreen() {
             required
             requiredNote="At least 1 photo required"
             right={
-              <button style={styles.photoTipsBtn}>
+              <button style={styles.photoTipsBtn} disabled={isStock}>
                 <LightbulbIcon />
                 <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, color: '#424242', marginLeft: 4 }}>Photo Tips</span>
               </button>
             }
           />
-          <CardBody style={{ display: 'flex', gap: 16 }}>
+          <CardBody style={{ display: 'flex', gap: 16, position: 'relative' }}>
             {/* Upload zone */}
-            <div style={styles.photoUpload}>
+            <div style={{ ...styles.photoUpload, background: isStock ? '#f0f0f0' : undefined, cursor: isStock ? 'not-allowed' : 'pointer', borderColor: isStock ? '#e0e0e0' : '#d9d9d9' }}>
               <CameraIcon />
-              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, fontWeight: 600, color: '#424242', margin: '8px 0 4px' }}>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, fontWeight: 600, color: isStock ? '#a0a0a0' : '#424242', margin: '8px 0 4px' }}>
                 Add Photos
               </p>
-              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: '#595959', margin: 0, textAlign: 'center' }}>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: isStock ? '#c0c0c0' : '#595959', margin: 0, textAlign: 'center' }}>
                 Click to take new images to this item.
               </p>
             </div>
             {/* Tips panel */}
-            <div style={styles.tipsPanel}>
+            <div style={{ ...styles.tipsPanel, background: isStock ? '#f0f0f0' : '#f5f5f5' }}>
               {['Use good lighting', 'Take the photo in horizontal mode', 'Capture the entire item', 'Highlight special or unique features'].map(tip => (
-                <p key={tip} style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: '#424242', margin: '0 0 6px' }}>
+                <p key={tip} style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: isStock ? '#c0c0c0' : '#424242', margin: '0 0 6px' }}>
                   {tip}
                 </p>
               ))}
@@ -491,15 +515,15 @@ export default function InventoryFormScreen() {
             <div style={{ display: 'flex', flexDirection: fieldColumns === 1 ? 'column' : 'row', gap: 12 }}>
               <div style={{ flex: 1 }}>
                 <FieldLabel required>Brand</FieldLabel>
-                <SelectField value={brand} onChange={e => setBrand(e.target.value)} options={BRANDS} placeholder="Select or enter..." />
+                <SelectField value={brand} onChange={e => setBrand(e.target.value)} options={BRANDS} placeholder="Search or select..." disabled={isStock} />
               </div>
               <div style={{ flex: 1 }}>
                 <FieldLabel required>Model and/or Style</FieldLabel>
-                <InputField value={modelStyle} onChange={e => setModelStyle(e.target.value)} placeholder="Enter..." />
+                <InputField value={modelStyle} onChange={e => setModelStyle(e.target.value)} placeholder="Enter..." disabled={isStock} />
               </div>
               <div style={{ flex: 1 }}>
                 <FieldLabel>Color and/or Material</FieldLabel>
-                <SelectField value={color} onChange={e => setColor(e.target.value)} options={COLORS} placeholder="Select or enter..." />
+                <SelectField value={color} onChange={e => setColor(e.target.value)} options={COLORS} placeholder="Search or select..." disabled={isStock} />
               </div>
             </div>
 
@@ -513,6 +537,7 @@ export default function InventoryFormScreen() {
                     label={char}
                     checked={specialChars.includes(char)}
                     onChange={() => toggleSpecialChar(char)}
+                    disabled={isStock}
                   />
                 ))}
               </div>
@@ -520,10 +545,10 @@ export default function InventoryFormScreen() {
 
             {/* Condition */}
             <div>
-              <FieldLabel>Condition (Optional)</FieldLabel>
+              <FieldLabel>Condition</FieldLabel>
               <div style={{ display: 'flex', gap: 20 }}>
                 {CONDITIONS.map(c => (
-                  <RadioButton key={c} label={c} checked={condition === c} onChange={() => setCondition(c)} />
+                  <RadioButton key={c} label={c} checked={condition === c} onChange={() => setCondition(c)} disabled={isStock} />
                 ))}
               </div>
             </div>
@@ -535,7 +560,8 @@ export default function InventoryFormScreen() {
                 value={description}
                 onChange={e => setDescription(e.target.value)}
                 placeholder="Enter a description for the website."
-                style={styles.textarea}
+                disabled={isStock}
+                style={{ ...styles.textarea, background: isStock ? '#f0f0f0' : undefined, color: isStock ? '#a0a0a0' : '#000', cursor: isStock ? 'not-allowed' : undefined }}
               />
             </div>
           </CardBody>
@@ -549,36 +575,55 @@ export default function InventoryFormScreen() {
               {/* Price */}
               <div style={{ flex: 1 }}>
                 <FieldLabel required>Price</FieldLabel>
-                <div style={styles.priceRow}>
-                  <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: '#595959', paddingLeft: 10 }}>$</span>
+                <div style={{ ...styles.priceRow, background: isStock ? '#f0f0f0' : undefined, cursor: isStock ? 'not-allowed' : undefined }}>
+                  <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: isStock ? '#a0a0a0' : '#595959', paddingLeft: 10 }}>$</span>
                   <input
                     type="number"
                     value={price}
                     onChange={e => setPrice(e.target.value)}
                     placeholder="0.00"
-                    style={{ flex: 1, border: 'none', outline: 'none', background: 'transparent', fontFamily: "'Inter', sans-serif", fontSize: 14, color: '#000' }}
+                    disabled={isStock}
+                    style={{ flex: 1, border: 'none', outline: 'none', background: 'transparent', fontFamily: "'Inter', sans-serif", fontSize: 14, color: isStock ? '#a0a0a0' : '#000', cursor: isStock ? 'not-allowed' : undefined }}
                   />
                 </div>
               </div>
               {/* Quantity */}
               <div style={{ flex: 1 }}>
                 <FieldLabel required>Quantity</FieldLabel>
-                <div style={styles.qtyRow}>
-                  <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, color: '#595959' }}>_</span>
-                  <input
-                    type="number"
-                    value={qty}
-                    onChange={e => setQty(e.target.value)}
-                    min="1"
-                    style={{ width: 40, border: 'none', outline: 'none', background: 'transparent', fontFamily: "'Inter', sans-serif", fontSize: 14, color: '#000', textAlign: 'center' }}
-                  />
-                  <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, color: '#595959' }}>_ of _1_</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 44, width: 64, border: '0.558px solid #d9d9d9', borderRadius: 8, background: isStock ? '#f0f0f0' : '#fff', cursor: isStock ? 'not-allowed' : undefined }}>
+                      <input
+                        type="number"
+                        value={qty}
+                        onChange={e => setQty(e.target.value)}
+                        min="1"
+                        disabled={isStock}
+                        style={{ width: 44, border: 'none', outline: 'none', background: 'transparent', fontFamily: "'Inter', sans-serif", fontSize: 16, fontWeight: 500, color: isStock ? '#a0a0a0' : '#000', textAlign: 'center', cursor: isStock ? 'not-allowed' : undefined }}
+                      />
+                    </div>
+                    <span style={{ fontSize: 10, color: '#595959', fontFamily: "'Inter', sans-serif" }}>count</span>
+                  </div>
+                  <span style={{ fontSize: 16, color: '#d9d9d9', lineHeight: 1, paddingBottom: 16 }}>/</span>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 44, width: 64, border: '0.558px solid #d9d9d9', borderRadius: 8, background: isStock ? '#f0f0f0' : '#fff', cursor: isStock ? 'not-allowed' : undefined }}>
+                      <input
+                        type="number"
+                        value={qtyOf}
+                        onChange={e => setQtyOf(e.target.value)}
+                        min="1"
+                        disabled={isStock}
+                        style={{ width: 44, border: 'none', outline: 'none', background: 'transparent', fontFamily: "'Inter', sans-serif", fontSize: 16, fontWeight: 500, color: isStock ? '#a0a0a0' : '#000', textAlign: 'center', cursor: isStock ? 'not-allowed' : undefined }}
+                      />
+                    </div>
+                    <span style={{ fontSize: 10, color: '#595959', fontFamily: "'Inter', sans-serif" }}>total</span>
+                  </div>
                 </div>
               </div>
               {/* Units */}
               <div style={{ flex: 1 }}>
                 <FieldLabel required>Units</FieldLabel>
-                <SelectField value={units} onChange={e => setUnits(e.target.value)} options={UNITS} />
+                <SelectField value={units} onChange={e => setUnits(e.target.value)} options={UNITS} disabled={isStock} />
               </div>
             </div>
           </CardBody>
@@ -595,7 +640,7 @@ export default function InventoryFormScreen() {
             ].map(([label, val, setter]) => (
               <div key={label} style={{ flex: 1 }}>
                 <FieldLabel>{label}</FieldLabel>
-                <InputField value={val} onChange={e => setter(e.target.value)} placeholder="N/A" />
+                <InputField value={val} onChange={e => setter(e.target.value)} placeholder="N/A" disabled={isStock} />
               </div>
             ))}
           </div>
@@ -607,7 +652,8 @@ export default function InventoryFormScreen() {
             value={notes}
             onChange={e => setNotes(e.target.value)}
             placeholder="Want to mention something extra to your team?"
-            style={styles.textarea}
+            disabled={isStock}
+            style={{ ...styles.textarea, background: isStock ? '#f0f0f0' : undefined, color: isStock ? '#a0a0a0' : '#000', cursor: isStock ? 'not-allowed' : undefined }}
           />
         </CollapsibleSection>
 
@@ -628,9 +674,9 @@ export default function InventoryFormScreen() {
             <SaveIcon />
             <span style={styles.navBtnLabel}>Save</span>
           </button>
-          <button style={{ ...styles.navBtn, background: '#085420', border: '1px solid #085420', color: '#fff' }}>
+          <button onClick={handlePrint} style={{ ...styles.navBtn, background: '#085420', border: '1px solid #085420', color: '#fff' }}>
             <PrintIcon />
-            <span style={{ ...styles.navBtnLabel, color: '#fff' }}>Print Label</span>
+            <span style={{ ...styles.navBtnLabel, color: '#fff' }}>Print & Save</span>
           </button>
         </div>
       </div>
@@ -645,6 +691,31 @@ export default function InventoryFormScreen() {
           onCancel={() => setShowWizard(false)}
           onComplete={handleWizardComplete}
         />
+      )}
+
+      {printState && (
+        <>
+          <style>{`
+            @keyframes cj-spin { to { transform: rotate(360deg); } }
+            @keyframes cj-pop { 0% { transform: scale(0.6); opacity: 0; } 70% { transform: scale(1.15); } 100% { transform: scale(1); opacity: 1; } }
+          `}</style>
+          <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.55)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
+              {printState === 'printing' ? (
+                <div style={{ width: 72, height: 72, borderRadius: '50%', border: '5px solid rgba(255,255,255,0.2)', borderTopColor: '#fff', animation: 'cj-spin 0.75s linear infinite' }} />
+              ) : (
+                <div style={{ width: 72, height: 72, borderRadius: '50%', background: '#085420', display: 'flex', alignItems: 'center', justifyContent: 'center', animation: 'cj-pop 0.35s ease-out both' }}>
+                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
+                    <path d="M5 13l4 4L19 7" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+              )}
+              <p style={{ fontFamily: "'Helvetica Neue', sans-serif", fontSize: 16, fontWeight: 500, color: '#fff', margin: 0 }}>
+                {printState === 'printing' ? 'Printing…' : 'Label printed'}
+              </p>
+            </div>
+          </div>
+        </>
       )}
     </div>
   );
@@ -733,10 +804,10 @@ const styles = {
   navBtn: {
     flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
     background: '#fff', border: '0.558px solid #d9d9d9', borderRadius: 10,
-    padding: '10px 0', minHeight: 44, cursor: 'pointer',
+    padding: '10px 0', height: 44, cursor: 'pointer',
   },
   navBtnLabel: {
     fontFamily: "'Helvetica Neue', sans-serif",
-    fontSize: 12, fontWeight: 500, color: '#000', whiteSpace: 'nowrap',
+    fontSize: 14, fontWeight: 500, color: '#000', whiteSpace: 'nowrap',
   },
 };

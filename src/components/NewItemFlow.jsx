@@ -34,23 +34,24 @@ const SUBCATEGORIES = {
   CJM: ['Junction Made Item'],
 };
 
-const STOCK_ITEMS_BY_SUBCATEGORY = {
+// Stock items are objects { name, price } so the form can pre-fill price
+const STOCK_ITEMS = {
   Microwave: [
-    'Countertop Microwave, Used, Small (ASIS)',
-    'Countertop Microwave, Used, Med/Larger (ASIS)',
+    { name: 'Countertop Microwave, Used, Small (ASIS)', price: '15.99' },
+    { name: 'Countertop Microwave, Used, Med/Larger (ASIS)', price: '19.99' },
   ],
   Cooktop: [
-    'Electric Cooktop, 30 in., Good (ASIS)',
-    'Gas Cooktop, Stainless, Best (ASIS)',
+    { name: 'Electric Cooktop, 30 in., Good (ASIS)', price: '49.99' },
+    { name: 'Gas Cooktop, Stainless, Best (ASIS)', price: '79.99' },
   ],
   Refrigerator: [
-    'Refrigerator, Top Freezer, White (ASIS)',
-    'Refrigerator, Side by Side (ASIS)',
-    'Refrigerator, French Door (ASIS)',
+    { name: 'Refrigerator, Top Freezer, White (ASIS)', price: '149.99' },
+    { name: 'Refrigerator, Side by Side (ASIS)', price: '189.99' },
+    { name: 'Refrigerator, French Door (ASIS)', price: '229.99' },
   ],
   'Wall Oven': [
-    'Wall Oven, Single, Electric (ASIS)',
-    'Wall Oven, Double, Gas (ASIS)',
+    { name: 'Wall Oven, Single, Electric (ASIS)', price: '99.99' },
+    { name: 'Wall Oven, Double, Gas (ASIS)', price: '149.99' },
   ],
 };
 
@@ -89,7 +90,6 @@ function ChevronRight() {
   );
 }
 
-// Category icon — simple generic icon per category code
 function CategoryIcon({ code, size = 20 }) {
   const icons = {
     APP: <path d="M3 6h18v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6zM3 6l2-3h14l2 3" stroke="#424242" strokeWidth="1.6" strokeLinejoin="round"/>,
@@ -156,7 +156,6 @@ function ModalShell({ onBack, onClose, title, subtitle, children }) {
             <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 16, fontWeight: 600, color: '#000', margin: 0 }}>
               {title}
             </p>
-            {/* Always render subtitle row at fixed height so header doesn't shift between steps */}
             <div style={{ height: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, marginTop: subtitle ? 4 : 0 }}>
               {subtitle}
             </div>
@@ -177,7 +176,7 @@ function ModalShell({ onBack, onClose, title, subtitle, children }) {
 
 // ── Step 1: Category picker ───────────────────────────────────────────────────
 
-function CategoryStep({ onClose, onSelect }) {
+function CategoryStep({ onDismiss, onCancel, onSelect }) {
   const [q, setQ] = useState('');
   const filtered = CATEGORIES.filter(c =>
     `${c.name} (${c.code})`.toLowerCase().includes(q.toLowerCase())
@@ -186,8 +185,8 @@ function CategoryStep({ onClose, onSelect }) {
     <ModalShell
       title="Select a Category"
       subtitle={<span style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, color: '#595959' }}>Select or search for a category to begin</span>}
-      onBack={onClose}
-      onClose={onClose}
+      onBack={onDismiss}
+      onClose={onCancel}
     >
       <div style={{ padding: '12px 20px 0' }}>
         <div style={searchBar}>
@@ -215,7 +214,7 @@ function CategoryStep({ onClose, onSelect }) {
 
 // ── Step 2: Subcategory picker ────────────────────────────────────────────────
 
-function SubcategoryStep({ category, onBack, onClose, onSelect }) {
+function SubcategoryStep({ category, onBack, onCancel, onSelect }) {
   const [q, setQ] = useState('');
   const subs = SUBCATEGORIES[category.code] || [];
   const filtered = subs.filter(s =>
@@ -225,7 +224,7 @@ function SubcategoryStep({ category, onBack, onClose, onSelect }) {
     <ModalShell
       title="Select a Subcategory"
       onBack={onBack}
-      onClose={onClose}
+      onClose={onCancel}
       subtitle={
         <>
           <CategoryIcon code={category.code} size={14} />
@@ -260,12 +259,12 @@ function SubcategoryStep({ category, onBack, onClose, onSelect }) {
 
 // ── Step 3: Stock vs. Reuse ───────────────────────────────────────────────────
 
-function StockOrReuseStep({ category, subcategory, onBack, onClose, onStock, onReuse }) {
+function StockOrReuseStep({ category, subcategory, onBack, onCancel, onStock, onReuse }) {
   return (
     <ModalShell
       title="How would you like to continue?"
       onBack={onBack}
-      onClose={onClose}
+      onClose={onCancel}
       subtitle={
         <>
           <CategoryIcon code={category.code} size={14} />
@@ -276,8 +275,6 @@ function StockOrReuseStep({ category, subcategory, onBack, onClose, onStock, onR
       }
     >
       <div style={{ padding: '24px 20px', display: 'flex', flexDirection: 'column', gap: 0 }}>
-
-        {/* Reuse Item */}
         <button onClick={onReuse} style={choiceRow}>
           <div style={choiceIcon}>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -293,7 +290,6 @@ function StockOrReuseStep({ category, subcategory, onBack, onClose, onStock, onR
 
         <div style={{ height: 1, background: '#f3f4f6', margin: '4px 0' }} />
 
-        {/* Stock Item */}
         <button onClick={onStock} style={choiceRow}>
           <div style={choiceIcon}>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -307,7 +303,6 @@ function StockOrReuseStep({ category, subcategory, onBack, onClose, onStock, onR
           </div>
           <ChevronRight />
         </button>
-
       </div>
     </ModalShell>
   );
@@ -315,15 +310,15 @@ function StockOrReuseStep({ category, subcategory, onBack, onClose, onStock, onR
 
 // ── Step 4a: Stock item picker ────────────────────────────────────────────────
 
-function StockItemStep({ category, subcategory, onBack, onClose, onSelect }) {
+function StockItemStep({ category, subcategory, onBack, onCancel, onSelect }) {
   const [q, setQ] = useState('');
-  const items = STOCK_ITEMS_BY_SUBCATEGORY[subcategory] || [];
-  const filtered = items.filter(i => i.toLowerCase().includes(q.toLowerCase()));
+  const items = STOCK_ITEMS[subcategory] || [];
+  const filtered = items.filter(i => i.name.toLowerCase().includes(q.toLowerCase()));
   return (
     <ModalShell
       title="Select an Existing Stock Item"
       onBack={onBack}
-      onClose={onClose}
+      onClose={onCancel}
     >
       <div style={{ padding: '12px 20px 0' }}>
         <div style={searchBar}>
@@ -344,8 +339,8 @@ function StockItemStep({ category, subcategory, onBack, onClose, onSelect }) {
           </p>
         )}
         {filtered.map(item => (
-          <button key={item} onClick={() => onSelect(item)} style={listRow}>
-            <span style={listText}>{item}</span>
+          <button key={item.name} onClick={() => onSelect(item)} style={listRow}>
+            <span style={listText}>{item.name}</span>
           </button>
         ))}
       </div>
@@ -353,50 +348,25 @@ function StockItemStep({ category, subcategory, onBack, onClose, onSelect }) {
   );
 }
 
-// ── Step 4b: Unique Item Form placeholder ─────────────────────────────────────
+// ── Main export ───────────────────────────────────────────────────────────────
 
-function UniqueItemFormStep({ category, subcategory, onBack, onClose }) {
-  return (
-    <ModalShell
-      title="Item Intake Form"
-      onBack={onBack}
-      onClose={onClose}
-      subtitle={
-        <>
-          <CategoryIcon code={category.code} size={14} />
-          <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, color: '#424242' }}>
-            {subcategory}, {category.name} ({category.code})
-          </span>
-        </>
-      }
-    >
-      <div style={{ padding: '48px 32px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="#d9d9d9" strokeWidth="1.5" strokeLinejoin="round"/>
-          <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" stroke="#d9d9d9" strokeWidth="1.5" strokeLinecap="round"/>
-        </svg>
-        <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 18, fontWeight: 600, color: '#000', margin: 0 }}>
-          Item Intake Form
-        </p>
-        <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: '#595959', margin: 0, textAlign: 'center' }}>
-          Coming soon — further logic TBD
-        </p>
-      </div>
-    </ModalShell>
-  );
-}
-
-// ── Main export: full flow ────────────────────────────────────────────────────
-
-export default function NewItemFlow({ onClose }) {
-  const [step, setStep] = useState('category');
-  const [category, setCategory] = useState(null);
-  const [subcategory, setSubcategory] = useState(null);
+export default function NewItemFlow({
+  onDismiss,          // ← back on step 1 (go back to wherever user came from)
+  onCancel,           // X on any step / backdrop
+  onComplete,         // { type, category, subcategory, stockItem? }
+  startStep = 'category',
+  startCategory = null,
+  startSubcategory = null,
+}) {
+  const [step, setStep] = useState(startStep);
+  const [category, setCategory] = useState(startCategory);
+  const [subcategory, setSubcategory] = useState(startSubcategory);
 
   if (step === 'category') {
     return (
       <CategoryStep
-        onClose={onClose}
+        onDismiss={onDismiss}
+        onCancel={onCancel}
         onSelect={cat => { setCategory(cat); setStep('subcategory'); }}
       />
     );
@@ -407,7 +377,7 @@ export default function NewItemFlow({ onClose }) {
       <SubcategoryStep
         category={category}
         onBack={() => setStep('category')}
-        onClose={onClose}
+        onCancel={onCancel}
         onSelect={sub => { setSubcategory(sub); setStep('type'); }}
       />
     );
@@ -419,9 +389,9 @@ export default function NewItemFlow({ onClose }) {
         category={category}
         subcategory={subcategory}
         onBack={() => setStep('subcategory')}
-        onClose={onClose}
+        onCancel={onCancel}
         onStock={() => setStep('stock')}
-        onReuse={() => setStep('unique')}
+        onReuse={() => onComplete({ type: 'reuse', category, subcategory })}
       />
     );
   }
@@ -432,19 +402,8 @@ export default function NewItemFlow({ onClose }) {
         category={category}
         subcategory={subcategory}
         onBack={() => setStep('type')}
-        onClose={onClose}
-        onSelect={() => onClose()}
-      />
-    );
-  }
-
-  if (step === 'unique') {
-    return (
-      <UniqueItemFormStep
-        category={category}
-        subcategory={subcategory}
-        onBack={() => setStep('type')}
-        onClose={onClose}
+        onCancel={onCancel}
+        onSelect={stockItem => onComplete({ type: 'stock', category, subcategory, stockItem })}
       />
     );
   }
