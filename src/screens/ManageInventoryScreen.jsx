@@ -215,7 +215,6 @@ function ItemRow({ item, onClick, isMobile }) {
         background: 'transparent', cursor: 'pointer', textAlign: 'left', gap: 20,
       }}
     >
-      <CameraPlaceholder />
       <div style={{ flex: 1, minWidth: 140 }}>
         <p style={{ fontFamily: "'Helvetica Neue', sans-serif", fontSize: 14, fontWeight: 700, color: '#000', margin: 0, lineHeight: 1.35 }}>
           {item.name}
@@ -229,7 +228,6 @@ function ItemRow({ item, onClick, isMobile }) {
         <span style={{ color: '#595959' }}>/each</span>
       </p>
       <p style={{ ...s.cell, width: 80, color: '#424242' }}>{item.created}</p>
-      <p style={{ ...s.cell, width: 80, color: '#424242' }}>{item.modified}</p>
       <div style={{ flexShrink: 0 }}><ChevronRight /></div>
     </button>
   );
@@ -299,7 +297,6 @@ const INVENTORY_SORT_OPTIONS = [
   { label: 'Quantity', field: 'qty' },
   { label: 'Price', field: 'price' },
   { label: 'Created', field: 'created' },
-  { label: 'Modified', field: 'modified' },
 ];
 
 // ── Category Filter Modal ─────────────────────────────────────────────────────
@@ -648,10 +645,9 @@ export default function ManageInventoryScreen() {
                 { label: 'Item Name',   field: 'name',        flex: true },
                 { label: 'Category',    field: 'category',    width: 48  },
                 { label: 'Subcategory', field: 'subcategory', width: 90  },
-                { label: 'Qty',         field: 'qty',         width: 32, center: true },
+                { label: 'Qty',         field: 'qty',         width: 32 },
                 { label: 'Price',       field: 'price',       width: 96  },
                 { label: 'Created',     field: 'created',     width: 80  },
-                { label: 'Modified',    field: 'modified',    width: 80  },
               ].map(col => (
                 <span key={col.field} style={{ ...s.headerCell, ...(col.flex ? { flex: 1 } : { width: col.width }), textAlign: col.center ? 'center' : undefined, display: 'flex', alignItems: 'center', gap: 4 }}>
                   {col.label}
