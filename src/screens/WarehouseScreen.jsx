@@ -460,7 +460,7 @@ function BottomNav({ onHome, onNewDonor }) {
 
         <button onClick={onNewDonor} style={{ ...styles.navBtn, background: '#085420', border: '1px solid #085420' }}>
           <PlusIcon />
-          <span style={{ ...styles.navBtnLabel, color: '#ffffff' }}>New Donor</span>
+          <span style={{ ...styles.navBtnLabel, color: '#ffffff' }}>Create New Day</span>
         </button>
       </div>
     </div>
@@ -482,6 +482,7 @@ export default function WarehouseScreen() {
   const [filterTypes, setFilterTypes] = useState(new Set());
   const [filterHasItems, setFilterHasItems] = useState(false);
   const [page, setPage] = useState(1);
+  const [recentOpen, setRecentOpen] = useState(true);
 
   const filtered = DONORS.filter(d => {
     const matchSearch = d.name.toLowerCase().includes(search.toLowerCase());
@@ -545,13 +546,20 @@ export default function WarehouseScreen() {
 
         {/* Recent Donors card */}
         <div style={styles.recentCard}>
-          <div style={styles.recentHeader}>
+          <button
+            onClick={() => setRecentOpen(o => !o)}
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', background: 'none', border: 'none', cursor: 'pointer', padding: '12px 16px', borderBottom: recentOpen ? '0.558px solid #f3f4f6' : 'none' }}
+          >
             <span style={styles.recentLabel}>Recent Donors</span>
-            <ChevronRight size={14} />
-          </div>
-          <div style={styles.recentScroll}>
-            {RECENT_DONORS.map(d => <DonorChip key={d.id} donor={d} onClick={() => navigate('/donor/' + d.id, { state: d })} />)}
-          </div>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style={{ transform: recentOpen ? 'rotate(0deg)' : 'rotate(-90deg)', transition: 'transform 0.2s' }}>
+              <path d="M6 9l6 6 6-6" stroke="#424242" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+          {recentOpen && (
+            <div style={styles.recentScroll}>
+              {RECENT_DONORS.map(d => <DonorChip key={d.id} donor={d} onClick={() => navigate('/donor/' + d.id, { state: d })} />)}
+            </div>
+          )}
         </div>
 
         {/* Donors table card */}
@@ -742,7 +750,7 @@ const styles = {
   },
   recentCard: {
     background: '#ffffff',
-    border: '0.558px solid #d9d9d9', borderRadius: 10, overflow: 'hidden',
+    border: '0.558px solid #d9d9d9', borderRadius: 10,
   },
   recentHeader: {
     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
@@ -754,7 +762,7 @@ const styles = {
   },
   recentScroll: {
     display: 'flex', gap: 8, overflowX: 'auto',
-    padding: '12px 16px 20px', scrollbarWidth: 'none',
+    padding: '12px 16px 16px 16px', scrollbarWidth: 'none',
     scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch',
   },
   tableCard: {

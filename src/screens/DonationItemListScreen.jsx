@@ -338,7 +338,7 @@ function BottomNav({ onHome, onScanQr, onNewDonation, maxWidth }) {
           </button>
           <button onClick={onNewDonation} style={{ ...styles.navBtn, background: '#085420', border: '1px solid #085420' }}>
             <PlusIcon />
-            <span style={{ ...styles.navBtnLabel, color: '#ffffff' }}>New Donation</span>
+            <span style={{ ...styles.navBtnLabel, color: '#ffffff' }}>Add Item</span>
           </button>
         </div>
       </div>
@@ -425,7 +425,7 @@ export default function DonationItemListScreen() {
       {/* ── Main content ── */}
       <main style={{ ...styles.main, maxWidth, padding: `16px ${px}px 24px` }}>
 
-        <h1 style={styles.pageTitle}>List of Items</h1>
+        <h1 style={styles.pageTitle}>Donated Items</h1>
 
         {/* Donor summary card */}
         <DonorSummaryCard
@@ -521,7 +521,16 @@ export default function DonationItemListScreen() {
           {/* Table rows */}
           <div>
             {pageRows.length === 0
-              ? <p style={styles.emptyText}>No items match your search.</p>
+              ? donorItems.length === 0
+                ? (
+                  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '48px 0' }}>
+                    <button onClick={() => setShowNewItemFlow(true)} style={{ display: 'flex', alignItems: 'center', gap: 8, height: 52, padding: '0 20px', background: '#085420', border: 'none', borderRadius: 10, cursor: 'pointer', fontFamily: "'Helvetica Neue', sans-serif", fontSize: 14, fontWeight: 500, color: '#fff' }}>
+                      <PlusIcon />
+                      Add Item
+                    </button>
+                  </div>
+                )
+                : <p style={styles.emptyText}>No items match your search.</p>
               : pageRows.map(item => (
                   <ItemRow key={item.id} item={item} isMobile={isMobile} onClick={() => navigate(`/donor/${id}/item/${item.id}`, { state: { item } })} />
                 ))
