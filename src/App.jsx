@@ -1,4 +1,5 @@
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 import { DeviceProvider } from './context/DeviceContext.jsx';
 import LoginScreen from './screens/LoginScreen.jsx';
 import ModeSelectorScreen from './screens/ModeSelectorScreen.jsx';
@@ -29,6 +30,7 @@ export default function App() {
         <Route path="/cycle-count/:staffId" element={<CycleCountDetailScreen />} />
       </Routes>
       </DeviceProvider>
+      <Analytics />
     </HashRouter>
   );
 }
