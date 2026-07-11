@@ -90,7 +90,7 @@ export default function ModeSelectorScreen() {
             <div style={{ ...styles.cardText, paddingLeft: isMobile ? 16 : 32, paddingRight: isMobile ? 16 : 32, gap: isMobile ? 6 : 16 }}>
               <div>
                 <p style={{ ...styles.cardTitle, color: '#085420', fontSize: fontSize.cardTitle, whiteSpace: isMobile ? 'normal' : 'nowrap' }}>Item Intake</p>
-                <p style={{ ...styles.cardSubtitle, color: '#085420' }}>LOADING DOCK</p>
+                <p style={{ ...styles.cardSubtitle, color: '#085420' }}>WAREHOUSE</p>
               </div>
               <p style={styles.cardDesc}>Receive new donations and log items.</p>
             </div>
@@ -109,7 +109,7 @@ export default function ModeSelectorScreen() {
                 <p style={{ ...styles.cardTitle, color: '#D65737', fontSize: fontSize.cardTitle, whiteSpace: isMobile ? 'normal' : 'nowrap' }}>Manage Inventory</p>
                 <p style={{ ...styles.cardSubtitle, color: '#D65737' }}>SALES FLOOR</p>
               </div>
-              <p style={styles.cardDesc}>Update prices for items out on the floor.</p>
+              <p style={styles.cardDesc}>Update information for items on the floor.</p>
             </div>
             <div style={{ ...styles.cardArrow, width: isMobile ? 32 : 100 }}>
               <ChevronRight color="#D65737" />

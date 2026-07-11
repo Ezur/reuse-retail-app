@@ -1,11 +1,24 @@
 import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { useLayout } from '../hooks/useLayout';
 
 import CJ_LOGO from '../assets/construction_junction_logo_white.svg';
 import AnonymousDonorAvatar from '../assets/AnonymousDonorAvatar.svg';
 import UserMenu from '../components/UserMenu';
+import BackButton from '../components/BackButton';
+import SortModal from '../components/SortModal';
+import FilterModal from '../components/FilterModal';
 import NewItemFlow from '../components/NewItemFlow';
+
+const ITEM_SORT_OPTIONS = [
+  { label: 'Item Name', field: 'name' },
+  { label: 'Category', field: 'category' },
+  { label: 'Subcategory', field: 'subcategory' },
+  { label: 'Quantity', field: 'qty' },
+  { label: 'Price', field: 'price' },
+  { label: 'Created', field: 'created' },
+  { label: 'Modified', field: 'modified' },
+];
 
 // ── Mock data ─────────────────────────────────────────────────────────────────
 
@@ -106,7 +119,7 @@ function SortIcon() {
 
 function HomeIcon() {
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
       <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z" stroke="#000" strokeWidth="1.8" strokeLinejoin="round"/>
       <path d="M9 21V12h6v9" stroke="#000" strokeWidth="1.8" strokeLinejoin="round"/>
     </svg>
@@ -115,7 +128,7 @@ function HomeIcon() {
 
 function PlusIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
       <path d="M12 5v14M5 12h14" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/>
     </svg>
   );
@@ -139,24 +152,27 @@ function ChevronLeft({ disabled }) {
 
 // ── Donor summary card ────────────────────────────────────────────────────────
 
-function DonorSummaryCard({ info, totalItems, totalCost }) {
+function DonorSummaryCard({ info, totalItems, totalCost, isMobile }) {
   return (
     <div style={{
       border: '0.558px solid #d9d9d9', borderRadius: 14,
       padding: '16px 20px',
-      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+      display: 'flex',
+      flexDirection: isMobile ? 'column' : 'row',
+      alignItems: isMobile ? 'flex-start' : 'center',
+      justifyContent: 'space-between',
       gap: 12, background: '#ffffff',
     }}>
-      {/* Left — avatar + name */}
+      {/* Avatar + name */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 14, flex: 1, minWidth: 0 }}>
         <img
           src={AnonymousDonorAvatar}
           alt=""
-          width={56} height={56}
+          width={isMobile ? 44 : 56} height={isMobile ? 44 : 56}
           style={{ borderRadius: '50%', flexShrink: 0 }}
         />
-        <div>
-          <p style={{ fontFamily: "'Helvetica Neue', sans-serif", fontSize: 18, fontWeight: 700, color: '#000', margin: 0, lineHeight: 1.3 }}>
+        <div style={{ minWidth: 0 }}>
+          <p style={{ fontFamily: "'Helvetica Neue', sans-serif", fontSize: isMobile ? 16 : 18, fontWeight: 700, color: '#000', margin: 0, lineHeight: 1.3 }}>
             {info.name}
           </p>
           <p style={{ fontFamily: "'Helvetica Neue', sans-serif", fontSize: 14, color: '#424242', margin: '4px 0 0' }}>
@@ -165,8 +181,8 @@ function DonorSummaryCard({ info, totalItems, totalCost }) {
         </div>
       </div>
 
-      {/* Right — stats */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexShrink: 0 }}>
+      {/* Stats */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexShrink: 0, paddingLeft: isMobile ? 58 : 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, textAlign: 'center' }}>
           <BoxIcon />
           <div>
@@ -194,7 +210,37 @@ function DonorSummaryCard({ info, totalItems, totalCost }) {
 
 // ── Item row ──────────────────────────────────────────────────────────────────
 
-function ItemRow({ item, onClick }) {
+function ItemRow({ item, onClick, isMobile }) {
+  if (isMobile) {
+    return (
+      <button
+        onClick={onClick}
+        style={{
+          width: '100%', display: 'flex', alignItems: 'center',
+          padding: '12px 16px', border: 'none', borderBottom: '0.558px solid #f3f4f6',
+          background: 'transparent', cursor: 'pointer', textAlign: 'left', gap: 20,
+        }}
+      >
+        <CameraPlaceholder />
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <p style={{ fontFamily: "'Helvetica Neue', sans-serif", fontSize: 14, fontWeight: 700, color: '#000', margin: 0, lineHeight: 1.35, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {item.name}
+          </p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 4, flexWrap: 'wrap' }}>
+            <span style={{ fontFamily: "'Helvetica Neue', sans-serif", fontSize: 12, fontWeight: 700, color: '#fff', background: '#595959', borderRadius: 4, padding: '1px 6px' }}>{item.category}</span>
+            <span style={{ fontFamily: "'Helvetica Neue', sans-serif", fontSize: 12, color: '#595959' }}>{item.subcategory}</span>
+            <span style={{ fontFamily: "'Helvetica Neue', sans-serif", fontSize: 12, color: '#595959' }}>· Qty {item.qty}</span>
+          </div>
+        </div>
+        <div style={{ flexShrink: 0, textAlign: 'right' }}>
+          <p style={{ fontFamily: "'Helvetica Neue', sans-serif", fontSize: 14, fontWeight: 700, color: '#000', margin: 0 }}>${item.price.toFixed(2)}</p>
+          <p style={{ fontFamily: "'Helvetica Neue', sans-serif", fontSize: 11, color: '#595959', margin: 0 }}>/each</p>
+        </div>
+        <ChevronRight />
+      </button>
+    );
+  }
+
   return (
     <button
       onClick={onClick}
@@ -208,39 +254,20 @@ function ItemRow({ item, onClick }) {
       }}
     >
       <CameraPlaceholder />
-
-      {/* Name */}
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <p style={{
-          fontFamily: "'Helvetica Neue', sans-serif",
-          fontSize: 14, fontWeight: 700, color: '#085420',
-          margin: 0, lineHeight: 1.35,
-        }}>
+      <div style={{ flex: 1, minWidth: 0, overflow: 'hidden' }}>
+        <p style={{ fontFamily: "'Helvetica Neue', sans-serif", fontSize: 14, fontWeight: 700, color: '#000', margin: 0, lineHeight: 1.35, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {item.name}
         </p>
       </div>
-
-      {/* Category */}
       <p style={{ ...styles.cell, width: 48, fontWeight: 700, color: '#000' }}>{item.category}</p>
-
-      {/* Subcategory */}
       <p style={{ ...styles.cell, width: 90 }}>{item.subcategory}</p>
-
-      {/* Qty */}
       <p style={{ ...styles.cell, width: 32, textAlign: 'center' }}>{item.qty}</p>
-
-      {/* Price */}
       <p style={{ ...styles.cell, width: 96 }}>
         <span style={{ fontWeight: 700 }}>${item.price.toFixed(2)}</span>
         <span style={{ color: '#595959' }}>/each</span>
       </p>
-
-      {/* Created */}
       <p style={{ ...styles.cell, width: 80, color: '#424242' }}>{item.created}</p>
-
-      {/* Modified */}
       <p style={{ ...styles.cell, width: 80, color: '#424242' }}>{item.modified}</p>
-
       <div style={{ flexShrink: 0 }}><ChevronRight /></div>
     </button>
   );
@@ -306,12 +333,12 @@ function BottomNav({ onHome, onScanQr, onNewDonation, maxWidth }) {
         </button>
         <div style={{ display: 'flex', alignItems: 'center', gap: 21 }}>
           <button onClick={onScanQr} style={styles.navBtn}>
-            <QrIcon size={24} />
+            <QrIcon size={16} />
             <span style={styles.navBtnLabel}>Scan QR Code</span>
           </button>
-          <button onClick={onNewDonation} style={{ ...styles.navBtn, background: '#085420', border: '1px solid #424242' }}>
+          <button onClick={onNewDonation} style={{ ...styles.navBtn, background: '#085420', border: '1px solid #085420' }}>
             <PlusIcon />
-            <span style={{ ...styles.navBtnLabel, color: '#ffffff' }}>New Donation</span>
+            <span style={{ ...styles.navBtnLabel, color: '#ffffff' }}>Add Item</span>
           </button>
         </div>
       </div>
@@ -324,20 +351,62 @@ function BottomNav({ onHome, onScanQr, onNewDonation, maxWidth }) {
 export default function DonationItemListScreen() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { maxWidth, headerHeight, px } = useLayout();
+  const location = useLocation();
+  const { maxWidth, headerHeight, px, isMobile } = useLayout();
+
+  const donor = location.state ?? DONOR_INFO;
+  const donorInfo = {
+    name: donor.name,
+    donorNumber: donor.donorNumber,
+    date: donor.date,
+    isOrg: donor.type === 'Shared Revenue',
+  };
+  const donorItemCount = donor.items ?? ITEMS.length;
+  const donorItems = ITEMS.slice(0, donorItemCount);
+
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const [showNewItemFlow, setShowNewItemFlow] = useState(false);
+  const [showSortModal, setShowSortModal] = useState(false);
+  const [showFilterModal, setShowFilterModal] = useState(false);
+  const [sortField, setSortField] = useState(null);
+  const [filterCategories, setFilterCategories] = useState(new Set());
+  const [filterHasPrice, setFilterHasPrice] = useState(false);
 
-  const filtered = ITEMS.filter(item =>
-    item.name.toLowerCase().includes(search.toLowerCase()) ||
-    item.category.toLowerCase().includes(search.toLowerCase()) ||
-    item.subcategory.toLowerCase().includes(search.toLowerCase())
-  );
+  const allCategories = [...new Set(donorItems.map(i => i.category))].sort();
 
-  const totalPages = Math.max(1, Math.ceil(filtered.length / ROWS_PER_PAGE));
+  const filtered = donorItems.filter(item => {
+    const matchSearch =
+      item.name.toLowerCase().includes(search.toLowerCase()) ||
+      item.category.toLowerCase().includes(search.toLowerCase()) ||
+      item.subcategory.toLowerCase().includes(search.toLowerCase());
+    const matchCat = filterCategories.size === 0 || filterCategories.has(item.category);
+    const matchPrice = !filterHasPrice || item.price > 0;
+    return matchSearch && matchCat && matchPrice;
+  });
+
+  const CATEGORY_LABELS = { APP: 'Appliances', CAB: 'Cabinets', DOR: 'Doors & Windows', ELC: 'Electrical', FLR: 'Flooring', FRN: 'Furniture', HWD: 'Hardware', LTG: 'Lighting', PLB: 'Plumbing', PNT: 'Paint', RFG: 'Roofing', TLS: 'Tools', FXR: 'Fixtures' };
+  const activeFilterCount = filterCategories.size + (filterHasPrice ? 1 : 0);
+  const activeFilterChips = [
+    ...[...filterCategories].map(v => ({ label: CATEGORY_LABELS[v] || v, onClear: () => { const s = new Set(filterCategories); s.delete(v); setFilterCategories(s); setPage(1); } })),
+    ...(filterHasPrice ? [{ label: 'Has price', onClear: () => { setFilterHasPrice(false); setPage(1); } }] : []),
+  ];
+  const clearAllFilters = () => { setFilterCategories(new Set()); setFilterHasPrice(false); setPage(1); };
+  const toggleCat = v => setFilterCategories(prev => { const s = new Set(prev); s.has(v) ? s.delete(v) : s.add(v); return s; });
+
+  const sorted = sortField ? [...filtered].sort((a, b) => {
+    const va = a[sortField], vb = b[sortField];
+    if (sortField === 'qty' || sortField === 'price') return va - vb;
+    if (sortField === 'created' || sortField === 'modified') {
+      const toMs = s => { const [m, d, y] = s.split('/'); return new Date(y, m - 1, d).getTime(); };
+      return toMs(va) - toMs(vb);
+    }
+    return String(va).localeCompare(String(vb));
+  }) : filtered;
+
+  const totalPages = Math.max(1, Math.ceil(sorted.length / ROWS_PER_PAGE));
   const safePage = Math.min(page, totalPages);
-  const pageRows = filtered.slice((safePage - 1) * ROWS_PER_PAGE, safePage * ROWS_PER_PAGE);
+  const pageRows = sorted.slice((safePage - 1) * ROWS_PER_PAGE, safePage * ROWS_PER_PAGE);
 
   const handleSearch = (val) => { setSearch(val); setPage(1); };
   const handlePage = (n) => setPage(Math.max(1, Math.min(n, totalPages)));
@@ -346,10 +415,7 @@ export default function DonationItemListScreen() {
     <div style={styles.page}>
       {/* ── Header ── */}
       <header style={{ ...styles.header, height: headerHeight, paddingLeft: px, paddingRight: px }}>
-        <button onClick={() => navigate(-1)} style={styles.backBtn}>
-          <span style={styles.backArrow}>←</span>
-          <span style={styles.backLabel}>Back</span>
-        </button>
+        <BackButton onClick={() => navigate(-1)} />
         <img src={CJ_LOGO} alt="Construction Junction" style={styles.logo} />
         <div style={{ width: 120, height: 56, flexShrink: 0, position: 'relative' }}>
           <UserMenu initials="JS" onSignOut={() => navigate('/login')} />
@@ -359,21 +425,22 @@ export default function DonationItemListScreen() {
       {/* ── Main content ── */}
       <main style={{ ...styles.main, maxWidth, padding: `16px ${px}px 24px` }}>
 
-        <h1 style={styles.pageTitle}>List of Items</h1>
+        <h1 style={styles.pageTitle}>Donated Items</h1>
 
         {/* Donor summary card */}
         <DonorSummaryCard
-          info={DONOR_INFO}
-          totalItems={ITEMS.reduce((sum, item) => sum + item.qty, 0)}
-          totalCost={ITEMS.reduce((sum, item) => sum + item.price * item.qty, 0)}
+          info={donorInfo}
+          totalItems={donorItemCount}
+          totalCost={donorItems.reduce((sum, item) => sum + item.price * item.qty, 0)}
+          isMobile={isMobile}
         />
 
         {/* Items table */}
         <div style={styles.tableCard}>
 
           {/* Toolbar */}
-          <div style={styles.toolbar}>
-            <div style={styles.searchWrapper}>
+          <div style={{ ...styles.toolbar, flexWrap: isMobile ? 'wrap' : 'nowrap' }}>
+            <div style={{ ...styles.searchWrapper, minWidth: isMobile ? '100%' : 200 }}>
               <SearchIcon />
               <input
                 type="text"
@@ -383,47 +450,96 @@ export default function DonationItemListScreen() {
                 style={styles.searchInput}
               />
             </div>
-            <div style={{ display: 'flex', gap: 8 }}>
-              <button style={styles.toolBtn}>
+            <div style={{ display: 'flex', gap: 8, width: isMobile ? '100%' : undefined, flexShrink: 0 }}>
+              <button style={{ ...styles.toolBtn, flex: isMobile ? 1 : undefined }}>
                 <QrIcon size={18} color="#424242" />
-                <span style={styles.toolBtnLabel}>Scan QR Code</span>
+                {!isMobile && <span style={styles.toolBtnLabel}>Scan QR Code</span>}
               </button>
-              <button style={styles.toolBtn}>
+              <button
+                onClick={() => setShowFilterModal(true)}
+                style={{ ...styles.toolBtn, flex: isMobile ? 1 : undefined, borderColor: activeFilterCount > 0 ? '#085420' : '#d9d9d9', background: activeFilterCount > 0 ? '#f0f7f2' : '#f0f0f0' }}
+              >
                 <FilterIcon />
-                <span style={styles.toolBtnLabel}>Filter</span>
+                <span style={{ ...styles.toolBtnLabel, color: activeFilterCount > 0 ? '#085420' : '#000' }}>Filter</span>
+                {activeFilterCount > 0 && (
+                  <span style={{ minWidth: 18, height: 18, borderRadius: 9, background: '#085420', color: '#fff', fontSize: 11, fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 4px' }}>{activeFilterCount}</span>
+                )}
               </button>
-              <button style={styles.toolBtn}>
+              <button
+                onClick={() => setShowSortModal(true)}
+                style={{ ...styles.toolBtn, flex: isMobile ? 1 : undefined, borderColor: sortField ? '#085420' : '#d9d9d9', background: sortField ? '#f0f7f2' : '#f0f0f0' }}
+              >
                 <SortIcon />
-                <span style={styles.toolBtnLabel}>Sort</span>
+                <span style={{ ...styles.toolBtnLabel, color: sortField ? '#085420' : '#000' }}>Sort</span>
+                {sortField && (
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#085420" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                )}
               </button>
             </div>
           </div>
 
-          {/* Column headers */}
-          <div style={styles.tableHeader}>
-            <span style={{ ...styles.headerCell, flex: 1 }}>Item Name</span>
-            <span style={{ ...styles.headerCell, width: 48 }}>Category</span>
-            <span style={{ ...styles.headerCell, width: 90 }}>Subcategory</span>
-            <span style={{ ...styles.headerCell, width: 32, textAlign: 'center' }}>Qty</span>
-            <span style={{ ...styles.headerCell, width: 96 }}>Price</span>
-            <span style={{ ...styles.headerCell, width: 80 }}>Created</span>
-            <span style={{ ...styles.headerCell, width: 80 }}>Modified</span>
-            <span style={{ width: 14, flexShrink: 0 }} />
-          </div>
+          {/* Active filter chips */}
+          {activeFilterChips.length > 0 && (
+            <div style={{ display: 'flex', gap: 6, padding: '10px 16px', background: '#fafafa', borderBottom: '0.558px solid #f3f4f6', flexWrap: 'wrap', alignItems: 'center' }}>
+              {activeFilterChips.map((chip, i) => (
+                <button key={i} onClick={chip.onClear} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, height: 28, padding: '0 10px', borderRadius: 6, border: '1px solid #c3dbc8', background: '#f0f7f2', fontFamily: "'Helvetica Neue', sans-serif", fontSize: 13, fontWeight: 500, color: '#085420', cursor: 'pointer' }}>
+                  {chip.label}
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="#085420" strokeWidth="2.2" strokeLinecap="round"/></svg>
+                </button>
+              ))}
+              <button onClick={clearAllFilters} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, height: 28, padding: '0 10px', borderRadius: 6, border: '1px solid #d1d5dc', background: 'transparent', fontFamily: "'Helvetica Neue', sans-serif", fontSize: 13, color: '#888', cursor: 'pointer' }}>
+                Clear all
+              </button>
+            </div>
+          )}
+
+          {/* Column headers — tablet only */}
+          {!isMobile && (
+            <div style={styles.tableHeader}>
+              {[
+                { label: 'Item Name',   field: 'name',        flex: true },
+                { label: 'Category',    field: 'category',    width: 48  },
+                { label: 'Subcategory', field: 'subcategory', width: 90  },
+                { label: 'Qty',         field: 'qty',         width: 32, center: true },
+                { label: 'Price',       field: 'price',       width: 96  },
+                { label: 'Created',     field: 'created',     width: 80  },
+                { label: 'Modified',    field: 'modified',    width: 80  },
+              ].map(col => (
+                <span key={col.field} style={{ ...styles.headerCell, ...(col.flex ? { flex: 1 } : { width: col.width }), textAlign: col.center ? 'center' : undefined, display: 'flex', alignItems: 'center', gap: 4 }}>
+                  {col.label}
+                  {sortField === col.field && (
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}>
+                      <path d="M20 6L9 17l-5-5" stroke="#085420" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  )}
+                </span>
+              ))}
+              <span style={{ width: 14, flexShrink: 0 }} />
+            </div>
+          )}
 
           {/* Table rows */}
           <div>
             {pageRows.length === 0
-              ? <p style={styles.emptyText}>No items match your search.</p>
+              ? donorItems.length === 0
+                ? (
+                  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '48px 0' }}>
+                    <button onClick={() => setShowNewItemFlow(true)} style={{ display: 'flex', alignItems: 'center', gap: 8, height: 52, padding: '0 20px', background: '#085420', border: 'none', borderRadius: 10, cursor: 'pointer', fontFamily: "'Helvetica Neue', sans-serif", fontSize: 14, fontWeight: 500, color: '#fff' }}>
+                      <PlusIcon />
+                      Add Item
+                    </button>
+                  </div>
+                )
+                : <p style={styles.emptyText}>No items match your search.</p>
               : pageRows.map(item => (
-                  <ItemRow key={item.id} item={item} onClick={() => {}} />
+                  <ItemRow key={item.id} item={item} isMobile={isMobile} onClick={() => navigate(`/donor/${id}/item/${item.id}`, { state: { item } })} />
                 ))
             }
           </div>
 
           {/* Pagination */}
           <TableControls
-            total={filtered.length}
+            total={sorted.length}
             page={safePage}
             totalPages={totalPages}
             rowsPerPage={ROWS_PER_PAGE}
@@ -440,6 +556,32 @@ export default function DonationItemListScreen() {
         onNewDonation={() => setShowNewItemFlow(true)}
         maxWidth={maxWidth}
       />
+
+      {showFilterModal && (
+        <FilterModal
+          title="Filter Items"
+          color="#085420"
+          resultCount={filtered.length}
+          onClose={() => setShowFilterModal(false)}
+          onClearAll={clearAllFilters}
+          onApply={() => { setPage(1); setShowFilterModal(false); }}
+          sections={[
+            { type: 'pills', label: 'Category', options: allCategories.map(c => ({ value: c, label: CATEGORY_LABELS[c] || c })), selected: filterCategories, onToggle: toggleCat },
+            { type: 'toggle', label: 'Has price', description: 'Only show items with a price set', value: filterHasPrice, onChange: setFilterHasPrice },
+          ]}
+        />
+      )}
+
+      {showSortModal && (
+        <SortModal
+          title="Sort Items"
+          options={ITEM_SORT_OPTIONS}
+          selected={sortField}
+          color="#085420"
+          onClose={() => setShowSortModal(false)}
+          onSelect={(field) => { setSortField(field); setShowSortModal(false); }}
+        />
+      )}
 
       {showNewItemFlow && (
         <NewItemFlow
@@ -531,12 +673,12 @@ const styles = {
     display: 'flex', alignItems: 'center',
     padding: '8px 8px 8px 8px',
     background: '#fafafa', borderBottom: '0.558px solid #f3f4f6',
-    gap: 12,
+    gap: 20,
   },
   headerCell: {
     fontFamily: "'Helvetica Neue', sans-serif",
     fontSize: 13, fontWeight: 600, color: '#595959',
-    flexShrink: 0,
+    flexShrink: 0, whiteSpace: 'nowrap',
   },
   cell: {
     fontFamily: "'Helvetica Neue', sans-serif",
@@ -544,7 +686,7 @@ const styles = {
   },
   emptyText: {
     fontFamily: "'Helvetica Neue', sans-serif",
-    fontSize: 14, color: '#595959', textAlign: 'center',
+    fontSize: 14, color: '#595959', textAlign: 'left',
     padding: '32px 0', margin: 0,
   },
   pageBtn: {
@@ -567,13 +709,13 @@ const styles = {
     padding: '10px 32px', maxWidth: 834, margin: '0 auto',
   },
   navBtn: {
-    display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4,
-    background: 'transparent', border: '0.558px solid #d9d9d9', borderRadius: 10,
-    paddingLeft: 16, paddingRight: 16, paddingTop: 8, paddingBottom: 8,
-    cursor: 'pointer', minWidth: 80,
+    flex: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+    width: 172.5, height: 52,
+    background: '#fff', border: '0.558px solid #d9d9d9', borderRadius: 10,
+    padding: '10px 0', cursor: 'pointer',
   },
   navBtnLabel: {
     fontFamily: "'Helvetica Neue', sans-serif",
-    fontSize: 11, fontWeight: 500, color: '#000', whiteSpace: 'nowrap',
+    fontSize: 14, fontWeight: 500, color: '#000', whiteSpace: 'nowrap',
   },
 };

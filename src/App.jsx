@@ -4,11 +4,12 @@ import LoginScreen from './screens/LoginScreen.jsx';
 import ModeSelectorScreen from './screens/ModeSelectorScreen.jsx';
 import WarehouseScreen from './screens/WarehouseScreen.jsx';
 import DonationItemListScreen from './screens/DonationItemListScreen.jsx';
+import NewDonorScreen from './screens/NewDonorScreen.jsx';
 import InventoryFormScreen from './screens/InventoryFormScreen.jsx';
+import ManageInventoryScreen from './screens/ManageInventoryScreen.jsx';
+import CycleCountScreen from './screens/CycleCountScreen.jsx';
+import CycleCountDetailScreen from './screens/CycleCountDetailScreen.jsx';
 
-function RetailScreen() {
-  return <div style={{ padding: 32, fontFamily: 'Inter, sans-serif' }}>Retail Mode — coming soon</div>;
-}
 
 export default function App() {
   return (
@@ -19,9 +20,13 @@ export default function App() {
         <Route path="/login"        element={<LoginScreen />} />
         <Route path="/mode-select"  element={<ModeSelectorScreen />} />
         <Route path="/warehouse"    element={<WarehouseScreen />} />
+        <Route path="/donor/new"             element={<NewDonorScreen />} />
         <Route path="/donor/:id"             element={<DonationItemListScreen />} />
-        <Route path="/donor/:id/item/new"   element={<InventoryFormScreen />} />
-        <Route path="/retail"       element={<RetailScreen />} />
+        <Route path="/donor/:id/item/new"    element={<InventoryFormScreen />} />
+        <Route path="/donor/:id/item/:itemId" element={<InventoryFormScreen />} />
+        <Route path="/retail"       element={<ManageInventoryScreen />} />
+        <Route path="/cycle-count"  element={<CycleCountScreen />} />
+        <Route path="/cycle-count/:staffId" element={<CycleCountDetailScreen />} />
       </Routes>
       </DeviceProvider>
     </HashRouter>
