@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { useLayout } from '../hooks/useLayout';
 
@@ -9,6 +9,7 @@ import BackButton from '../components/BackButton';
 import SortModal from '../components/SortModal';
 import FilterModal from '../components/FilterModal';
 import NewItemFlow from '../components/NewItemFlow';
+import { supabase } from '../lib/supabase';
 
 const ITEM_SORT_OPTIONS = [
   { label: 'Item Name', field: 'name' },
@@ -361,11 +362,41 @@ export default function DonationItemListScreen() {
     date: donor.date,
     isOrg: donor.type === 'Shared Revenue',
   };
-  const donorItemCount = donor.items ?? ITEMS.length;
-  const donorItems = ITEMS.slice(0, donorItemCount);
 
+  const [donorItems, setDonorItems] = useState([]);
+  const [loadingItems, setLoadingItems] = useState(true);
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    // Only fetch from Supabase if id looks like a UUID (real donor)
+    const isUuid = /^[0-9a-f-]{36}$/.test(id);
+    if (!isUuid) {
+      setDonorItems(ITEMS.slice(0, donor.items ?? ITEMS.length));
+      setLoadingItems(false);
+      return;
+    }
+    supabase
+      .from('items')
+      .select('*')
+      .eq('donor_id', id)
+      .order('created_at', { ascending: false })
+      .then(({ data, error }) => {
+        if (!error && data) {
+          setDonorItems(data.map(item => ({
+            id: item.id,
+            name: item.name ?? '',
+            category: item.category ?? '',
+            subcategory: item.subcategory ?? '',
+            condition: item.condition ?? '',
+            price: item.price ?? 0,
+            qty: item.qty ?? 1,
+            created: new Date(item.created_at).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }),
+          })));
+        }
+        setLoadingItems(false);
+      });
+  }, [id]);
   const [showNewItemFlow, setShowNewItemFlow] = useState(false);
   const [showSortModal, setShowSortModal] = useState(false);
   const [showFilterModal, setShowFilterModal] = useState(false);

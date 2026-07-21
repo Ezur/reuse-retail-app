@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { useLayout } from '../hooks/useLayout';
 import CJ_LOGO from '../assets/construction_junction_logo_white.svg';
@@ -6,6 +6,7 @@ import AnonymousDonorAvatar from '../assets/AnonymousDonorAvatar.svg';
 import UserMenu from '../components/UserMenu';
 import BackButton from '../components/BackButton';
 import NewItemFlow from '../components/NewItemFlow';
+import { supabase } from '../lib/supabase';
 
 const CATEGORY_MAP = {
   APP: 'Appliances', BML: 'Building Material and Lumber', CAB: 'Cabinets and Built-Ins',
@@ -381,11 +382,26 @@ export default function InventoryFormScreen() {
 
   // Print state
   const [printState, setPrintState] = useState(null); // null | 'printing' | 'done'
+  const printTimers = useRef([]);
 
-  const handlePrint = () => {
+  const handlePrint = async () => {
     setPrintState('printing');
-    setTimeout(() => setPrintState('done'), 2000);
-    setTimeout(() => setPrintState(null), 3500);
+
+    // Save item to Supabase (non-blocking on error for prototype)
+    const payload = {
+      donor_id: id !== 'new' ? id : null,
+      name: itemName,
+      category: category?.code ?? null,
+      subcategory: subcategory ?? null,
+      condition: condition || null,
+      price: price !== '' ? Number(price) : null,
+      qty: qty !== '' ? Number(qty) : 1,
+    };
+    await supabase.from('items').insert(payload);
+
+    const t1 = setTimeout(() => setPrintState('done'), 2000);
+    const t2 = setTimeout(() => setPrintState(null), 3500);
+    printTimers.current = [t1, t2];
   };
 
   const itemName = buildItemName({ type: itemType, subcategory, stockItem, brand, modelStyle, color });

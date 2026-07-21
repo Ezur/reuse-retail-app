@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLayout } from '../hooks/useLayout';
+import { supabase } from '../lib/supabase';
 
 import CJ_LOGO from '../assets/construction_junction_logo_white.svg';
 import UserMenu from '../components/UserMenu';
@@ -160,7 +161,7 @@ function CloseIcon() {
   );
 }
 
-function NewDonorModal({ onClose, onConfirm }) {
+function NewDonorModal({ onClose, onConfirm, loading }) {
   return (
     <div
       onClick={onClose}
@@ -236,18 +237,19 @@ function NewDonorModal({ onClose, onConfirm }) {
           </button>
           <button
             onClick={onConfirm}
+            disabled={loading}
             style={{
               width: 172.5, height: 52,
               background: '#085420',
               border: 'none', borderRadius: 10,
               fontFamily: "'Inter', sans-serif",
               fontSize: 14, fontWeight: 500, color: '#ffffff',
-              cursor: 'pointer',
+              cursor: loading ? 'not-allowed' : 'pointer',
+              opacity: loading ? 0.7 : 1,
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
             }}
           >
-            <PlusIcon />
-            Add Donor
+            {loading ? 'Creating…' : <><PlusIcon />Add Donor</>}
           </button>
         </div>
       </div>
@@ -483,8 +485,45 @@ export default function WarehouseScreen() {
   const [filterHasItems, setFilterHasItems] = useState(false);
   const [page, setPage] = useState(1);
   const [recentOpen, setRecentOpen] = useState(true);
+  const [donors, setDonors] = useState(DONORS);
+  const [creatingDonor, setCreatingDonor] = useState(false);
 
-  const filtered = DONORS.filter(d => {
+  useEffect(() => {
+    supabase
+      .from('donors')
+      .select('*, items(count)')
+      .order('created_at', { ascending: false })
+      .then(({ data, error }) => {
+        if (error || !data?.length) return;
+        setDonors(data.map(d => ({
+          id: d.id,
+          name: d.name || 'Anonymous',
+          donorNumber: d.donation_number,
+          type: d.type || 'Drop Off',
+          status: 'Scheduled',
+          items: d.items?.[0]?.count ?? 0,
+          date: new Date(d.created_at).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }),
+          isOrg: false,
+        })));
+      });
+  }, []);
+
+  const handleCreateDonor = async () => {
+    setCreatingDonor(true);
+    const donationNumber = String(Math.floor(10000 + Math.random() * 90000));
+    const { data, error } = await supabase
+      .from('donors')
+      .insert({ donation_number: donationNumber, type: 'Drop Off' })
+      .select()
+      .single();
+    setCreatingDonor(false);
+    setShowNewDonorModal(false);
+    if (!error && data) {
+      navigate('/donor/new', { state: { donorId: data.id, donationNumber: data.donation_number } });
+    }
+  };
+
+  const filtered = donors.filter(d => {
     const matchSearch = d.name.toLowerCase().includes(search.toLowerCase());
     const matchStage = filterStages.size === 0 || filterStages.has(d.status);
     const matchType = filterTypes.size === 0 || filterTypes.has(d.type);
@@ -526,7 +565,8 @@ export default function WarehouseScreen() {
       {showNewDonorModal && (
         <NewDonorModal
           onClose={() => setShowNewDonorModal(false)}
-          onConfirm={() => { setShowNewDonorModal(false); navigate('/donor/new'); }}
+          onConfirm={handleCreateDonor}
+          loading={creatingDonor}
         />
       )}
 
@@ -557,7 +597,7 @@ export default function WarehouseScreen() {
           </button>
           {recentOpen && (
             <div style={styles.recentScroll}>
-              {RECENT_DONORS.map(d => <DonorChip key={d.id} donor={d} onClick={() => navigate('/donor/' + d.id, { state: d })} />)}
+              {donors.slice(0, 4).map(d => <DonorChip key={d.id} donor={d} onClick={() => navigate('/donor/' + d.id, { state: d })} />)}
             </div>
           )}
         </div>

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useLayout } from '../hooks/useLayout';
 
 import CJ_LOGO from '../assets/construction_junction_logo_white.svg';
@@ -88,7 +88,7 @@ function ChevronLeft({ disabled }) {
 
 // ── Donor summary card (no stats — new donor) ─────────────────────────────────
 
-function NewDonorSummaryCard() {
+function NewDonorSummaryCard({ donationNumber }) {
   return (
     <div style={{
       border: '0.558px solid #d9d9d9', borderRadius: 14,
@@ -107,7 +107,7 @@ function NewDonorSummaryCard() {
           Anonymous Donor Drop-Off
         </p>
         <p style={{ fontFamily: "'Helvetica Neue', sans-serif", fontSize: 14, color: '#424242', margin: '4px 0 0' }}>
-          D# {NEW_DONOR_NUMBER}&nbsp;&nbsp;|&nbsp;&nbsp;{TODAY}
+          D# {donationNumber}&nbsp;&nbsp;|&nbsp;&nbsp;{TODAY}
         </p>
       </div>
     </div>
@@ -171,11 +171,13 @@ function BottomNav({ onHome, onNewDonation, maxWidth }) {
 
 export default function NewDonorScreen() {
   const navigate = useNavigate();
+  const { state } = useLocation();
   const { maxWidth, headerHeight, px } = useLayout();
   const [showNewItemFlow, setShowNewItemFlow] = useState(false);
 
-  // Stable donor ID for this session
-  const [donorId] = useState(() => String(Math.floor(10000 + Math.random() * 90000)));
+  // Use real DB donor ID passed from WarehouseScreen, fall back to a local ID
+  const donorId = state?.donorId ?? String(Math.floor(10000 + Math.random() * 90000));
+  const donationNumber = state?.donationNumber ?? donorId;
 
   return (
     <div style={styles.page}>
@@ -195,7 +197,7 @@ export default function NewDonorScreen() {
         <h1 style={styles.pageTitle}>Donated Items</h1>
 
         {/* New donor summary — no stats */}
-        <NewDonorSummaryCard donorId={donorId} />
+        <NewDonorSummaryCard donationNumber={donationNumber} />
 
         {/* Items table */}
         <div style={styles.tableCard}>
