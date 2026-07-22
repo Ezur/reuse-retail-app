@@ -703,34 +703,15 @@ export default function InventoryFormScreen() {
               {/* Quantity */}
               <div style={{ flex: 1 }}>
                 <FieldLabel required>Quantity</FieldLabel>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 44, width: 64, border: '0.558px solid #d9d9d9', borderRadius: 8, background: isStock ? '#f0f0f0' : '#fff', cursor: isStock ? 'not-allowed' : undefined }}>
-                      <input
-                        type="number"
-                        value={qty}
-                        onChange={e => setQty(e.target.value)}
-                        min="1"
-                        disabled={isStock}
-                        style={{ width: 44, border: 'none', outline: 'none', background: 'transparent', fontFamily: "'Inter', sans-serif", fontSize: 16, fontWeight: 500, color: isStock ? '#a0a0a0' : '#000', textAlign: 'center', cursor: isStock ? 'not-allowed' : undefined }}
-                      />
-                    </div>
-                    <span style={{ fontSize: 10, color: '#595959', fontFamily: "'Inter', sans-serif" }}>count</span>
-                  </div>
-                  <span style={{ fontSize: 16, color: '#d9d9d9', lineHeight: 1, paddingBottom: 16 }}>/</span>
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 44, width: 64, border: '0.558px solid #d9d9d9', borderRadius: 8, background: isStock ? '#f0f0f0' : '#fff', cursor: isStock ? 'not-allowed' : undefined }}>
-                      <input
-                        type="number"
-                        value={qtyOf}
-                        onChange={e => setQtyOf(e.target.value)}
-                        min="1"
-                        disabled={isStock}
-                        style={{ width: 44, border: 'none', outline: 'none', background: 'transparent', fontFamily: "'Inter', sans-serif", fontSize: 16, fontWeight: 500, color: isStock ? '#a0a0a0' : '#000', textAlign: 'center', cursor: isStock ? 'not-allowed' : undefined }}
-                      />
-                    </div>
-                    <span style={{ fontSize: 10, color: '#595959', fontFamily: "'Inter', sans-serif" }}>total</span>
-                  </div>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 44, border: '0.558px solid #d9d9d9', borderRadius: 8, background: isStock ? '#f0f0f0' : '#fff' }}>
+                  <input
+                    type="number"
+                    value={qty}
+                    onChange={e => setQty(e.target.value)}
+                    min="1"
+                    disabled={isStock}
+                    style={{ width: '100%', border: 'none', outline: 'none', background: 'transparent', fontFamily: "'Inter', sans-serif", fontSize: 16, fontWeight: 500, color: isStock ? '#a0a0a0' : '#000', textAlign: 'center', cursor: isStock ? 'not-allowed' : undefined, padding: '0 12px' }}
+                  />
                 </div>
               </div>
               {/* Units */}
