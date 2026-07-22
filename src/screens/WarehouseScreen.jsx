@@ -485,7 +485,8 @@ export default function WarehouseScreen() {
   const [filterHasItems, setFilterHasItems] = useState(false);
   const [page, setPage] = useState(1);
   const [recentOpen, setRecentOpen] = useState(true);
-  const [donors, setDonors] = useState(DONORS);
+  const [donors, setDonors] = useState([]);
+  const [loadingDonors, setLoadingDonors] = useState(true);
   const [creatingDonor, setCreatingDonor] = useState(false);
 
   useEffect(() => {
@@ -494,17 +495,19 @@ export default function WarehouseScreen() {
       .select('*, items(count)')
       .order('created_at', { ascending: false })
       .then(({ data, error }) => {
-        if (error || !data?.length) return;
-        setDonors(data.map(d => ({
-          id: d.id,
-          name: d.name || 'Anonymous',
-          donorNumber: d.donation_number,
-          type: d.type || 'Drop Off',
-          status: 'Scheduled',
-          items: d.items?.[0]?.count ?? 0,
-          date: new Date(d.created_at).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }),
-          isOrg: false,
-        })));
+        if (!error && data?.length) {
+          setDonors(data.map(d => ({
+            id: d.id,
+            name: d.name || 'Anonymous',
+            donorNumber: d.donation_number,
+            type: d.type || 'Drop Off',
+            status: d.status || 'Scheduled',
+            items: d.items?.[0]?.count ?? 0,
+            date: new Date(d.created_at).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }),
+            isOrg: d.is_org ?? false,
+          })));
+        }
+        setLoadingDonors(false);
       });
   }, []);
 
