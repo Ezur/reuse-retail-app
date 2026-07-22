@@ -356,24 +356,13 @@ function CancelConfirmModal({ onStay, onLeave }) {
           display: 'flex', flexDirection: 'column', alignItems: 'center',
         }}
       >
-        {/* Close button */}
-        <button
-          onClick={onStay}
-          style={{
-            position: 'absolute', top: 16, right: 16,
-            background: 'transparent', border: 'none',
-            cursor: 'pointer', padding: 4,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-            <path d="M18 6L6 18M6 6l12 12" stroke="#424242" strokeWidth="2" strokeLinecap="round"/>
-          </svg>
-        </button>
-
         {/* Icon */}
-        <div style={{ marginTop: 16, marginBottom: 24 }}>
-          <img src={AnonymousDonorAvatar} alt="" width={86} height={86} style={{ borderRadius: '50%', display: 'block' }} />
+        <div style={{
+          marginTop: 16, marginBottom: 24,
+          width: 86, height: 86, borderRadius: '50%',
+          background: '#f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }}>
+          <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 40, fontWeight: 700, color: '#595959', lineHeight: 1 }}>?</span>
         </div>
 
         {/* Title */}
@@ -658,7 +647,17 @@ export default function InventoryFormScreen() {
 
             {/* Condition */}
             <div>
-              <FieldLabel>Condition</FieldLabel>
+              <div style={{ display: 'flex', alignItems: 'center', marginBottom: 6 }}>
+                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, fontWeight: 600, color: '#000', margin: 0 }}>Condition</p>
+                {condition && !isStock && (
+                  <button
+                    onClick={() => setCondition('')}
+                    style={{ marginLeft: 10, background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontFamily: "'Inter', sans-serif", fontSize: 13, color: '#595959', textDecoration: 'underline' }}
+                  >
+                    Clear
+                  </button>
+                )}
+              </div>
               <div style={{ display: 'flex', gap: 20 }}>
                 {CONDITIONS.map(c => (
                   <RadioButton key={c} label={c} checked={condition === c} onChange={() => setCondition(c)} disabled={isStock} />
