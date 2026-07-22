@@ -158,12 +158,12 @@ function CardHeader({ badge, title, required, requiredNote, right }) {
       borderBottom: '0.558px solid #f3f4f6',
     }}>
       {badge && <SectionBadge n={badge} />}
-      <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 15, fontWeight: 600, color: '#000' }}>
+      <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 16, fontWeight: 600, color: '#000' }}>
         {title}
         {required && <span style={{ color: '#DC0000' }}>*</span>}
       </span>
       {requiredNote && (
-        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: '#DC0000', marginLeft: 2 }}>
+        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: '#DC0000', marginLeft: 2 }}>
           {requiredNote}
         </span>
       )}
@@ -178,7 +178,7 @@ function CardBody({ children, style }) {
 
 function FieldLabel({ children, required }) {
   return (
-    <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, fontWeight: 600, color: '#000', margin: '0 0 6px' }}>
+    <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, fontWeight: 600, color: '#000', margin: '0 0 6px' }}>
       {children}{required && <span style={{ color: '#DC0000' }}> *</span>}
     </p>
   );
@@ -197,7 +197,7 @@ function InputField({ value, onChange, placeholder, readOnly, disabled, style })
         height: 44, border: '0.558px solid #d9d9d9', borderRadius: 8,
         background: disabled ? '#f0f0f0' : readOnly ? '#f5f5f5' : '#fff',
         padding: '0 10px',
-        fontFamily: "'Inter', sans-serif", fontSize: 14,
+        fontFamily: "'Inter', sans-serif", fontSize: 16,
         color: disabled ? '#a0a0a0' : '#000',
         outline: 'none', cursor: disabled ? 'not-allowed' : undefined,
         ...style,
@@ -216,7 +216,7 @@ function SelectField({ value, onChange, options, placeholder, disabled }) {
         width: '100%', boxSizing: 'border-box',
         height: 44, border: '0.558px solid #d9d9d9', borderRadius: 8,
         background: disabled ? '#f0f0f0' : '#fff', padding: '0 10px',
-        fontFamily: "'Inter', sans-serif", fontSize: 14, color: disabled ? '#a0a0a0' : '#000',
+        fontFamily: "'Inter', sans-serif", fontSize: 16, color: disabled ? '#a0a0a0' : '#000',
         outline: 'none', cursor: disabled ? 'not-allowed' : 'pointer',
         appearance: 'none',
         backgroundImage: `url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23424242' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`,
@@ -248,7 +248,7 @@ function CheckboxPill({ label, checked, onChange, disabled }) {
         disabled={disabled}
         style={{ width: 14, height: 14, accentColor: '#085420', cursor: disabled ? 'not-allowed' : 'pointer' }}
       />
-      <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, color: disabled ? '#a0a0a0' : '#000', whiteSpace: 'nowrap' }}>{label}</span>
+      <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: disabled ? '#a0a0a0' : '#000', whiteSpace: 'nowrap' }}>{label}</span>
     </label>
   );
 }
@@ -281,7 +281,7 @@ function CategoryChip({ label, onClick }) {
         border: '0.558px solid #d9d9d9', borderRadius: 20,
         padding: '6px 10px 6px 14px', minHeight: 44,
         background: '#fff', cursor: 'pointer',
-        fontFamily: "'Inter', sans-serif", fontSize: 13, color: '#000',
+        fontFamily: "'Inter', sans-serif", fontSize: 14, color: '#000',
       }}
     >
       <span style={{ maxWidth: 280, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
@@ -305,7 +305,7 @@ function CollapsibleSection({ title, open, onToggle, children }) {
           borderBottom: open ? '0.558px solid #f3f4f6' : 'none',
         }}
       >
-        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 15, fontWeight: 600, color: '#000' }}>{title}</span>
+        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 16, fontWeight: 600, color: '#000' }}>{title}</span>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
           style={{ transform: open ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}>
           <path d="M6 9l6 6 6-6" stroke="#424242" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -469,8 +469,8 @@ export default function InventoryFormScreen() {
   const [width, setWidth] = useState('');
   const [height, setHeight] = useState('');
   const [notes, setNotes] = useState('');
-  const [showAdditional, setShowAdditional] = useState(false);
-  const [showNotes, setShowNotes] = useState(false);
+  const [showAdditional, setShowAdditional] = useState(true);
+  const [showNotes, setShowNotes] = useState(true);
 
   // Wizard state
   const [showWizard, setShowWizard] = useState(false);
@@ -543,7 +543,7 @@ export default function InventoryFormScreen() {
       <main style={{ ...styles.main, maxWidth, padding: `16px ${px}px 24px` }}>
         <h1 style={styles.pageTitle}>{isEditing ? 'Edit Item' : 'Inventory Form'}</h1>
         {isEditing && (
-          <p style={{ fontSize: 13, color: '#595959', margin: '-8px 0 12px', fontFamily: "'Helvetica Neue', sans-serif" }}>
+          <p style={{ fontSize: 14, color: '#595959', margin: '-8px 0 12px', fontFamily: "'Helvetica Neue', sans-serif" }}>
             {existingItem.name}
           </p>
         )}
@@ -587,7 +587,7 @@ export default function InventoryFormScreen() {
             right={
               <button style={styles.photoTipsBtn} disabled={isStock}>
                 <LightbulbIcon />
-                <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, color: '#424242', marginLeft: 4 }}>Photo Tips</span>
+                <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: '#424242', marginLeft: 4 }}>Photo Tips</span>
               </button>
             }
           />
@@ -598,14 +598,14 @@ export default function InventoryFormScreen() {
               <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, fontWeight: 600, color: isStock ? '#a0a0a0' : '#424242', margin: '8px 0 4px' }}>
                 Add Photos
               </p>
-              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: isStock ? '#c0c0c0' : '#595959', margin: 0, textAlign: 'center' }}>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: isStock ? '#c0c0c0' : '#595959', margin: 0, textAlign: 'center' }}>
                 Click to take new images to this item.
               </p>
             </div>
             {/* Tips panel */}
             <div style={{ ...styles.tipsPanel, background: isStock ? '#f0f0f0' : '#f5f5f5' }}>
               {['Use good lighting', 'Take the photo in horizontal mode', 'Capture the entire item', 'Highlight special or unique features'].map(tip => (
-                <p key={tip} style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: isStock ? '#c0c0c0' : '#424242', margin: '0 0 6px' }}>
+                <p key={tip} style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: isStock ? '#c0c0c0' : '#424242', margin: '0 0 6px' }}>
                   {tip}
                 </p>
               ))}
@@ -689,14 +689,14 @@ export default function InventoryFormScreen() {
               <div style={{ flex: 1 }}>
                 <FieldLabel required>Price</FieldLabel>
                 <div style={{ ...styles.priceRow, background: isStock ? '#f0f0f0' : undefined, cursor: isStock ? 'not-allowed' : undefined }}>
-                  <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: isStock ? '#a0a0a0' : '#595959', paddingLeft: 10 }}>$</span>
+                  <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 16, color: isStock ? '#a0a0a0' : '#595959', paddingLeft: 10 }}>$</span>
                   <input
                     type="number"
                     value={price}
                     onChange={e => setPrice(e.target.value)}
                     placeholder="0.00"
                     disabled={isStock}
-                    style={{ flex: 1, border: 'none', outline: 'none', background: 'transparent', fontFamily: "'Inter', sans-serif", fontSize: 14, color: isStock ? '#a0a0a0' : '#000', cursor: isStock ? 'not-allowed' : undefined }}
+                    style={{ flex: 1, border: 'none', outline: 'none', background: 'transparent', fontFamily: "'Inter', sans-serif", fontSize: 16, color: isStock ? '#a0a0a0' : '#000', cursor: isStock ? 'not-allowed' : undefined }}
                   />
                 </div>
               </div>
