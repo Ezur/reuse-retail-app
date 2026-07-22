@@ -725,16 +725,40 @@ export default function InventoryFormScreen() {
 
         {/* ── Additional Details (collapsible) ── */}
         <CollapsibleSection title="Additional Details" open={showAdditional} onToggle={() => setShowAdditional(p => !p)}>
-          <div style={{ display: 'flex', gap: 12 }}>
+          <div style={{ display: 'flex', gap: 8 }}>
             {[
-              ['Weight', weight, setWeight],
-              ['Length', length, setLength],
-              ['Width', width, setWidth],
-              ['Height', height, setHeight],
-            ].map(([label, val, setter]) => (
-              <div key={label} style={{ flex: 1 }}>
+              ['Weight', weight, setWeight, 'lbs', 'Enter pounds'],
+              ['Length', length, setLength, 'in', 'Enter inches'],
+              ['Width', width, setWidth, 'in', 'Enter inches'],
+              ['Height', height, setHeight, 'in', 'Enter inches'],
+            ].map(([label, val, setter, unit, placeholder]) => (
+              <div key={label} style={{ flex: 1, minWidth: 0 }}>
                 <FieldLabel>{label}</FieldLabel>
-                <InputField value={val} onChange={e => setter(e.target.value)} placeholder="N/A" disabled={isStock} />
+                <div style={{
+                  display: 'flex', alignItems: 'center',
+                  height: 44, border: '0.558px solid #d9d9d9', borderRadius: 8,
+                  background: isStock ? '#f0f0f0' : '#fff', overflow: 'hidden',
+                }}>
+                  <input
+                    type="number"
+                    value={val}
+                    onChange={e => setter(e.target.value)}
+                    placeholder={placeholder}
+                    disabled={isStock}
+                    style={{
+                      flex: 1, border: 'none', outline: 'none', background: 'transparent',
+                      padding: '0 8px', fontFamily: "'Inter', sans-serif", fontSize: 14,
+                      color: isStock ? '#a0a0a0' : '#000', cursor: isStock ? 'not-allowed' : undefined,
+                      minWidth: 0,
+                    }}
+                  />
+                  <div style={{ width: 1, height: 24, background: '#d9d9d9', flexShrink: 0 }} />
+                  <span style={{
+                    fontFamily: "'Inter', sans-serif", fontSize: 13, fontWeight: 600,
+                    color: isStock ? '#a0a0a0' : '#424242',
+                    padding: '0 7px', flexShrink: 0,
+                  }}>{unit}</span>
+                </div>
               </div>
             ))}
           </div>
