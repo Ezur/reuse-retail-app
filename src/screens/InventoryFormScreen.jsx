@@ -333,6 +333,102 @@ function buildItemName({ type, subcategory, stockItem, brand, modelStyle, color 
     : `${subcategory} - Brand - Model - Key Details`;
 }
 
+// ── Cancel confirmation modal ─────────────────────────────────────────────────
+
+function CancelConfirmModal({ onStay, onLeave }) {
+  return (
+    <div
+      onClick={onStay}
+      style={{
+        position: 'fixed', inset: 0,
+        background: 'rgba(0,0,0,0.45)',
+        zIndex: 200,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+      }}
+    >
+      <div
+        onClick={e => e.stopPropagation()}
+        style={{
+          background: '#ffffff', borderRadius: 16,
+          width: 619, maxWidth: 'calc(100vw - 48px)',
+          position: 'relative',
+          padding: '24px 32px 32px',
+          display: 'flex', flexDirection: 'column', alignItems: 'center',
+        }}
+      >
+        {/* Close button */}
+        <button
+          onClick={onStay}
+          style={{
+            position: 'absolute', top: 16, right: 16,
+            background: 'transparent', border: 'none',
+            cursor: 'pointer', padding: 4,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M18 6L6 18M6 6l12 12" stroke="#424242" strokeWidth="2" strokeLinecap="round"/>
+          </svg>
+        </button>
+
+        {/* Icon */}
+        <div style={{ marginTop: 16, marginBottom: 24 }}>
+          <img src={AnonymousDonorAvatar} alt="" width={86} height={86} style={{ borderRadius: '50%', display: 'block' }} />
+        </div>
+
+        {/* Title */}
+        <p style={{
+          fontFamily: "'Inter', sans-serif",
+          fontSize: 20, fontWeight: 700, color: '#000',
+          margin: '0 0 12px', textAlign: 'center',
+        }}>
+          Are you sure you want to cancel?
+        </p>
+
+        {/* Body */}
+        <p style={{
+          fontFamily: "'Inter', sans-serif",
+          fontSize: 15, fontWeight: 400, color: '#595959',
+          margin: '0 0 32px', textAlign: 'center',
+          lineHeight: 1.5, maxWidth: 395,
+        }}>
+          Any unsaved changes to this item will be lost if you go back now.
+        </p>
+
+        {/* Buttons */}
+        <div style={{ display: 'flex', gap: 21, justifyContent: 'center' }}>
+          <button
+            onClick={onStay}
+            style={{
+              width: 172.5, height: 52,
+              background: '#ffffff',
+              border: '1px solid #d9d9d9', borderRadius: 10,
+              fontFamily: "'Inter', sans-serif",
+              fontSize: 14, fontWeight: 500, color: '#000',
+              cursor: 'pointer',
+            }}
+          >
+            Keep Editing
+          </button>
+          <button
+            onClick={onLeave}
+            style={{
+              width: 172.5, height: 52,
+              background: '#085420',
+              border: 'none', borderRadius: 10,
+              fontFamily: "'Inter', sans-serif",
+              fontSize: 14, fontWeight: 500, color: '#ffffff',
+              cursor: 'pointer',
+            }}
+          >
+            Yes, Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ── Main screen ───────────────────────────────────────────────────────────────
 
 export default function InventoryFormScreen() {
@@ -379,6 +475,7 @@ export default function InventoryFormScreen() {
   // Wizard state
   const [showWizard, setShowWizard] = useState(false);
   const [wizardStartStep, setWizardStartStep] = useState('category');
+  const [showCancelModal, setShowCancelModal] = useState(false);
 
   // Print state
   const [printState, setPrintState] = useState(null); // null | 'printing' | 'done'
@@ -435,7 +532,7 @@ export default function InventoryFormScreen() {
     <div style={styles.page}>
       {/* Header */}
       <header style={{ ...styles.header, height: headerHeight, paddingLeft: px, paddingRight: px }}>
-        <BackButton onClick={() => navigate(-1)} variant="cancel" />
+        <BackButton onClick={() => setShowCancelModal(true)} variant="cancel" />
         <img src={CJ_LOGO} alt="Construction Junction" style={styles.logo} />
         <div style={{ width: 120, height: 56, flexShrink: 0, position: 'relative' }}>
           <UserMenu initials="JS" onSignOut={() => navigate('/login')} />
@@ -696,6 +793,14 @@ export default function InventoryFormScreen() {
           </button>
         </div>
       </div>
+
+      {/* Cancel confirmation */}
+      {showCancelModal && (
+        <CancelConfirmModal
+          onStay={() => setShowCancelModal(false)}
+          onLeave={() => navigate(-1)}
+        />
+      )}
 
       {/* Wizard overlay */}
       {showWizard && (
