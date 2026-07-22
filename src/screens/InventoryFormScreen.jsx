@@ -701,16 +701,16 @@ export default function InventoryFormScreen() {
                 </div>
               </div>
               {/* Quantity */}
-              <div style={{ flex: 1 }}>
+              <div style={{ flex: 'none' }}>
                 <FieldLabel required>Quantity</FieldLabel>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 44, border: '0.558px solid #d9d9d9', borderRadius: 8, background: isStock ? '#f0f0f0' : '#fff' }}>
+                <div style={{ display: 'flex', alignItems: 'center', height: 44, width: 96, border: '0.558px solid #d9d9d9', borderRadius: 8, background: isStock ? '#f0f0f0' : '#fff' }}>
                   <input
                     type="number"
                     value={qty}
                     onChange={e => setQty(e.target.value)}
                     min="1"
                     disabled={isStock}
-                    style={{ width: '100%', border: 'none', outline: 'none', background: 'transparent', fontFamily: "'Inter', sans-serif", fontSize: 16, fontWeight: 500, color: isStock ? '#a0a0a0' : '#000', textAlign: 'center', cursor: isStock ? 'not-allowed' : undefined, padding: '0 12px' }}
+                    style={{ width: '100%', border: 'none', outline: 'none', background: 'transparent', fontFamily: "'Inter', sans-serif", fontSize: 16, fontWeight: 500, color: isStock ? '#a0a0a0' : '#000', textAlign: 'left', cursor: isStock ? 'not-allowed' : undefined, padding: '0 12px' }}
                   />
                 </div>
               </div>
