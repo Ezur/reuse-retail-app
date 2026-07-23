@@ -1,4 +1,6 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, createContext, useContext } from 'react';
+
+const AccentContext = createContext('#085420');
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { useLayout } from '../hooks/useLayout';
 import CJ_LOGO from '../assets/construction_junction_logo_white.svg';
@@ -153,10 +155,11 @@ function DonorSummaryCard({ info }) {
 }
 
 function SectionBadge({ n }) {
+  const accent = useContext(AccentContext);
   return (
     <div style={{
       width: 24, height: 24, borderRadius: '50%',
-      background: '#085420', color: '#fff',
+      background: accent, color: '#fff',
       fontFamily: "'Inter', sans-serif", fontSize: 13, fontWeight: 700,
       display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
     }}>{n}</div>
@@ -253,11 +256,12 @@ function SelectField({ value, onChange, options, placeholder, disabled }) {
 }
 
 function CheckboxPill({ label, checked, onChange, disabled }) {
+  const accent = useContext(AccentContext);
   return (
     <label style={{
       display: 'flex', alignItems: 'center', gap: 6,
       cursor: disabled ? 'not-allowed' : 'pointer',
-      border: `0.558px solid ${disabled ? '#e0e0e0' : checked ? '#085420' : '#d9d9d9'}`,
+      border: `0.558px solid ${disabled ? '#e0e0e0' : checked ? accent : '#d9d9d9'}`,
       borderRadius: 6, padding: '5px 10px', minHeight: 44,
       background: disabled ? '#f0f0f0' : checked ? '#e8f5e9' : '#fff',
       opacity: disabled ? 0.6 : 1,
@@ -267,7 +271,7 @@ function CheckboxPill({ label, checked, onChange, disabled }) {
         checked={checked}
         onChange={onChange}
         disabled={disabled}
-        style={{ width: 14, height: 14, accentColor: '#085420', cursor: disabled ? 'not-allowed' : 'pointer' }}
+        style={{ width: 14, height: 14, accentColor: accent, cursor: disabled ? 'not-allowed' : 'pointer' }}
       />
       <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: disabled ? '#a0a0a0' : '#000', whiteSpace: 'nowrap' }}>{label}</span>
     </label>
@@ -275,6 +279,7 @@ function CheckboxPill({ label, checked, onChange, disabled }) {
 }
 
 function RadioButton({ label, checked, onChange, disabled }) {
+  const accent = useContext(AccentContext);
   return (
     <label style={{
       display: 'flex', alignItems: 'center', gap: 6,
@@ -286,7 +291,7 @@ function RadioButton({ label, checked, onChange, disabled }) {
         checked={checked}
         onChange={onChange}
         disabled={disabled}
-        style={{ width: 16, height: 16, accentColor: '#085420', cursor: disabled ? 'not-allowed' : 'pointer' }}
+        style={{ width: 16, height: 16, accentColor: accent, cursor: disabled ? 'not-allowed' : 'pointer' }}
       />
       <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: disabled ? '#a0a0a0' : '#000' }}>{label}</span>
     </label>
@@ -357,6 +362,7 @@ function buildItemName({ type, subcategory, stockItem, brand, modelStyle, color 
 // ── Cancel confirmation modal ─────────────────────────────────────────────────
 
 function CancelConfirmModal({ onStay, onLeave }) {
+  const accent = useContext(AccentContext);
   return (
     <div
       onClick={onStay}
@@ -424,7 +430,7 @@ function CancelConfirmModal({ onStay, onLeave }) {
             onClick={onLeave}
             style={{
               width: 172.5, height: 52,
-              background: '#085420',
+              background: accent,
               border: 'none', borderRadius: 10,
               fontFamily: "'Inter', sans-serif",
               fontSize: 14, fontWeight: 500, color: '#ffffff',
@@ -552,7 +558,10 @@ export default function InventoryFormScreen() {
     return base;
   };
 
+  const accent = isManageMode ? '#D65737' : '#085420';
+
   return (
+    <AccentContext.Provider value={accent}>
     <div style={styles.page}>
       {/* Header */}
       <header style={{ ...styles.header, height: headerHeight, paddingLeft: px, paddingRight: px, background: isManageMode ? '#D65737' : '#085420' }}>
@@ -824,7 +833,7 @@ export default function InventoryFormScreen() {
                 <RepriceIcon />
                 <span style={styles.navBtnLabel}>Reprice</span>
               </button>
-              <button onClick={() => { showToast('Item saved successfully'); }} style={{ ...styles.navBtn, background: '#085420', border: '1px solid #085420', color: '#fff' }}>
+              <button onClick={() => { showToast('Item saved successfully'); }} style={{ ...styles.navBtn, background: '#D65737', border: '1px solid #D65737', color: '#fff' }}>
                 <SaveIcon color="#fff" />
                 <span style={{ ...styles.navBtnLabel, color: '#fff' }}>Save</span>
               </button>
@@ -887,6 +896,7 @@ export default function InventoryFormScreen() {
               >
                 Yes, Clone
               </button>
+              {/* Clone modal is only shown in intake mode, so accent is always green here */}
             </div>
           </div>
         </div>
@@ -925,7 +935,7 @@ export default function InventoryFormScreen() {
               {printState === 'printing' ? (
                 <div style={{ width: 72, height: 72, borderRadius: '50%', border: '5px solid rgba(255,255,255,0.2)', borderTopColor: '#fff', animation: 'cj-spin 0.75s linear infinite' }} />
               ) : (
-                <div style={{ width: 72, height: 72, borderRadius: '50%', background: '#085420', display: 'flex', alignItems: 'center', justifyContent: 'center', animation: 'cj-pop 0.35s ease-out both' }}>
+                <div style={{ width: 72, height: 72, borderRadius: '50%', background: isManageMode ? '#D65737' : '#085420', display: 'flex', alignItems: 'center', justifyContent: 'center', animation: 'cj-pop 0.35s ease-out both' }}>
                   <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
                     <path d="M5 13l4 4L19 7" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
@@ -939,6 +949,7 @@ export default function InventoryFormScreen() {
         </>
       )}
     </div>
+    </AccentContext.Provider>
   );
 }
 
