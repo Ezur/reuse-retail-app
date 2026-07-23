@@ -27,7 +27,7 @@ const DONOR_INFO = {
 
 const BRANDS = ['N/A', 'Galanz', 'GE', 'Whirlpool', 'Samsung', 'LG', 'Bosch', 'KitchenAid', 'Maytag', 'Frigidaire'];
 const COLORS = ['N/A', 'Black', 'White', 'Stainless', 'Blue', 'Red', 'Green', 'Gray', 'Brown', 'Natural'];
-const UNITS = ['Each', 'Pair', 'Set', 'Lot', 'Linear Foot', 'Square Foot'];
+const UNITS = ['Each', 'Pair', 'Set', 'Lot', 'Linear Foot', 'Square Foot', 'Gaylord'];
 const SPECIAL_CHARS = ['Antique', 'Vintage', 'Salvaged', 'Refurbished', 'Surplus', 'Handmade', 'Rare Find'];
 const CONDITIONS = ['Like New', 'Good', 'Fair'];
 

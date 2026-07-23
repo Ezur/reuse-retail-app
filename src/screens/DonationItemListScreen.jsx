@@ -461,7 +461,7 @@ export default function DonationItemListScreen() {
         {/* Donor summary card */}
         <DonorSummaryCard
           info={donorInfo}
-          totalItems={donorItemCount}
+          totalItems={donorItems.length}
           totalCost={donorItems.reduce((sum, item) => sum + item.price * item.qty, 0)}
           isMobile={isMobile}
         />

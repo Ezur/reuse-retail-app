@@ -585,7 +585,7 @@ export default function WarehouseScreen() {
       {/* ── Main content ── */}
       <main style={{ ...styles.main, maxWidth, padding: `16px ${px}px 24px` }}>
 
-        <h1 style={styles.pageTitle}>All Donors</h1>
+        <h1 style={styles.pageTitle}>Donors</h1>
 
         {/* Recent Donors card */}
         <div style={styles.recentCard}>
