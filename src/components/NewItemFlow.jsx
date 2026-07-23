@@ -435,7 +435,6 @@ const searchInput = {
 const listRow = {
   width: '100%', display: 'flex', alignItems: 'center', gap: 12,
   padding: '14px 20px',
-  borderBottom: '0.558px solid #f3f4f6',
   background: 'transparent', border: 'none',
   borderBottom: '0.558px solid #f3f4f6',
   cursor: 'pointer', textAlign: 'left',
