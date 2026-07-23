@@ -264,7 +264,6 @@ function CheckboxPill({ label, checked, onChange, disabled }) {
       border: `0.558px solid ${disabled ? '#e0e0e0' : checked ? accent : '#d9d9d9'}`,
       borderRadius: 6, padding: '5px 10px', minHeight: 44,
       background: disabled ? '#f0f0f0' : checked ? '#e8f5e9' : '#fff',
-      opacity: disabled ? 0.6 : 1,
     }}>
       <input
         type="checkbox"
@@ -284,7 +283,7 @@ function RadioButton({ label, checked, onChange, disabled }) {
     <label style={{
       display: 'flex', alignItems: 'center', gap: 6,
       cursor: disabled ? 'not-allowed' : 'pointer',
-      minHeight: 44, opacity: disabled ? 0.5 : 1,
+      minHeight: 44,
     }}>
       <input
         type="radio"
@@ -631,14 +630,14 @@ export default function InventoryFormScreen() {
               <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, fontWeight: 600, color: isStock ? '#a0a0a0' : '#424242', margin: '8px 0 4px' }}>
                 Add Photos
               </p>
-              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: isStock ? '#c0c0c0' : '#595959', margin: 0, textAlign: 'center' }}>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: isStock ? '#a0a0a0' : '#595959', margin: 0, textAlign: 'center' }}>
                 Click to take new images to this item.
               </p>
             </div>
             {/* Tips panel */}
             <div style={{ ...styles.tipsPanel, background: isStock ? '#f0f0f0' : '#f5f5f5' }}>
               {['Use good lighting', 'Take the photo in horizontal mode', 'Capture the entire item', 'Highlight special or unique features'].map(tip => (
-                <p key={tip} style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: isStock ? '#c0c0c0' : '#424242', margin: '0 0 6px' }}>
+                <p key={tip} style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: isStock ? '#a0a0a0' : '#424242', margin: '0 0 6px' }}>
                   {tip}
                 </p>
               ))}
@@ -746,14 +745,13 @@ export default function InventoryFormScreen() {
               {/* Quantity */}
               <div style={{ flex: 'none' }}>
                 <FieldLabel required>Quantity</FieldLabel>
-                <div style={{ display: 'flex', alignItems: 'center', height: 44, width: 96, border: '0.558px solid #d9d9d9', borderRadius: 8, background: isStock ? '#f0f0f0' : '#fff' }}>
+                <div style={{ display: 'flex', alignItems: 'center', height: 44, width: 96, border: '0.558px solid #d9d9d9', borderRadius: 8, background: '#fff' }}>
                   <input
                     type="number"
                     value={qty}
                     onChange={e => setQty(e.target.value)}
                     min="1"
-                    disabled={isStock}
-                    style={{ width: '100%', border: 'none', outline: 'none', background: 'transparent', fontFamily: "'Inter', sans-serif", fontSize: 16, fontWeight: 500, color: isStock ? '#a0a0a0' : '#000', textAlign: 'left', cursor: isStock ? 'not-allowed' : undefined, padding: '0 12px' }}
+                    style={{ width: '100%', border: 'none', outline: 'none', background: 'transparent', fontFamily: "'Inter', sans-serif", fontSize: 16, fontWeight: 500, color: '#000', textAlign: 'left', padding: '0 12px' }}
                   />
                 </div>
               </div>
