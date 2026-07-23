@@ -164,7 +164,7 @@ function CardHeader({ badge, title, required, requiredNote, right }) {
         {required && <span style={{ color: '#DC0000' }}>*</span>}
       </span>
       {requiredNote && (
-        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: '#DC0000', marginLeft: 2 }}>
+        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: '#DC0000', marginLeft: 0 }}>
           {requiredNote}
         </span>
       )}
@@ -472,6 +472,14 @@ export default function InventoryFormScreen() {
   const printTimers = useRef([]);
 
   const { toast, show: showToast, hide: hideToast } = useToast();
+  const [showCloneModal, setShowCloneModal] = useState(false);
+
+  const handleClone = () => {
+    setShowCloneModal(false);
+    setPrice('');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    showToast('Item cloned — price cleared');
+  };
 
   const handlePrint = async () => {
     setPrintState('printing');
@@ -489,7 +497,10 @@ export default function InventoryFormScreen() {
     await supabase.from('items').insert(payload);
 
     const t1 = setTimeout(() => setPrintState('done'), 2000);
-    const t2 = setTimeout(() => setPrintState(null), 3500);
+    const t2 = setTimeout(() => {
+      setPrintState(null);
+      navigate(id && id !== 'new' ? `/donor/${id}` : -1);
+    }, 3500);
     printTimers.current = [t1, t2];
   };
 
@@ -575,7 +586,7 @@ export default function InventoryFormScreen() {
             badge={2}
             title="Item Photos"
             required
-            requiredNote="At least 1 photo required"
+            requiredNote="At least 1 photo recommended"
             right={
               <button style={styles.photoTipsBtn} disabled={isStock}>
                 <LightbulbIcon />
@@ -786,9 +797,9 @@ export default function InventoryFormScreen() {
             <HomeIcon />
             <span style={styles.navBtnLabel}>Home</span>
           </button>
-          <button style={styles.navBtn}>
+          <button style={styles.navBtn} onClick={() => setShowCloneModal(true)}>
             <CopyIcon />
-            <span style={styles.navBtnLabel}>Copy</span>
+            <span style={styles.navBtnLabel}>Clone</span>
           </button>
           <button style={styles.navBtn} onClick={() => showToast('Item saved successfully')}>
             <SaveIcon />
@@ -800,6 +811,46 @@ export default function InventoryFormScreen() {
           </button>
         </div>
       </div>
+
+      {/* Clone confirmation */}
+      {showCloneModal && (
+        <div
+          onClick={() => setShowCloneModal(false)}
+          style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)', zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        >
+          <div
+            onClick={e => e.stopPropagation()}
+            style={{ background: '#ffffff', borderRadius: 16, width: 619, maxWidth: 'calc(100vw - 48px)', padding: '24px 32px 32px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+          >
+            <div style={{ marginTop: 16, marginBottom: 24, width: 86, height: 86, borderRadius: '50%', background: '#f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
+                <rect x="9" y="9" width="13" height="13" rx="2" stroke="#595959" strokeWidth="1.8"/>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="#595959" strokeWidth="1.8"/>
+              </svg>
+            </div>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 20, fontWeight: 700, color: '#000', margin: '0 0 12px', textAlign: 'center' }}>
+              Clone this item?
+            </p>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 15, fontWeight: 400, color: '#595959', margin: '0 0 32px', textAlign: 'center', lineHeight: 1.5, maxWidth: 395 }}>
+              All item details will be duplicated. The price will be cleared so you can enter a new one.
+            </p>
+            <div style={{ display: 'flex', gap: 21, justifyContent: 'center' }}>
+              <button
+                onClick={() => setShowCloneModal(false)}
+                style={{ width: 172.5, height: 52, background: '#ffffff', border: '1px solid #d9d9d9', borderRadius: 10, fontFamily: "'Inter', sans-serif", fontSize: 14, fontWeight: 500, color: '#000', cursor: 'pointer' }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleClone}
+                style={{ width: 172.5, height: 52, background: '#085420', border: 'none', borderRadius: 10, fontFamily: "'Inter', sans-serif", fontSize: 14, fontWeight: 500, color: '#ffffff', cursor: 'pointer' }}
+              >
+                Yes, Clone
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Cancel confirmation */}
       {showCancelModal && (

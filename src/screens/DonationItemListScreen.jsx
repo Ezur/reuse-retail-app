@@ -222,7 +222,6 @@ function ItemRow({ item, onClick, isMobile }) {
           background: 'transparent', cursor: 'pointer', textAlign: 'left', gap: 20,
         }}
       >
-        <CameraPlaceholder />
         <div style={{ flex: 1, minWidth: 0 }}>
           <p style={{ fontFamily: "'Helvetica Neue', sans-serif", fontSize: 14, fontWeight: 700, color: '#000', margin: 0, lineHeight: 1.35, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {item.name}
@@ -254,7 +253,6 @@ function ItemRow({ item, onClick, isMobile }) {
         gap: 12,
       }}
     >
-      <CameraPlaceholder />
       <div style={{ flex: 1, minWidth: 0, overflow: 'hidden' }}>
         <p style={{ fontFamily: "'Helvetica Neue', sans-serif", fontSize: 14, fontWeight: 700, color: '#000', margin: 0, lineHeight: 1.35, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {item.name}

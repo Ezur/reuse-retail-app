@@ -185,7 +185,6 @@ function ItemRow({ item, onClick, isMobile }) {
           background: 'transparent', cursor: 'pointer', textAlign: 'left', gap: 12,
         }}
       >
-        <CameraPlaceholder />
         <div style={{ flex: 1, minWidth: 0 }}>
           <p style={{ fontFamily: "'Helvetica Neue', sans-serif", fontSize: 14, fontWeight: 700, color: '#000', margin: 0, lineHeight: 1.35, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {item.name}
@@ -484,8 +483,7 @@ function StockItemSearchModal({ onClose, onSelect, selectedItem }) {
                 cursor: 'pointer', textAlign: 'left',
               }}
             >
-              <CameraPlaceholder />
-              <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ flex: 1, minWidth: 0 }}>
                 <p style={{ fontFamily: "'Helvetica Neue', sans-serif", fontSize: 14, fontWeight: selectedItem === item.name ? 700 : 400, color: selectedItem === item.name ? '#D65737' : '#000', margin: 0, lineHeight: 1.4 }}>
                   {item.name}
                 </p>
