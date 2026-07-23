@@ -8,7 +8,7 @@ import AnonymousDonorAvatar from '../assets/AnonymousDonorAvatar.svg';
 import UserMenu from '../components/UserMenu';
 import BackButton from '../components/BackButton';
 import NewItemFlow from '../components/NewItemFlow';
-import { supabase } from '../lib/supabase';
+import { supabase, uploadItemPhotos } from '../lib/supabase';
 import { Toast, useToast } from '../components/Toast';
 
 const CATEGORY_MAP = {
@@ -491,6 +491,25 @@ export default function InventoryFormScreen() {
   const [showAdditional, setShowAdditional] = useState(true);
   const [showNotes, setShowNotes] = useState(true);
 
+  // Photos — { file, url } pairs; url is a local object URL for preview,
+  // file is uploaded to Supabase Storage on save. Existing saved photos
+  // (from the DB) have url only and file: null, so they are never re-uploaded.
+  const [photos, setPhotos] = useState(
+    (existingItem?.photos ?? []).map(url => ({ file: null, url }))
+  );
+  const photoInputRef = useRef(null);
+  const handlePhotoFiles = (e) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length) setPhotos(prev => [...prev, ...files.map(f => ({ file: f, url: URL.createObjectURL(f) }))]);
+    e.target.value = '';
+  };
+  const removePhoto = (idx) => {
+    setPhotos(prev => {
+      if (prev[idx].file) URL.revokeObjectURL(prev[idx].url);
+      return prev.filter((_, i) => i !== idx);
+    });
+  };
+
   // Wizard state
   const [showWizard, setShowWizard] = useState(false);
   const [wizardStartStep, setWizardStartStep] = useState('category');
@@ -524,7 +543,11 @@ export default function InventoryFormScreen() {
       price: price !== '' ? Number(price) : null,
       qty: qty !== '' ? Number(qty) : 1,
     };
-    await supabase.from('items').insert(payload);
+    const { data: inserted } = await supabase.from('items').insert(payload).select('id').single();
+    if (inserted?.id && photos.length > 0) {
+      const urls = await uploadItemPhotos(inserted.id, photos);
+      if (urls.length) await supabase.from('items').update({ photos: urls }).eq('id', inserted.id);
+    }
 
     const t1 = setTimeout(() => setPrintState('done'), 2000);
     const t2 = setTimeout(() => {
@@ -535,6 +558,34 @@ export default function InventoryFormScreen() {
   };
 
   const itemName = buildItemName({ type: itemType, subcategory, subSubcategory, stockItem, brand, modelStyle, color });
+
+  // Dirty tracking — snapshot every form value on first render; any change flips
+  // the header button from "Back" (leave freely) to "Cancel" (confirm first).
+  const formSnapshot = JSON.stringify([
+    itemType, stockItem?.name, category?.code, subcategory, subSubcategory,
+    brand, modelStyle, color, specialChars, condition, description,
+    price, qty, qtyOf, units, weight, length, width, height, notes, photos.length,
+  ]);
+  const initialSnapshot = useRef(null);
+  if (initialSnapshot.current === null) initialSnapshot.current = formSnapshot;
+  const isDirty = formSnapshot !== initialSnapshot.current;
+  // Saving makes the current values the new baseline, so the button returns to "Back"
+  const markSaved = () => { initialSnapshot.current = formSnapshot; };
+
+  // Manage-mode Save: persist new photos to Supabase Storage under this item.
+  // Mock items (non-UUID ids) skip the network calls.
+  const handleManageSave = async () => {
+    markSaved();
+    showToast('Item saved successfully', 'manage');
+    const itemId = existingItem?.id;
+    if (/^[0-9a-f-]{36}$/.test(String(itemId ?? '')) && photos.some(p => p.file)) {
+      const urls = await uploadItemPhotos(itemId, photos);
+      if (urls.length) {
+        await supabase.from('items').update({ photos: urls }).eq('id', itemId);
+        setPhotos(urls.map(url => ({ file: null, url })));
+      }
+    }
+  };
 
   const toggleSpecialChar = (char) => {
     setSpecialChars(prev =>
@@ -570,7 +621,10 @@ export default function InventoryFormScreen() {
     <div style={styles.page}>
       {/* Header */}
       <header style={{ ...styles.header, height: headerHeight, paddingLeft: px, paddingRight: px, background: isManageMode ? '#D65737' : '#085420' }}>
-        <BackButton onClick={() => setShowCancelModal(true)} variant="cancel" />
+        <BackButton
+          onClick={() => (isDirty ? setShowCancelModal(true) : navigate(-1))}
+          variant={isDirty ? 'cancel' : 'back'}
+        />
         <button onClick={() => navigate('/mode-select')} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
           <img src={CJ_LOGO} alt="Construction Junction" style={styles.logo} />
         </button>
@@ -581,11 +635,15 @@ export default function InventoryFormScreen() {
 
       {/* Main */}
       <main style={{ ...styles.main, maxWidth, padding: `16px ${px}px 24px` }}>
-        <h1 style={styles.pageTitle}>{isEditing ? 'Edit Item' : 'Inventory Form'}</h1>
-        {isEditing && (
-          <p style={{ fontSize: 14, color: '#595959', margin: '-8px 0 12px', fontFamily: "'Helvetica Neue', sans-serif" }}>
-            {existingItem.name}
-          </p>
+        {isEditing && isManageMode ? (
+          <>
+            <p style={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#D65737', margin: '0 0 4px', fontFamily: "'Helvetica Neue', sans-serif" }}>
+              Edit Item
+            </p>
+            <h1 style={{ ...styles.pageTitle, marginBottom: 12 }}>{existingItem.name}</h1>
+          </>
+        ) : (
+          <h1 style={styles.pageTitle}>Inventory Form</h1>
         )}
 
         <DonorSummaryCard info={DONOR_INFO} />
@@ -632,16 +690,52 @@ export default function InventoryFormScreen() {
             }
           />
           <CardBody style={{ display: 'flex', gap: 16, position: 'relative' }}>
-            {/* Upload zone */}
-            <div style={{ ...styles.photoUpload, background: isStock ? '#f0f0f0' : undefined, cursor: isStock ? 'not-allowed' : 'pointer', borderColor: isStock ? '#e0e0e0' : '#d9d9d9' }}>
-              <CameraIcon />
-              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, fontWeight: 600, color: isStock ? '#a0a0a0' : '#424242', margin: '8px 0 4px' }}>
-                Add Photos
-              </p>
-              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: isStock ? '#a0a0a0' : '#595959', margin: 0, textAlign: 'center' }}>
-                Click to take new images to this item.
-              </p>
-            </div>
+            <input
+              ref={photoInputRef}
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handlePhotoFiles}
+              style={{ display: 'none' }}
+            />
+            {photos.length === 0 ? (
+              /* Empty state — full-width upload zone */
+              <div
+                onClick={() => { if (!isStock) photoInputRef.current?.click(); }}
+                style={{ ...styles.photoUpload, background: isStock ? '#f0f0f0' : undefined, cursor: isStock ? 'not-allowed' : 'pointer', borderColor: isStock ? '#e0e0e0' : '#d9d9d9' }}
+              >
+                <CameraIcon />
+                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, fontWeight: 600, color: isStock ? '#a0a0a0' : '#424242', margin: '8px 0 4px' }}>
+                  Add Photos
+                </p>
+                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: isStock ? '#a0a0a0' : '#595959', margin: 0, textAlign: 'center' }}>
+                  Take a photo or choose one from your camera roll.
+                </p>
+              </div>
+            ) : (
+              /* Photos taken — left-aligned thumbnails + smaller add tile */
+              <div style={{ flex: 1, display: 'flex', flexWrap: 'wrap', gap: 10, alignContent: 'flex-start' }}>
+                {photos.map((p, i) => (
+                  <div key={p.url} style={{ position: 'relative', width: 96, height: 96, flexShrink: 0 }}>
+                    <img src={p.url} alt={`Item photo ${i + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 10, border: '0.558px solid #d9d9d9', display: 'block' }} />
+                    <button
+                      onClick={() => removePhoto(i)}
+                      aria-label={`Remove photo ${i + 1}`}
+                      style={{ position: 'absolute', top: -6, right: -6, width: 22, height: 22, borderRadius: '50%', background: '#424242', border: '2px solid #fff', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0 }}
+                    >
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/></svg>
+                    </button>
+                  </div>
+                ))}
+                <button
+                  onClick={() => photoInputRef.current?.click()}
+                  style={{ width: 96, height: 96, flexShrink: 0, border: '1.5px dashed #d9d9d9', borderRadius: 10, background: 'transparent', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 4 }}
+                >
+                  <CameraIcon />
+                  <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, fontWeight: 600, color: '#424242' }}>Add Photos</span>
+                </button>
+              </div>
+            )}
             {/* Tips panel */}
             <div style={{ ...styles.tipsPanel, background: isStock ? '#f0f0f0' : '#f5f5f5' }}>
               {['Use good lighting', 'Take the photo in horizontal mode', 'Capture the entire item', 'Highlight special or unique features'].map(tip => (
@@ -839,7 +933,7 @@ export default function InventoryFormScreen() {
                 <RepriceIcon />
                 <span style={styles.navBtnLabel}>Reprice</span>
               </button>
-              <button onClick={() => { showToast('Item saved successfully', 'manage'); }} style={{ ...styles.navBtn, background: '#D65737', border: '1px solid #D65737', color: '#fff' }}>
+              <button onClick={handleManageSave} style={{ ...styles.navBtn, background: '#D65737', border: '1px solid #D65737', color: '#fff' }}>
                 <SaveIcon color="#fff" />
                 <span style={{ ...styles.navBtnLabel, color: '#fff' }}>Save</span>
               </button>
@@ -854,7 +948,7 @@ export default function InventoryFormScreen() {
                 <CopyIcon />
                 <span style={styles.navBtnLabel}>Clone</span>
               </button>
-              <button style={styles.navBtn} onClick={() => showToast('Item saved successfully')}>
+              <button style={styles.navBtn} onClick={() => { markSaved(); showToast('Item saved successfully'); }}>
                 <SaveIcon />
                 <span style={styles.navBtnLabel}>Save</span>
               </button>

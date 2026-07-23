@@ -78,10 +78,12 @@ export default function FilterModal({
             Clear all
           </button>
           <p style={{ fontFamily: "'Helvetica Neue', sans-serif", fontSize: 17, fontWeight: 700, color: '#000', margin: 0 }}>{title}</p>
-          <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4, display: 'flex', alignItems: 'center', minWidth: 64, justifyContent: 'flex-end' }}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <path d="M18 6L6 18M6 6l12 12" stroke="#424242" strokeWidth="2" strokeLinecap="round"/>
-            </svg>
+          <button
+            onClick={onClose}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4, minWidth: 64, display: 'flex', justifyContent: 'flex-end' }}
+            aria-label="Close"
+          >
+            <CloseIcon />
           </button>
         </div>
 

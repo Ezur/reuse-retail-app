@@ -31,23 +31,23 @@ const DONOR_INFO = {
 };
 
 const ITEMS = [
-  { id: '1',  name: 'Countertop Microwave - Small - Used, ASIS', category: 'APP', subcategory: 'Microwave',    qty: 5, price: 15.99,  created: '05/31/2026', modified: '05/31/2026' },
-  { id: '2',  name: 'Electric Cooktop - 30 in. - Good, ASIS',   category: 'APP', subcategory: 'Cooktop',      qty: 2, price: 49.99,  created: '5/29/2026',  modified: '05/31/2026' },
-  { id: '3',  name: 'Gas Cooktop - Stainless Steel - Best, ASIS',category: 'APP', subcategory: 'Cooktop',      qty: 1, price: 79.99,  created: '5/28/2026',  modified: '05/31/2026' },
-  { id: '4',  name: 'Refrigerator - Top Freezer - White',        category: 'APP', subcategory: 'Refrigerator', qty: 2, price: 149.99, created: '5/27/2026',  modified: '05/31/2026' },
-  { id: '5',  name: 'Electric Range - 30 in. - White',           category: 'APP', subcategory: 'Refrigerator', qty: 1, price: 179.99, created: '5/26/2026',  modified: '05/31/2026' },
-  { id: '6',  name: 'Front Load Washer - White',                 category: 'APP', subcategory: 'Refrigerator', qty: 2, price: 199.99, created: '5/25/2026',  modified: '05/31/2026' },
-  { id: '8',  name: 'Wall Cabinet - 30 in. - Oak',               category: 'CAB', subcategory: 'Cabinet',      qty: 4, price: 39.99,  created: '5/23/2026',  modified: '05/31/2026' },
-  { id: '9',  name: 'Bathroom Vanity - 24 in. - White',          category: 'PLB', subcategory: 'Vanity',       qty: 1, price: 89.99,  created: '5/22/2026',  modified: '05/31/2026' },
-  { id: '10', name: 'Single Basin Sink - Stainless',             category: 'PLB', subcategory: 'Sink',         qty: 3, price: 59.99,  created: '5/21/2026',  modified: '05/31/2026' },
-  { id: '11', name: 'Ceiling Fan - 52 in. - Bronze',             category: 'ELC', subcategory: 'Fan',          qty: 2, price: 74.99,  created: '5/20/2026',  modified: '05/31/2026' },
-  { id: '12', name: 'Light Fixture - Pendant - Black',           category: 'ELC', subcategory: 'Lighting',     qty: 6, price: 29.99,  created: '5/19/2026',  modified: '05/31/2026' },
-  { id: '13', name: 'Exterior Door - 36 in. - Steel',            category: 'DOR', subcategory: 'Exterior',     qty: 1, price: 189.99, created: '5/18/2026',  modified: '05/31/2026' },
-  { id: '14', name: 'Interior Door - 30 in. - Pine',             category: 'DOR', subcategory: 'Interior',     qty: 3, price: 34.99,  created: '5/17/2026',  modified: '05/31/2026' },
-  { id: '15', name: 'Hardwood Flooring - Oak - 20 sq ft',        category: 'FLR', subcategory: 'Hardwood',     qty: 5, price: 24.99,  created: '5/16/2026',  modified: '05/31/2026' },
-  { id: '19', name: 'Storm Door - 32 in. - White',               category: 'DOR', subcategory: 'Storm',        qty: 2, price: 54.99,  created: '5/12/2026',  modified: '05/31/2026' },
-  { id: '20', name: 'Bathtub - Standard - White',                category: 'PLB', subcategory: 'Tub',          qty: 1, price: 119.99, created: '5/11/2026',  modified: '05/31/2026' },
-  { id: '21', name: 'Toilet - Round - White',                    category: 'PLB', subcategory: 'Toilet',       qty: 2, price: 64.99,  created: '5/10/2026',  modified: '05/31/2026' },
+  { id: '1',  name: 'Countertop Microwave - Small - Used, ASIS', category: 'APP', subcategory: 'Microwave',    qty: 5, price: 15.99,  upc: '012345678920', created: '05/31/2026', modified: '05/31/2026' },
+  { id: '2',  name: 'Electric Cooktop - 30 in. - Good, ASIS',   category: 'APP', subcategory: 'Cooktop',      qty: 2, price: 49.99,  upc: '012345678919', created: '5/29/2026',  modified: '05/31/2026' },
+  { id: '3',  name: 'Gas Cooktop - Stainless Steel - Best, ASIS',category: 'APP', subcategory: 'Cooktop',      qty: 1, price: 79.99,  upc: '012345678918', created: '5/28/2026',  modified: '05/31/2026' },
+  { id: '4',  name: 'Refrigerator - Top Freezer - White',        category: 'APP', subcategory: 'Refrigerator', qty: 2, price: 149.99, upc: '012345678917', created: '5/27/2026',  modified: '05/31/2026' },
+  { id: '5',  name: 'Electric Range - 30 in. - White',           category: 'APP', subcategory: 'Refrigerator', qty: 1, price: 179.99, upc: '012345678916', created: '5/26/2026',  modified: '05/31/2026' },
+  { id: '6',  name: 'Front Load Washer - White',                 category: 'APP', subcategory: 'Refrigerator', qty: 2, price: 199.99, upc: '012345678915', created: '5/25/2026',  modified: '05/31/2026' },
+  { id: '8',  name: 'Wall Cabinet - 30 in. - Oak',               category: 'CAB', subcategory: 'Cabinet',      qty: 4, price: 39.99,  upc: '012345678914', created: '5/23/2026',  modified: '05/31/2026' },
+  { id: '9',  name: 'Bathroom Vanity - 24 in. - White',          category: 'PLB', subcategory: 'Vanity',       qty: 1, price: 89.99,  upc: '012345678913', created: '5/22/2026',  modified: '05/31/2026' },
+  { id: '10', name: 'Single Basin Sink - Stainless',             category: 'PLB', subcategory: 'Sink',         qty: 3, price: 59.99,  upc: '012345678912', created: '5/21/2026',  modified: '05/31/2026' },
+  { id: '11', name: 'Ceiling Fan - 52 in. - Bronze',             category: 'ELC', subcategory: 'Fan',          qty: 2, price: 74.99,  upc: '012345678911', created: '5/20/2026',  modified: '05/31/2026' },
+  { id: '12', name: 'Light Fixture - Pendant - Black',           category: 'ELC', subcategory: 'Lighting',     qty: 6, price: 29.99,  upc: '012345678910', created: '5/19/2026',  modified: '05/31/2026' },
+  { id: '13', name: 'Exterior Door - 36 in. - Steel',            category: 'DOR', subcategory: 'Exterior',     qty: 1, price: 189.99, upc: '012345678909', created: '5/18/2026',  modified: '05/31/2026' },
+  { id: '14', name: 'Interior Door - 30 in. - Pine',             category: 'DOR', subcategory: 'Interior',     qty: 3, price: 34.99,  upc: '012345678908', created: '5/17/2026',  modified: '05/31/2026' },
+  { id: '15', name: 'Hardwood Flooring - Oak - 20 sq ft',        category: 'FLR', subcategory: 'Hardwood',     qty: 5, price: 24.99,  upc: '012345678907', created: '5/16/2026',  modified: '05/31/2026' },
+  { id: '19', name: 'Storm Door - 32 in. - White',               category: 'DOR', subcategory: 'Storm',        qty: 2, price: 54.99,  upc: '012345678903', created: '5/12/2026',  modified: '05/31/2026' },
+  { id: '20', name: 'Bathtub - Standard - White',                category: 'PLB', subcategory: 'Tub',          qty: 1, price: 119.99, upc: '012345678902', created: '5/11/2026',  modified: '05/31/2026' },
+  { id: '21', name: 'Toilet - Round - White',                    category: 'PLB', subcategory: 'Toilet',       qty: 2, price: 64.99,  upc: '012345678901', created: '5/10/2026',  modified: '05/31/2026' },
 ];
 
 const ROWS_PER_PAGE = 20;
@@ -184,16 +184,16 @@ function DonorSummaryCard({ info, totalItems, totalCost, isMobile }) {
 
       {/* Stats */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexShrink: 0, paddingLeft: isMobile ? 58 : 0 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, textAlign: 'center' }}>
-          <BoxIcon />
-          <div>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <BoxIcon />
             <p style={{ fontFamily: "'Helvetica Neue', sans-serif", fontSize: 18, fontWeight: 700, color: '#000', margin: 0 }}>
               {totalItems}
             </p>
-            <p style={{ fontFamily: "'Helvetica Neue', sans-serif", fontSize: 12, color: '#595959', margin: 0 }}>
-              Total Items
-            </p>
           </div>
+          <p style={{ fontFamily: "'Helvetica Neue', sans-serif", fontSize: 12, color: '#595959', margin: '2px 0 0' }}>
+            Total Items
+          </p>
         </div>
         <div style={{ width: 1, height: 40, background: '#d9d9d9', flexShrink: 0 }} />
         <div style={{ textAlign: 'center' }}>
@@ -247,10 +247,10 @@ function ItemRow({ item, onClick, isMobile }) {
       style={{
         width: '100%',
         display: 'flex', alignItems: 'center',
-        paddingLeft: 16, paddingRight: 16, paddingTop: 14, paddingBottom: 14,
+        paddingLeft: 16, paddingRight: 16, paddingTop: 12, paddingBottom: 12,
         border: 'none', borderBottom: '0.558px solid #f3f4f6',
         background: 'transparent', cursor: 'pointer', textAlign: 'left',
-        gap: 16,
+        gap: 20,
       }}
     >
       <div style={{ flex: 1, minWidth: 0, overflow: 'hidden' }}>
@@ -258,13 +258,14 @@ function ItemRow({ item, onClick, isMobile }) {
           {item.name}
         </p>
       </div>
-      <p style={{ ...styles.cell, width: 72, fontWeight: 700, color: '#000' }}>{item.category}</p>
-      <p style={{ ...styles.cell, width: 48, textAlign: 'center' }}>{item.qty}</p>
-      <p style={{ ...styles.cell, width: 110 }}>
+      <p style={{ ...styles.cell, width: 68, fontWeight: 700, color: '#000' }}>{item.category}</p>
+      <p style={{ ...styles.cell, width: 110, fontSize: 14, color: '#424242' }}>{item.upc || '—'}</p>
+      <p style={{ ...styles.cell, width: 32 }}>{item.qty}</p>
+      <p style={{ ...styles.cell, width: 96 }}>
         <span style={{ fontWeight: 700 }}>${item.price.toFixed(2)}</span>
         <span style={{ color: '#595959' }}>/each</span>
       </p>
-      <p style={{ ...styles.cell, width: 96, color: '#424242' }}>{item.created}</p>
+      <p style={{ ...styles.cell, width: 80, color: '#424242' }}>{item.created}</p>
       <div style={{ flexShrink: 0 }}><ChevronRight /></div>
     </button>
   );
@@ -381,6 +382,8 @@ export default function DonationItemListScreen() {
             condition: item.condition ?? '',
             price: item.price ?? 0,
             qty: item.qty ?? 1,
+            upc: item.upc ?? '',
+            photos: item.photos ?? [],
             created: new Date(item.created_at).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }),
           })));
         }
@@ -391,6 +394,7 @@ export default function DonationItemListScreen() {
   const [showSortModal, setShowSortModal] = useState(false);
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [sortField, setSortField] = useState(null);
+  const [sortDir, setSortDir] = useState('asc');
   const [filterCategories, setFilterCategories] = useState(new Set());
   const [filterHasPrice, setFilterHasPrice] = useState(false);
 
@@ -400,7 +404,8 @@ export default function DonationItemListScreen() {
     const matchSearch =
       item.name.toLowerCase().includes(search.toLowerCase()) ||
       item.category.toLowerCase().includes(search.toLowerCase()) ||
-      item.subcategory.toLowerCase().includes(search.toLowerCase());
+      item.subcategory.toLowerCase().includes(search.toLowerCase()) ||
+      (item.upc || '').includes(search.trim());
     const matchCat = filterCategories.size === 0 || filterCategories.has(item.category);
     const matchPrice = !filterHasPrice || item.price > 0;
     return matchSearch && matchCat && matchPrice;
@@ -415,14 +420,24 @@ export default function DonationItemListScreen() {
   const clearAllFilters = () => { setFilterCategories(new Set()); setFilterHasPrice(false); setPage(1); };
   const toggleCat = v => setFilterCategories(prev => { const s = new Set(prev); s.has(v) ? s.delete(v) : s.add(v); return s; });
 
+  const handleColSort = (field) => {
+    if (sortField !== field) { setSortField(field); setSortDir('asc'); }
+    else if (sortDir === 'asc') { setSortDir('desc'); }
+    else { setSortField(null); setSortDir('asc'); }
+    setPage(1);
+  };
+
   const sorted = sortField ? [...filtered].sort((a, b) => {
     const va = a[sortField], vb = b[sortField];
-    if (sortField === 'qty' || sortField === 'price') return va - vb;
-    if (sortField === 'created' || sortField === 'modified') {
-      const toMs = s => { const [m, d, y] = s.split('/'); return new Date(y, m - 1, d).getTime(); };
-      return toMs(va) - toMs(vb);
+    let cmp;
+    if (sortField === 'qty' || sortField === 'price') cmp = va - vb;
+    else if (sortField === 'created' || sortField === 'modified') {
+      const toMs = str => { const [m, d, y] = str.split('/'); return new Date(y, m - 1, d).getTime(); };
+      cmp = toMs(va) - toMs(vb);
+    } else {
+      cmp = String(va).localeCompare(String(vb));
     }
-    return String(va).localeCompare(String(vb));
+    return sortDir === 'desc' ? -cmp : cmp;
   }) : filtered;
 
   const totalPages = Math.max(1, Math.ceil(sorted.length / ROWS_PER_PAGE));
@@ -467,7 +482,7 @@ export default function DonationItemListScreen() {
               <SearchIcon />
               <input
                 type="text"
-                placeholder="Search items by name, category, or item #"
+                placeholder="Search by name, category, or UPC/barcode"
                 value={search}
                 onChange={e => handleSearch(e.target.value)}
                 style={styles.searchInput}
@@ -479,6 +494,13 @@ export default function DonationItemListScreen() {
                 {!isMobile && <span style={styles.toolBtnLabel}>Scan QR Code</span>}
               </button>
               <button
+                onClick={() => setShowSortModal(true)}
+                style={{ ...styles.toolBtn, flex: isMobile ? 1 : undefined, borderColor: sortField ? '#085420' : '#d9d9d9', background: sortField ? '#f0f7f2' : '#f0f0f0' }}
+              >
+                <SortIcon />
+                <span style={{ ...styles.toolBtnLabel, color: sortField ? '#085420' : '#000' }}>Sort</span>
+              </button>
+              <button
                 onClick={() => setShowFilterModal(true)}
                 style={{ ...styles.toolBtn, flex: isMobile ? 1 : undefined, borderColor: activeFilterCount > 0 ? '#085420' : '#d9d9d9', background: activeFilterCount > 0 ? '#f0f7f2' : '#f0f0f0' }}
               >
@@ -486,16 +508,6 @@ export default function DonationItemListScreen() {
                 <span style={{ ...styles.toolBtnLabel, color: activeFilterCount > 0 ? '#085420' : '#000' }}>Filter</span>
                 {activeFilterCount > 0 && (
                   <span style={{ minWidth: 18, height: 18, borderRadius: 9, background: '#085420', color: '#fff', fontSize: 11, fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 4px' }}>{activeFilterCount}</span>
-                )}
-              </button>
-              <button
-                onClick={() => setShowSortModal(true)}
-                style={{ ...styles.toolBtn, flex: isMobile ? 1 : undefined, borderColor: sortField ? '#085420' : '#d9d9d9', background: sortField ? '#f0f7f2' : '#f0f0f0' }}
-              >
-                <SortIcon />
-                <span style={{ ...styles.toolBtnLabel, color: sortField ? '#085420' : '#000' }}>Sort</span>
-                {sortField && (
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#085420" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 )}
               </button>
             </div>
@@ -521,20 +533,38 @@ export default function DonationItemListScreen() {
             <div style={styles.tableHeader}>
               {[
                 { label: 'Item Name',   field: 'name',        flex: true },
-                { label: 'Category',    field: 'category',    width: 72  },
-                { label: 'Qty',         field: 'qty',         width: 48, center: true },
-                { label: 'Price',       field: 'price',       width: 110 },
-                { label: 'Created',     field: 'created',     width: 96  },
-              ].map(col => (
-                <span key={col.field} style={{ ...styles.headerCell, ...(col.flex ? { flex: 1 } : { width: col.width }), textAlign: col.center ? 'center' : undefined, display: 'flex', alignItems: 'center', gap: 4 }}>
-                  {col.label}
-                  {sortField === col.field && (
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}>
-                      <path d="M20 6L9 17l-5-5" stroke="#085420" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  )}
-                </span>
-              ))}
+                { label: 'Category',    field: 'category',    width: 68  },
+                { label: 'UPC',         field: 'upc',         width: 110 },
+                { label: 'Qty',         field: 'qty',         width: 32 },
+                { label: 'Price',       field: 'price',       width: 96  },
+                { label: 'Created',     field: 'created',     width: 80  },
+              ].map(col => {
+                const active = sortField === col.field;
+                return (
+                  <button
+                    key={col.field}
+                    onClick={() => handleColSort(col.field)}
+                    style={{
+                      ...(col.flex ? { flex: 1 } : { width: col.width, flexShrink: 0 }),
+                      display: 'flex', alignItems: 'center', gap: 4,
+                      textAlign: col.center ? 'center' : undefined,
+                      background: active ? 'rgba(8,84,32,0.07)' : 'transparent',
+                      border: 'none', borderRadius: 6, padding: '3px 6px', cursor: 'pointer',
+                      fontFamily: "'Helvetica Neue', sans-serif", fontSize: 14,
+                      color: active ? '#085420' : '#595959',
+                      fontWeight: active ? 700 : 500,
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {col.label}
+                    {active && (
+                      sortDir === 'asc'
+                        ? <svg width="11" height="11" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}><path d="M12 19V5M5 12l7-7 7 7" stroke="#085420" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        : <svg width="11" height="11" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}><path d="M12 5v14M5 12l7 7 7-7" stroke="#085420" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    )}
+                  </button>
+                );
+              })}
               <span style={{ width: 16, flexShrink: 0 }} />
             </div>
           )}
@@ -595,11 +625,18 @@ export default function DonationItemListScreen() {
       {showSortModal && (
         <SortModal
           title="Sort Items"
-          options={ITEM_SORT_OPTIONS}
-          selected={sortField}
           color="#085420"
+          options={[
+            { label: 'Item Name', field: 'name' },
+            { label: 'Category', field: 'category' },
+            { label: 'UPC', field: 'upc' },
+            { label: 'Quantity', field: 'qty' },
+            { label: 'Price', field: 'price' },
+            { label: 'Created', field: 'created' },
+          ]}
+          selected={sortField}
           onClose={() => setShowSortModal(false)}
-          onSelect={(field) => { setSortField(field); setShowSortModal(false); }}
+          onSelect={(field) => { setSortField(field); setSortDir('asc'); setPage(1); setShowSortModal(false); }}
         />
       )}
 
@@ -693,7 +730,7 @@ const styles = {
     display: 'flex', alignItems: 'center',
     padding: '10px 16px',
     background: '#fafafa', borderBottom: '0.558px solid #f3f4f6',
-    gap: 16,
+    gap: 20,
   },
   headerCell: {
     fontFamily: "'Helvetica Neue', sans-serif",

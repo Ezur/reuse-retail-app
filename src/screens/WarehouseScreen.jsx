@@ -119,7 +119,6 @@ function SortIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M3 6h18M7 12h10M11 18h2" stroke="#424242" strokeWidth="2" strokeLinecap="round"/>
-      <path d="M17 4v16M17 4l-3 3M17 4l3 3" stroke="#424242" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   );
 }
@@ -183,19 +182,6 @@ function NewDonorModal({ onClose, onConfirm, loading }) {
           gap: 0,
         }}
       >
-        {/* Close button */}
-        <button
-          onClick={onClose}
-          style={{
-            position: 'absolute', top: 16, right: 16,
-            background: 'transparent', border: 'none',
-            cursor: 'pointer', padding: 4,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}
-        >
-          <CloseIcon />
-        </button>
-
         {/* Avatar */}
         <div style={{ marginTop: 16, marginBottom: 24 }}>
           <img src={AnonymousDonorAvatar} alt="" width={86} height={86} style={{ borderRadius: '50%', display: 'block' }} />
@@ -358,9 +344,9 @@ function DonorRow({ donor, onClick }) {
         </p>
       </div>
       <p style={{ ...styles.cell, flex: 1 }}>{donor.donorNumber}</p>
+      <p style={{ ...styles.cell, width: 40, flexShrink: 0, textAlign: 'center' }}>{donor.items}</p>
       <p style={{ ...styles.cell, flex: 1 }}>{donor.type}</p>
       <p style={{ ...styles.cell, flex: 1 }}>{donor.status}</p>
-      <p style={{ ...styles.cell, width: 40, flexShrink: 0, textAlign: 'center' }}>{donor.items}</p>
       <p style={{ ...styles.cell, flex: 1, color: '#424242' }}>{donor.date}</p>
       <div style={{ flexShrink: 0 }}><ChevronRight /></div>
     </button>
@@ -480,6 +466,7 @@ export default function WarehouseScreen() {
   const [showSortModal, setShowSortModal] = useState(false);
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [sortField, setSortField] = useState(null);
+  const [sortDir, setSortDir] = useState('asc');
   const [filterStages, setFilterStages] = useState(new Set());
   const [filterTypes, setFilterTypes] = useState(new Set());
   const [filterHasItems, setFilterHasItems] = useState(false);
@@ -545,14 +532,24 @@ export default function WarehouseScreen() {
 
   const toggleSet = (setter, value) => setter(prev => { const s = new Set(prev); s.has(value) ? s.delete(value) : s.add(value); return s; });
 
+  const handleColSort = (field) => {
+    if (sortField !== field) { setSortField(field); setSortDir('asc'); }
+    else if (sortDir === 'asc') { setSortDir('desc'); }
+    else { setSortField(null); setSortDir('asc'); }
+    setPage(1);
+  };
+
   const sorted = sortField ? [...filtered].sort((a, b) => {
     const va = a[sortField], vb = b[sortField];
-    if (sortField === 'items') return va - vb;
-    if (sortField === 'date') {
+    let cmp;
+    if (sortField === 'items') cmp = va - vb;
+    else if (sortField === 'date') {
       const toMs = s => { const [m, d, y] = s.split('/'); return new Date(y, m - 1, d).getTime(); };
-      return toMs(va) - toMs(vb);
+      cmp = toMs(va) - toMs(vb);
+    } else {
+      cmp = String(va).localeCompare(String(vb));
     }
-    return String(va).localeCompare(String(vb));
+    return sortDir === 'desc' ? -cmp : cmp;
   }) : filtered;
 
   const totalPages = Math.max(1, Math.ceil(sorted.length / ROWS_PER_PAGE));
@@ -616,7 +613,7 @@ export default function WarehouseScreen() {
               <SearchIcon />
               <input
                 type="text"
-                placeholder="Search donors..."
+                placeholder="Search donors by name..."
                 value={search}
                 onChange={e => handleSearch(e.target.value)}
                 style={styles.searchInput}
@@ -627,6 +624,13 @@ export default function WarehouseScreen() {
               <span style={styles.toolBtnLabel}>Scan QR Code</span>
             </button>
             <button
+              onClick={() => setShowSortModal(true)}
+              style={{ ...styles.toolBtn, borderColor: sortField ? '#085420' : '#d1d5dc', background: sortField ? '#f0f7f2' : '#f0f0f0' }}
+            >
+              <SortIcon />
+              <span style={{ ...styles.toolBtnLabel, color: sortField ? '#085420' : '#424242' }}>Sort</span>
+            </button>
+            <button
               onClick={() => setShowFilterModal(true)}
               style={{ ...styles.toolBtn, borderColor: activeFilterCount > 0 ? '#085420' : '#d1d5dc', background: activeFilterCount > 0 ? '#f0f7f2' : '#f0f0f0' }}
             >
@@ -634,16 +638,6 @@ export default function WarehouseScreen() {
               <span style={{ ...styles.toolBtnLabel, color: activeFilterCount > 0 ? '#085420' : '#424242' }}>Filter</span>
               {activeFilterCount > 0 && (
                 <span style={{ minWidth: 18, height: 18, borderRadius: 9, background: '#085420', color: '#fff', fontSize: 11, fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 4px' }}>{activeFilterCount}</span>
-              )}
-            </button>
-            <button
-              onClick={() => setShowSortModal(true)}
-              style={{ ...styles.toolBtn, borderColor: sortField ? '#085420' : '#d1d5dc', background: sortField ? '#f0f7f2' : '#f0f0f0' }}
-            >
-              <SortIcon />
-              <span style={{ ...styles.toolBtnLabel, color: sortField ? '#085420' : '#424242' }}>Sort</span>
-              {sortField && (
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#085420" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
               )}
             </button>
           </div>
@@ -668,21 +662,35 @@ export default function WarehouseScreen() {
             {[
               { label: 'Donors',     field: 'name',        flex: 2 },
               { label: 'Donation #', field: 'donorNumber', flex: 1 },
+              { label: 'Items',      field: 'items',       width: 40, center: true },
               { label: 'Type',       field: 'type',        flex: 1 },
               { label: 'Stage',      field: 'status',      flex: 1 },
-              { label: 'Items',      field: 'items',       width: 40, center: true },
               { label: 'Created',    field: 'date',        flex: 1 },
             ].map(col => {
               const active = sortField === col.field;
               return (
-                <span key={col.field} style={{ ...styles.headerCell, ...(col.flex ? { flex: col.flex } : { width: col.width, flexShrink: 0 }), textAlign: col.center ? 'center' : undefined, display: 'flex', alignItems: 'center', gap: 4, color: active ? '#085420' : '#595959', fontWeight: active ? 700 : 500 }}>
+                <button
+                  key={col.field}
+                  onClick={() => handleColSort(col.field)}
+                  style={{
+                    ...(col.flex ? { flex: col.flex } : { width: col.width, flexShrink: 0 }),
+                    display: 'flex', alignItems: 'center', gap: 4,
+                    textAlign: col.center ? 'center' : undefined,
+                    background: active ? 'rgba(8,84,32,0.07)' : 'transparent',
+                    border: 'none', borderRadius: 6, padding: '3px 6px', cursor: 'pointer',
+                    fontFamily: "'Helvetica Neue', sans-serif", fontSize: 14,
+                    color: active ? '#085420' : '#595959',
+                    fontWeight: active ? 700 : 500,
+                    whiteSpace: 'nowrap',
+                  }}
+                >
                   {col.label}
                   {active && (
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}>
-                      <path d="M20 6L9 17l-5-5" stroke="#085420" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
+                    sortDir === 'asc'
+                      ? <svg width="11" height="11" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}><path d="M12 19V5M5 12l7-7 7 7" stroke="#085420" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      : <svg width="11" height="11" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}><path d="M12 5v14M5 12l7 7 7-7" stroke="#085420" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
                   )}
-                </span>
+                </button>
               );
             })}
             <span style={{ width: 16, flexShrink: 0 }} />
@@ -740,7 +748,7 @@ export default function WarehouseScreen() {
           selected={sortField}
           color="#085420"
           onClose={() => setShowSortModal(false)}
-          onSelect={(field) => { setSortField(field); setShowSortModal(false); }}
+          onSelect={(field) => { setSortField(field); setSortDir('asc'); setPage(1); setShowSortModal(false); }}
         />
       )}
     </div>

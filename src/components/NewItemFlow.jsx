@@ -183,6 +183,16 @@ function CategoryIcon({ code, size = 20 }) {
     HVA: <><path d="M12 9V3M12 21v-6M3 12h6m6 0h6" stroke="#424242" strokeWidth="1.6" strokeLinecap="round"/><circle cx="12" cy="12" r="3" stroke="#424242" strokeWidth="1.6"/></>,
     HOF: <><path d="M4 10V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4" stroke="#424242" strokeWidth="1.6"/><path d="M2 10h20v10H2z" stroke="#424242" strokeWidth="1.6" strokeLinejoin="round"/><path d="M6 20v2M18 20v2" stroke="#424242" strokeWidth="1.6" strokeLinecap="round"/></>,
     CJM: <path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z" stroke="#085420" strokeWidth="1.6" fill="none" strokeLinejoin="round"/>,
+    KIT: <><rect x="2" y="6" width="20" height="14" rx="1" stroke="#424242" strokeWidth="1.6"/><path d="M2 10h20M7 6V4M12 6V4M17 6V4M7 14h2M11 14h2M15 14h2" stroke="#424242" strokeWidth="1.6" strokeLinecap="round"/></>,
+    LIG: <><path d="M9 21h6M12 21v-3" stroke="#424242" strokeWidth="1.6" strokeLinecap="round"/><path d="M12 3a6 6 0 0 1 6 6c0 2.4-1.4 4.5-3.5 5.5V17H9.5v-2.5C7.4 13.5 6 11.4 6 9a6 6 0 0 1 6-6z" stroke="#424242" strokeWidth="1.6" strokeLinejoin="round"/></>,
+    MAS: <><path d="M2 18h20M2 14h20" stroke="#424242" strokeWidth="1.6" strokeLinecap="round"/><rect x="4" y="6" width="6" height="8" rx="0.5" stroke="#424242" strokeWidth="1.6"/><rect x="14" y="6" width="6" height="8" rx="0.5" stroke="#424242" strokeWidth="1.6"/><rect x="9" y="10" width="6" height="4" rx="0.5" stroke="#424242" strokeWidth="1.6"/></>,
+    MGS: <><path d="M12 2l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4z" stroke="#424242" strokeWidth="1.6" strokeLinejoin="round"/><path d="M12 14v8M8 22h8" stroke="#424242" strokeWidth="1.6" strokeLinecap="round"/></>,
+    PLB: <><path d="M5 3v6a4 4 0 0 0 4 4h2a4 4 0 0 1 4 4v4" stroke="#424242" strokeWidth="1.6" strokeLinecap="round"/><path d="M5 3h4M13 21h4" stroke="#424242" strokeWidth="1.6" strokeLinecap="round"/></>,
+    PNT: <><path d="M8 3h8l1 6H7L8 3z" stroke="#424242" strokeWidth="1.6" strokeLinejoin="round"/><path d="M7 9l-2 10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1L17 9" stroke="#424242" strokeWidth="1.6" strokeLinejoin="round"/><path d="M10 14h4" stroke="#424242" strokeWidth="1.6" strokeLinecap="round"/></>,
+    SHL: <><circle cx="12" cy="12" r="3" stroke="#424242" strokeWidth="1.6"/><path d="M3 9h3M3 12h3M3 15h3M18 9h3M18 12h3M18 15h3M9 3v3M12 3v3M15 3v3M9 18v3M12 18v3M15 18v3" stroke="#424242" strokeWidth="1.6" strokeLinecap="round"/></>,
+    TIL: <><rect x="3" y="3" width="8" height="8" rx="0.5" stroke="#424242" strokeWidth="1.6"/><rect x="13" y="3" width="8" height="8" rx="0.5" stroke="#424242" strokeWidth="1.6"/><rect x="3" y="13" width="8" height="8" rx="0.5" stroke="#424242" strokeWidth="1.6"/><rect x="13" y="13" width="8" height="8" rx="0.5" stroke="#424242" strokeWidth="1.6"/></>,
+    WIN: <><rect x="3" y="3" width="18" height="18" rx="1" stroke="#424242" strokeWidth="1.6"/><path d="M3 12h18M12 3v18" stroke="#424242" strokeWidth="1.6"/></>,
+    UNK: <><circle cx="12" cy="12" r="9" stroke="#424242" strokeWidth="1.6"/><path d="M12 8a3 3 0 0 1 2 5.2c-.6.5-1 1.1-1 1.8v.5" stroke="#424242" strokeWidth="1.6" strokeLinecap="round"/><circle cx="12" cy="17.5" r="0.75" fill="#424242"/></>,
   };
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -238,9 +248,7 @@ function ModalShell({ onBack, onClose, title, subtitle, children }) {
               {subtitle}
             </div>
           </div>
-          <button onClick={onClose} style={btnReset}>
-            <CloseIcon />
-          </button>
+          <div style={{ width: 32 }} />
         </div>
 
         {/* Body */}
