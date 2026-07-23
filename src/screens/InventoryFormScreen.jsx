@@ -343,19 +343,20 @@ function CollapsibleSection({ title, open, onToggle, children }) {
 
 // ── Auto-name logic ───────────────────────────────────────────────────────────
 
-function buildItemName({ type, subcategory, stockItem, brand, modelStyle, color }) {
-  if (type === 'empty' || !subcategory) {
+function buildItemName({ type, subcategory, subSubcategory, stockItem, brand, modelStyle, color }) {
+  const displaySub = subSubcategory || subcategory;
+  if (type === 'empty' || !displaySub) {
     return 'Category - Subcategory - Item Type - Brand - Model - Key Details';
   }
   if (type === 'stock') {
-    return stockItem?.name || subcategory;
+    return stockItem?.name || displaySub;
   }
-  const parts = [subcategory, brand, modelStyle, color].filter(
+  const parts = [displaySub, brand, modelStyle, color].filter(
     p => p && p.trim() && p !== 'N/A' && p !== 'Select or enter...' && p !== 'Enter...'
   );
   return parts.length > 0
     ? parts.join(' - ')
-    : `${subcategory} - Brand - Model - Key Details`;
+    : `${displaySub} - Brand - Model - Key Details`;
 }
 
 // ── Cancel confirmation modal ─────────────────────────────────────────────────
@@ -459,11 +460,13 @@ export default function InventoryFormScreen() {
   const initType = state?.type || (existingItem ? 'donated' : 'empty');
   const initCategory = state?.category || (existingItem?.category ? { code: existingItem.category, name: CATEGORY_MAP[existingItem.category] ?? existingItem.category } : null);
   const initSubcategory = state?.subcategory || existingItem?.subcategory || null;
+  const initSubSubcategory = state?.subSubcategory || existingItem?.subSubcategory || null;
   const initStockItem = state?.stockItem || null;
 
   // Category / type state (can change if user re-opens wizard)
   const [category, setCategory] = useState(initCategory);
   const [subcategory, setSubcategory] = useState(initSubcategory);
+  const [subSubcategory, setSubSubcategory] = useState(initSubSubcategory);
   const [itemType, setItemType] = useState(initType);
   const [stockItem, setStockItem] = useState(initStockItem);
 
@@ -531,7 +534,7 @@ export default function InventoryFormScreen() {
     printTimers.current = [t1, t2];
   };
 
-  const itemName = buildItemName({ type: itemType, subcategory, stockItem, brand, modelStyle, color });
+  const itemName = buildItemName({ type: itemType, subcategory, subSubcategory, stockItem, brand, modelStyle, color });
 
   const toggleSpecialChar = (char) => {
     setSpecialChars(prev =>
@@ -542,6 +545,7 @@ export default function InventoryFormScreen() {
   const handleWizardComplete = (data) => {
     setCategory(data.category);
     setSubcategory(data.subcategory);
+    setSubSubcategory(data.subSubcategory || null);
     setItemType(data.type);
     setStockItem(data.stockItem || null);
     if (data.type === 'stock' && data.stockItem?.price) {
@@ -550,10 +554,11 @@ export default function InventoryFormScreen() {
     setShowWizard(false);
   };
 
-  // chip 1 label: "APP, Microwave - Countertop Microwave, Used, Small (ASIS)"
+  // chip 1 label: "APP, Microwave, Countertop - Stock Item Name"
   const chip1Label = () => {
     if (!category) return '';
-    const base = `${category.code}, ${subcategory}`;
+    const parts = [category.code, subcategory, subSubcategory].filter(Boolean);
+    const base = parts.join(', ');
     if (itemType === 'stock' && stockItem) return `${base} - ${stockItem.name}`;
     return base;
   };

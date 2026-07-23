@@ -6,32 +6,110 @@ const CATEGORIES = [
   { code: 'APP', name: 'Appliances' },
   { code: 'BML', name: 'Building Material and Lumber' },
   { code: 'CAB', name: 'Cabinets and Built-Ins' },
+  { code: 'CJM', name: 'Junction Made' },
   { code: 'CLO', name: 'Clothing' },
   { code: 'CNT', name: 'Countertops and Tabletops' },
   { code: 'DOR', name: 'Doors' },
   { code: 'FLR', name: 'Flooring and Accessories' },
   { code: 'GDN', name: 'Garden and Outdoor' },
-  { code: 'GLS', name: 'Glass, Mirrors, and Glass Block' },
+  { code: 'GLS', name: 'Glass, Mirrors and Glass Block' },
   { code: 'HDW', name: 'Hardware, Tools, Electrical and Misc' },
   { code: 'HVA', name: 'Heating, Ventilation, A/C and Rads' },
   { code: 'HOF', name: 'Home, Office and Commercial Furnishings' },
-  { code: 'CJM', name: 'Junction Made' },
+  { code: 'KIT', name: 'Kitchen Sets and Accessories' },
+  { code: 'LIG', name: 'Lighting and Ceiling Fans' },
+  { code: 'MAS', name: 'Masonry and Finished Stone' },
+  { code: 'MGS', name: 'Magic Gift Shop' },
+  { code: 'PLB', name: 'Plumbing and Bath' },
+  { code: 'PNT', name: 'Paint' },
+  { code: 'SHL', name: 'Specialty Hardware and Lighting' },
+  { code: 'TIL', name: 'Tile and Accessories' },
+  { code: 'WIN', name: 'Windows, Shutters and Skylights' },
+  { code: 'UNK', name: 'Other / Unknown' },
 ];
 
 const SUBCATEGORIES = {
-  APP: ['Cooktop', 'Other APP', 'Freezer', 'Microwave', 'Range', 'Range Exhaust Hood', 'Refrigerator', 'Small Appliance', 'Smalls/Not for Erply', 'Wall Oven', 'Washers and Dryers'],
-  BML: ['Brick and Block', 'Decking and Fencing', 'Drywall', 'Insulation', 'Lumber', 'Molding and Trim', 'Pipes and Fittings', 'Roofing', 'Siding'],
-  CAB: ['Base Cabinet', 'Island', 'Medicine Cabinet', 'Other Cabinet', 'Pantry', 'Vanity', 'Wall Cabinet'],
-  CLO: ['Accessories', 'Bottoms', 'Footwear', 'Outerwear', 'Tops'],
-  CNT: ['Butcher Block', 'Laminate', 'Marble', 'Other Countertop', 'Solid Surface', 'Table'],
-  DOR: ['Bi-Fold', 'Exterior', 'Garage', 'Interior', 'Other Door', 'Patio', 'Pocket', 'Storm'],
-  FLR: ['Carpet', 'Hardwood', 'Laminate', 'Other Flooring', 'Tile', 'Vinyl'],
-  GDN: ['Fencing', 'Garden Tools', 'Landscaping', 'Outdoor Furniture', 'Planters', 'Pots'],
-  GLS: ['Glass Block', 'Mirror', 'Other Glass', 'Window Glass'],
-  HDW: ['Electrical', 'Hardware', 'Misc', 'Tools'],
-  HVA: ['A/C Unit', 'Boiler', 'Furnace', 'Other HVAC', 'Radiator', 'Thermostat', 'Vent'],
-  HOF: ['Bookcase', 'Chair', 'Desk', 'Dresser', 'Other Furnishings', 'Shelving', 'Sofa', 'Table'],
-  CJM: ['Junction Made Item'],
+  APP: ['Cooktop', 'Dishwasher', 'Freezer', 'Microwave', 'Other APP', 'Range', 'Refrigerator', 'Small Appliance', 'Smalls/Not for Erply', 'Trash Compactor', 'Wall Oven', 'Washers and Dryers'],
+  BML: ['Adhesives, Powders and Mixes', 'Ceiling Tile', 'Ceiling Tin', 'Column', 'Dimensional Lumber', 'Downspouts and Gutters', 'Glass Block', 'Insulation', 'Mantel', 'Moulding and Trim', 'Other BML', 'Roofing', 'Salvaged Lumber', 'Sheet Goods', 'Siding', 'Smalls/Not for Erply', 'Stairs and Railings', 'Structural Metal', 'Urban Lumber', 'Wallpaper'],
+  CAB: ['Built-In Cabinet', 'Cabinet Door', 'Commercial Cabinet', 'Kitchen Cabinet', 'Other CAB', 'Smalls/Not for Erply'],
+  CJM: ['Other CJM', 'Planed Lumber'],
+  CLO: ['Accessories', 'Mens', 'Other', 'Unisex', 'Womens'],
+  CNT: ['Countertop', 'Other CNT', 'Smalls/Not for Erply', 'Tabletop'],
+  DOR: ['Bifold Door', 'Exterior Door', 'Farmhouse Door', 'Garage Door', 'Interior Door', 'Other DOR', 'Pet Door', 'Screen Door', 'Smalls/Not for Erply'],
+  FLR: ['Carpet', 'Laminate Flooring', 'Other FLR', 'Smalls/Not for Erply', 'Wood Flooring'],
+  GDN: ['Fence', 'Fence Gate', 'Gardening Supplies', 'Lawn and Garden Tools', 'Other GDN', 'Outdoor Cooking Grills', 'Outdoor Furniture', 'Planter', 'Smalls/Not for Erply'],
+  GLS: ['Finished Glass', 'Other GLS', 'Sheet Glass', 'Smalls/Not for Erply', 'Specialty Glass'],
+  HDW: ['Appliance Parts and Accessories', 'Building Material/Parts and Accessories', 'Cabinet Hardware', 'Electrical Parts and Accessories', 'Garden Parts and Accessories', 'Home/Office Parts and Accessories', 'Other HDW', 'Painting Accessories', 'Plumbing/Bath Parts and Accessories', 'Smalls/Not for Erply', 'Tools', 'Window/Shutter Parts and Accessories'],
+  HVA: ['Ductwork', 'Fan', 'Fireplace and Stoves', 'Other HVA', 'Portable Heaters', 'Radiator', 'Radiator Cover', 'Smalls/Not for Erply', 'Vent Cover'],
+  HOF: ['Art and Frames, Mirror', "Baker's Rack", 'Bed Parts', 'Bench', 'Bookcase or Shelves', 'Cart or Stand', 'Chair', 'Chest (e.g. Cedar)', 'China Cabinet/Hutch/Hoosier', 'Credenza', 'Desk', 'Dining Set', 'Display Cabinet or Fixture', 'Display or Writing Board', 'Dresser or Chest of Drawers', 'File Cabinet', 'Home Decor and Art', 'Housewares', 'Other HOF', 'Podium or Lectern', 'Sewing Machine or Table', 'Smalls/Not for Erply', 'Storage and Organization', 'Table', 'Table, End Table', 'Wall Unit/Entertainment Center'],
+  KIT: ['Kitchen Cabinet Set'],
+  LIG: ['Ceiling Fan or Blades', 'Ceiling Light', 'Chandelier', 'Flood or Security Light', 'Globes and Shades', 'Industrial or Shop Light', 'Lamp', 'Landscape or Deck Lighting', 'Other LIG', 'Post Light', 'Recessed Lighting', 'Smalls/Not for Erply', 'Specialty or Accent Lighting', 'Track Light', 'Wall Light/Sconce'],
+  MAS: ['Block', 'Brick', 'Cut Stone', 'Finished/Polished Stone', 'Formed Concrete', 'Other MAS', 'Salvaged Brick', 'Smalls/Not for Erply', 'Stone'],
+  MGS: ['CJ Products', 'Consignment'],
+  PLB: ['Bidet', 'Faucet', 'Medicine Cabinet', 'Other PLB', 'Pipe', 'Shower', 'Sink', 'Smalls/Not for Erply', 'Toilet', 'Tub', 'Urinal', 'Vanity'],
+  PNT: ['Amazon Paint'],
+  SHL: ['Cabinet Hardware', 'Collectibles', 'Door Hardware Trim Plate or Rosette', 'Door Hinge', 'Door Knob', 'Door Knob Set', 'Door Pull (Handle)', 'Lighting Fixtures', 'Other SHL', 'Plumbing Fixtures', 'Sliding/Pocket Door Hardware', 'Smalls/Not for Erply'],
+  TIL: ['Ceramic Tile (DO NOT USE for Goodwill tile)', 'Other TIL', 'Smalls/Not for Erply (USE for Goodwill tile)', 'Specialty Tile', 'Tile Accessories', 'Vinyl Tile'],
+  WIN: ['Awnings', 'Blinds', 'Curtain Rod', 'Leaded Glass', 'Other WIN', 'Screen', 'Shutters', 'Skylight', 'Smalls/Not for Erply', 'Stained Glass', 'Valence', 'Window'],
+  UNK: ['Other UNK'],
+};
+
+// Keyed by "CODE::Subcategory name" — only entries that have sub-subcategories
+const SUB_SUBCATEGORIES = {
+  'APP::Microwave':          ['Built-In', 'Countertop'],
+  'APP::Range':              ['Range Exhaust Hood', 'Range, Freestanding', 'Range, Slide-In'],
+  'APP::Refrigerator':       ['Bottom Freezer Refrigerator', 'Side by Side Refrigerator', 'Top Freezer Refrigerator'],
+  'APP::Washers and Dryers': ['Dryer', 'Washer', 'Washer and Dryer Set'],
+
+  'BML::Dimensional Lumber': ['Dimensional Hardwood', 'Dimensional Softwood', 'Treated Lumber', 'Trial Lumber'],
+  'BML::Insulation':         ['Pipe Insulation', 'Rigid Insulation', 'Roll Insulation', 'Wrap Insulation'],
+  'BML::Roofing':            ['Roof Flashing', 'Roof Tile', 'Roofing Hardware and Accessories', 'Shingles'],
+  'BML::Salvaged Lumber':    ['Flooring', 'Millwork'],
+  'BML::Sheet Goods':        ['Drywall', 'Fiberboard', 'Lattice', 'Orientated Strand Board (OSB)', 'Pegboard', 'Plywood', 'Rigid Plastic / Polycarbonate / Acrylic', 'Sheet Metal'],
+  'BML::Stairs and Railings':['Spindles and Balusters', 'Stair Handrail Metal', 'Stair Handrail Wood', 'Stair Newel Post', 'Stair Railing Set', 'Stair Stringer', 'Stair Tread', 'Staircase Assembled'],
+
+  'CAB::Kitchen Cabinet':    ['Base Cabinet', 'Corner Cabinet', 'Pantry/Tall Cabinet', 'Wall Cabinet'],
+
+  'CNT::Countertop':         ['Butcher Block Countertop', 'Concrete Countertop', 'Granite Countertop', 'Laminate Countertop', 'Marble Countertop', 'Quartz Countertop', 'Resin Countertop', 'Solid Surface Countertop', 'Stainless Steel Countertop'],
+
+  'DOR::Bifold Door':        ['Bifold Flush/Slab Door', 'Bifold Louvre Door', 'Bifold Panel Door'],
+  'DOR::Exterior Door':      ['Cellar', 'Entryway', 'Flush', 'Panel', 'Patio Hinged', 'Patio Sliding', 'Security', 'Storm'],
+  'DOR::Interior Door':      ['Accordion', 'Bifold', 'Cafe Swing', 'Flush', 'Interior French Door', 'Interior Louvre Door', 'Interior Panel Door', 'Pocket', 'Sliding', 'Swinging Traffic'],
+
+  'FLR::Carpet':             ['Area Rug', 'Carpet Pad', 'Carpet Roll', 'Carpet Tile/Squares'],
+  'FLR::Laminate Flooring':  ['Laminate Plank Flooring', 'Laminate Roll/Sheet Flooring', 'Laminate Strip Flooring', 'Laminate Tile/Squares Flooring'],
+  'FLR::Wood Flooring':      ['Engineered', 'Hardwood'],
+
+  'GDN::Fence':              ['Chain Link Fence'],
+
+  'HDW::Cabinet Hardware':   ['Hinges and Slides', 'Knobs and Pulls'],
+
+  'HVA::Ductwork':           ['Flexible Ductwork', 'Rigid Ductwork', 'Stove Pipe'],
+  'HVA::Fireplace and Stoves':['Fireplace Accessories', 'Fireplace Andirons', 'Fireplace Front or Screen', 'Fireplace Log Holder'],
+
+  'HOF::Bookcase or Shelves':    ['Bookcase', 'Shelf Accessories', 'Shelves'],
+  'HOF::Desk':                   ['Drafting Table'],
+  'HOF::Dining Set':             ['Dining Room Buffet, Sideboard or Server Cabinet'],
+  'HOF::Display or Writing Board':['Bulletin Board', 'Chalkboard', 'Dry Erase Board'],
+  'HOF::File Cabinet':           ['Flat', 'Lateral', 'Vertical'],
+  'HOF::Storage and Organization':['Bedroom Nightstand', 'Locker Unit', 'Sorting Cabinet', 'Wardrobe or Armoire Cabinet'],
+
+  'LIG::Ceiling Fan or Blades':   ['Ceiling Fan'],
+  'LIG::Industrial or Shop Light':['Fluorescent Industrial/Shop Light'],
+  'LIG::Wall Light/Sconce':       ['Indoor Wall Light/Sconce', 'Outdoor Wall Light/Sconce'],
+
+  'MAS::Finished/Polished Stone': ['Granite Slab', 'Marble Slab', 'Slate Slab'],
+
+  'PLB::Pipe':   ['ABS Pipe', 'Black Steel Pipe', 'Copper Pipe', 'Drain Pipe', 'PVC Pipe'],
+  'PLB::Shower': ['Shower Base', 'Shower Door', 'Shower Surround'],
+  'PLB::Sink':   ['Bar Sink', 'Drop In Bath Sink', 'Farm Sink', 'Kitchen Sink', 'Pedestal Sink', 'Utility Sink', 'Vanity Sink Top', 'Wall Mount Bath Sink'],
+  'PLB::Toilet': ['High Flow Toilet (3.0gpf or more)', 'Low Flow Toilet (1.6gpf or less)', 'Premium Toilet', 'Toilet Tank Lid'],
+  'PLB::Tub':    ['Clawfoot Tub', 'Drop In Tub', 'Jetted', 'Skirted Tub'],
+  'PLB::Vanity': ['Complete Vanity Cabinet w/ Sink', 'Vanity Base'],
+
+  'TIL::Specialty Tile': ['Fireplace Tile', 'Glass Tile', 'Porcelain Tile', 'Stone Tile', 'Subway Tile'],
+
+  'WIN::Window': ['Bay Window', 'Casement Window', 'Double Hung Window', 'Fixed/Picture Window', 'Vintage Wood Frame Window Sash'],
 };
 
 // Stock items are objects { name, price } so the form can pre-fill price
@@ -257,6 +335,53 @@ function SubcategoryStep({ category, onBack, onCancel, onSelect }) {
   );
 }
 
+// ── Step 2.5: Sub-subcategory picker ─────────────────────────────────────────
+
+function SubSubcategoryStep({ category, subcategory, onBack, onCancel, onSelect, onSkip }) {
+  const [q, setQ] = useState('');
+  const key = `${category.code}::${subcategory}`;
+  const subs = SUB_SUBCATEGORIES[key] || [];
+  const filtered = subs.filter(s => s.toLowerCase().includes(q.toLowerCase()));
+  return (
+    <ModalShell
+      title="Select a Type"
+      onBack={onBack}
+      onClose={onCancel}
+      subtitle={
+        <>
+          <CategoryIcon code={category.code} size={14} />
+          <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, color: '#424242' }}>
+            {subcategory} · {category.name} ({category.code})
+          </span>
+        </>
+      }
+    >
+      <div style={{ padding: '12px 20px 0' }}>
+        <div style={searchBar}>
+          <SearchIcon />
+          <input
+            autoFocus
+            placeholder={`Search ${subcategory.toLowerCase()} types`}
+            value={q}
+            onChange={e => setQ(e.target.value)}
+            style={searchInput}
+          />
+        </div>
+      </div>
+      <div>
+        {filtered.map(sub => (
+          <button key={sub} onClick={() => onSelect(sub)} style={listRow}>
+            <span style={listText}>{sub}</span>
+          </button>
+        ))}
+        <button onClick={onSkip} style={{ ...listRow, color: '#595959' }}>
+          <span style={{ ...listText, color: '#595959', fontStyle: 'italic' }}>Skip — use "{subcategory}" only</span>
+        </button>
+      </div>
+    </ModalShell>
+  );
+}
+
 // ── Step 3: Stock vs. Reuse ───────────────────────────────────────────────────
 
 function StockOrReuseStep({ category, subcategory, onBack, onCancel, onStock, onReuse }) {
@@ -351,9 +476,9 @@ function StockItemStep({ category, subcategory, onBack, onCancel, onSelect }) {
 // ── Main export ───────────────────────────────────────────────────────────────
 
 export default function NewItemFlow({
-  onDismiss,          // ← back on step 1 (go back to wherever user came from)
-  onCancel,           // X on any step / backdrop
-  onComplete,         // { type, category, subcategory, stockItem? }
+  onDismiss,
+  onCancel,
+  onComplete,         // { type, category, subcategory, subSubcategory?, stockItem? }
   startStep = 'category',
   startCategory = null,
   startSubcategory = null,
@@ -361,6 +486,19 @@ export default function NewItemFlow({
   const [step, setStep] = useState(startStep);
   const [category, setCategory] = useState(startCategory);
   const [subcategory, setSubcategory] = useState(startSubcategory);
+  const [subSubcategory, setSubSubcategory] = useState(null);
+
+  const hasSubSubs = (cat, sub) => !!(SUB_SUBCATEGORIES[`${cat?.code}::${sub}`]?.length);
+
+  const handleSubSelect = (sub) => {
+    setSubcategory(sub);
+    setSubSubcategory(null);
+    if (hasSubSubs(category, sub)) {
+      setStep('subsubcategory');
+    } else {
+      setStep('type');
+    }
+  };
 
   if (step === 'category') {
     return (
@@ -378,7 +516,20 @@ export default function NewItemFlow({
         category={category}
         onBack={() => setStep('category')}
         onCancel={onCancel}
-        onSelect={sub => { setSubcategory(sub); setStep('type'); }}
+        onSelect={handleSubSelect}
+      />
+    );
+  }
+
+  if (step === 'subsubcategory') {
+    return (
+      <SubSubcategoryStep
+        category={category}
+        subcategory={subcategory}
+        onBack={() => setStep('subcategory')}
+        onCancel={onCancel}
+        onSelect={sub => { setSubSubcategory(sub); setStep('type'); }}
+        onSkip={() => { setSubSubcategory(null); setStep('type'); }}
       />
     );
   }
@@ -387,11 +538,11 @@ export default function NewItemFlow({
     return (
       <StockOrReuseStep
         category={category}
-        subcategory={subcategory}
-        onBack={() => setStep('subcategory')}
+        subcategory={subSubcategory || subcategory}
+        onBack={() => hasSubSubs(category, subcategory) ? setStep('subsubcategory') : setStep('subcategory')}
         onCancel={onCancel}
         onStock={() => setStep('stock')}
-        onReuse={() => onComplete({ type: 'reuse', category, subcategory })}
+        onReuse={() => onComplete({ type: 'reuse', category, subcategory, subSubcategory })}
       />
     );
   }
@@ -400,10 +551,10 @@ export default function NewItemFlow({
     return (
       <StockItemStep
         category={category}
-        subcategory={subcategory}
+        subcategory={subSubcategory || subcategory}
         onBack={() => setStep('type')}
         onCancel={onCancel}
-        onSelect={stockItem => onComplete({ type: 'stock', category, subcategory, stockItem })}
+        onSelect={stockItem => onComplete({ type: 'stock', category, subcategory, subSubcategory, stockItem })}
       />
     );
   }
