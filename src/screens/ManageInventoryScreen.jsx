@@ -589,7 +589,7 @@ export default function ManageInventoryScreen() {
               <SearchIcon />
               <input
                 type="text"
-                placeholder="Search items by name, category, or subcategory"
+                placeholder="Search by item name or UPC"
                 value={search}
                 onChange={e => handleSearch(e.target.value)}
                 style={s.searchInput}
