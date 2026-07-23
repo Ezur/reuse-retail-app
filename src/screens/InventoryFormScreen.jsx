@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { useLayout } from '../hooks/useLayout';
 import CJ_LOGO from '../assets/construction_junction_logo_white.svg';
@@ -6,6 +6,7 @@ import AnonymousDonorAvatar from '../assets/AnonymousDonorAvatar.svg';
 import UserMenu from '../components/UserMenu';
 import BackButton from '../components/BackButton';
 import NewItemFlow from '../components/NewItemFlow';
+import { supabase } from '../lib/supabase';
 
 const CATEGORY_MAP = {
   APP: 'Appliances', BML: 'Building Material and Lumber', CAB: 'Cabinets and Built-Ins',
@@ -26,7 +27,7 @@ const DONOR_INFO = {
 
 const BRANDS = ['N/A', 'Galanz', 'GE', 'Whirlpool', 'Samsung', 'LG', 'Bosch', 'KitchenAid', 'Maytag', 'Frigidaire'];
 const COLORS = ['N/A', 'Black', 'White', 'Stainless', 'Blue', 'Red', 'Green', 'Gray', 'Brown', 'Natural'];
-const UNITS = ['Each', 'Pair', 'Set', 'Lot', 'Linear Foot', 'Square Foot'];
+const UNITS = ['Each', 'Pair', 'Set', 'Lot', 'Linear Foot', 'Square Foot', 'Gaylord'];
 const SPECIAL_CHARS = ['Antique', 'Vintage', 'Salvaged', 'Refurbished', 'Surplus', 'Handmade', 'Rare Find'];
 const CONDITIONS = ['Like New', 'Good', 'Fair'];
 
@@ -157,12 +158,12 @@ function CardHeader({ badge, title, required, requiredNote, right }) {
       borderBottom: '0.558px solid #f3f4f6',
     }}>
       {badge && <SectionBadge n={badge} />}
-      <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 15, fontWeight: 600, color: '#000' }}>
+      <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 16, fontWeight: 600, color: '#000' }}>
         {title}
         {required && <span style={{ color: '#DC0000' }}>*</span>}
       </span>
       {requiredNote && (
-        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: '#DC0000', marginLeft: 2 }}>
+        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: '#DC0000', marginLeft: 2 }}>
           {requiredNote}
         </span>
       )}
@@ -177,7 +178,7 @@ function CardBody({ children, style }) {
 
 function FieldLabel({ children, required }) {
   return (
-    <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, fontWeight: 600, color: '#000', margin: '0 0 6px' }}>
+    <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, fontWeight: 600, color: '#000', margin: '0 0 6px' }}>
       {children}{required && <span style={{ color: '#DC0000' }}> *</span>}
     </p>
   );
@@ -196,7 +197,7 @@ function InputField({ value, onChange, placeholder, readOnly, disabled, style })
         height: 44, border: '0.558px solid #d9d9d9', borderRadius: 8,
         background: disabled ? '#f0f0f0' : readOnly ? '#f5f5f5' : '#fff',
         padding: '0 10px',
-        fontFamily: "'Inter', sans-serif", fontSize: 14,
+        fontFamily: "'Inter', sans-serif", fontSize: 16,
         color: disabled ? '#a0a0a0' : '#000',
         outline: 'none', cursor: disabled ? 'not-allowed' : undefined,
         ...style,
@@ -215,7 +216,7 @@ function SelectField({ value, onChange, options, placeholder, disabled }) {
         width: '100%', boxSizing: 'border-box',
         height: 44, border: '0.558px solid #d9d9d9', borderRadius: 8,
         background: disabled ? '#f0f0f0' : '#fff', padding: '0 10px',
-        fontFamily: "'Inter', sans-serif", fontSize: 14, color: disabled ? '#a0a0a0' : '#000',
+        fontFamily: "'Inter', sans-serif", fontSize: 16, color: disabled ? '#a0a0a0' : '#000',
         outline: 'none', cursor: disabled ? 'not-allowed' : 'pointer',
         appearance: 'none',
         backgroundImage: `url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23424242' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`,
@@ -247,7 +248,7 @@ function CheckboxPill({ label, checked, onChange, disabled }) {
         disabled={disabled}
         style={{ width: 14, height: 14, accentColor: '#085420', cursor: disabled ? 'not-allowed' : 'pointer' }}
       />
-      <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, color: disabled ? '#a0a0a0' : '#000', whiteSpace: 'nowrap' }}>{label}</span>
+      <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: disabled ? '#a0a0a0' : '#000', whiteSpace: 'nowrap' }}>{label}</span>
     </label>
   );
 }
@@ -280,7 +281,7 @@ function CategoryChip({ label, onClick }) {
         border: '0.558px solid #d9d9d9', borderRadius: 20,
         padding: '6px 10px 6px 14px', minHeight: 44,
         background: '#fff', cursor: 'pointer',
-        fontFamily: "'Inter', sans-serif", fontSize: 13, color: '#000',
+        fontFamily: "'Inter', sans-serif", fontSize: 14, color: '#000',
       }}
     >
       <span style={{ maxWidth: 280, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
@@ -304,7 +305,7 @@ function CollapsibleSection({ title, open, onToggle, children }) {
           borderBottom: open ? '0.558px solid #f3f4f6' : 'none',
         }}
       >
-        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 15, fontWeight: 600, color: '#000' }}>{title}</span>
+        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 16, fontWeight: 600, color: '#000' }}>{title}</span>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
           style={{ transform: open ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}>
           <path d="M6 9l6 6 6-6" stroke="#424242" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -330,6 +331,91 @@ function buildItemName({ type, subcategory, stockItem, brand, modelStyle, color 
   return parts.length > 0
     ? parts.join(' - ')
     : `${subcategory} - Brand - Model - Key Details`;
+}
+
+// ── Cancel confirmation modal ─────────────────────────────────────────────────
+
+function CancelConfirmModal({ onStay, onLeave }) {
+  return (
+    <div
+      onClick={onStay}
+      style={{
+        position: 'fixed', inset: 0,
+        background: 'rgba(0,0,0,0.45)',
+        zIndex: 200,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+      }}
+    >
+      <div
+        onClick={e => e.stopPropagation()}
+        style={{
+          background: '#ffffff', borderRadius: 16,
+          width: 619, maxWidth: 'calc(100vw - 48px)',
+          position: 'relative',
+          padding: '24px 32px 32px',
+          display: 'flex', flexDirection: 'column', alignItems: 'center',
+        }}
+      >
+        {/* Icon */}
+        <div style={{
+          marginTop: 16, marginBottom: 24,
+          width: 86, height: 86, borderRadius: '50%',
+          background: '#f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }}>
+          <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 40, fontWeight: 700, color: '#595959', lineHeight: 1 }}>?</span>
+        </div>
+
+        {/* Title */}
+        <p style={{
+          fontFamily: "'Inter', sans-serif",
+          fontSize: 20, fontWeight: 700, color: '#000',
+          margin: '0 0 12px', textAlign: 'center',
+        }}>
+          Are you sure you want to cancel?
+        </p>
+
+        {/* Body */}
+        <p style={{
+          fontFamily: "'Inter', sans-serif",
+          fontSize: 15, fontWeight: 400, color: '#595959',
+          margin: '0 0 32px', textAlign: 'center',
+          lineHeight: 1.5, maxWidth: 395,
+        }}>
+          Any unsaved changes to this item will be lost if you go back now.
+        </p>
+
+        {/* Buttons */}
+        <div style={{ display: 'flex', gap: 21, justifyContent: 'center' }}>
+          <button
+            onClick={onStay}
+            style={{
+              width: 172.5, height: 52,
+              background: '#ffffff',
+              border: '1px solid #d9d9d9', borderRadius: 10,
+              fontFamily: "'Inter', sans-serif",
+              fontSize: 14, fontWeight: 500, color: '#000',
+              cursor: 'pointer',
+            }}
+          >
+            Keep Editing
+          </button>
+          <button
+            onClick={onLeave}
+            style={{
+              width: 172.5, height: 52,
+              background: '#085420',
+              border: 'none', borderRadius: 10,
+              fontFamily: "'Inter', sans-serif",
+              fontSize: 14, fontWeight: 500, color: '#ffffff',
+              cursor: 'pointer',
+            }}
+          >
+            Yes, Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 // ── Main screen ───────────────────────────────────────────────────────────────
@@ -372,20 +458,36 @@ export default function InventoryFormScreen() {
   const [width, setWidth] = useState('');
   const [height, setHeight] = useState('');
   const [notes, setNotes] = useState('');
-  const [showAdditional, setShowAdditional] = useState(false);
-  const [showNotes, setShowNotes] = useState(false);
+  const [showAdditional, setShowAdditional] = useState(true);
+  const [showNotes, setShowNotes] = useState(true);
 
   // Wizard state
   const [showWizard, setShowWizard] = useState(false);
   const [wizardStartStep, setWizardStartStep] = useState('category');
+  const [showCancelModal, setShowCancelModal] = useState(false);
 
   // Print state
   const [printState, setPrintState] = useState(null); // null | 'printing' | 'done'
+  const printTimers = useRef([]);
 
-  const handlePrint = () => {
+  const handlePrint = async () => {
     setPrintState('printing');
-    setTimeout(() => setPrintState('done'), 2000);
-    setTimeout(() => setPrintState(null), 3500);
+
+    // Save item to Supabase (non-blocking on error for prototype)
+    const payload = {
+      donor_id: id !== 'new' ? id : null,
+      name: itemName,
+      category: category?.code ?? null,
+      subcategory: subcategory ?? null,
+      condition: condition || null,
+      price: price !== '' ? Number(price) : null,
+      qty: qty !== '' ? Number(qty) : 1,
+    };
+    await supabase.from('items').insert(payload);
+
+    const t1 = setTimeout(() => setPrintState('done'), 2000);
+    const t2 = setTimeout(() => setPrintState(null), 3500);
+    printTimers.current = [t1, t2];
   };
 
   const itemName = buildItemName({ type: itemType, subcategory, stockItem, brand, modelStyle, color });
@@ -419,7 +521,7 @@ export default function InventoryFormScreen() {
     <div style={styles.page}>
       {/* Header */}
       <header style={{ ...styles.header, height: headerHeight, paddingLeft: px, paddingRight: px }}>
-        <BackButton onClick={() => navigate(-1)} variant="cancel" />
+        <BackButton onClick={() => setShowCancelModal(true)} variant="cancel" />
         <img src={CJ_LOGO} alt="Construction Junction" style={styles.logo} />
         <div style={{ width: 120, height: 56, flexShrink: 0, position: 'relative' }}>
           <UserMenu initials="JS" onSignOut={() => navigate('/login')} />
@@ -430,7 +532,7 @@ export default function InventoryFormScreen() {
       <main style={{ ...styles.main, maxWidth, padding: `16px ${px}px 24px` }}>
         <h1 style={styles.pageTitle}>{isEditing ? 'Edit Item' : 'Inventory Form'}</h1>
         {isEditing && (
-          <p style={{ fontSize: 13, color: '#595959', margin: '-8px 0 12px', fontFamily: "'Helvetica Neue', sans-serif" }}>
+          <p style={{ fontSize: 14, color: '#595959', margin: '-8px 0 12px', fontFamily: "'Helvetica Neue', sans-serif" }}>
             {existingItem.name}
           </p>
         )}
@@ -474,7 +576,7 @@ export default function InventoryFormScreen() {
             right={
               <button style={styles.photoTipsBtn} disabled={isStock}>
                 <LightbulbIcon />
-                <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, color: '#424242', marginLeft: 4 }}>Photo Tips</span>
+                <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: '#424242', marginLeft: 4 }}>Photo Tips</span>
               </button>
             }
           />
@@ -485,14 +587,14 @@ export default function InventoryFormScreen() {
               <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, fontWeight: 600, color: isStock ? '#a0a0a0' : '#424242', margin: '8px 0 4px' }}>
                 Add Photos
               </p>
-              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: isStock ? '#c0c0c0' : '#595959', margin: 0, textAlign: 'center' }}>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: isStock ? '#c0c0c0' : '#595959', margin: 0, textAlign: 'center' }}>
                 Click to take new images to this item.
               </p>
             </div>
             {/* Tips panel */}
             <div style={{ ...styles.tipsPanel, background: isStock ? '#f0f0f0' : '#f5f5f5' }}>
               {['Use good lighting', 'Take the photo in horizontal mode', 'Capture the entire item', 'Highlight special or unique features'].map(tip => (
-                <p key={tip} style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: isStock ? '#c0c0c0' : '#424242', margin: '0 0 6px' }}>
+                <p key={tip} style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: isStock ? '#c0c0c0' : '#424242', margin: '0 0 6px' }}>
                   {tip}
                 </p>
               ))}
@@ -545,7 +647,17 @@ export default function InventoryFormScreen() {
 
             {/* Condition */}
             <div>
-              <FieldLabel>Condition</FieldLabel>
+              <div style={{ display: 'flex', alignItems: 'center', marginBottom: 6 }}>
+                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, fontWeight: 600, color: '#000', margin: 0 }}>Condition</p>
+                {condition && !isStock && (
+                  <button
+                    onClick={() => setCondition('')}
+                    style={{ marginLeft: 10, background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontFamily: "'Inter', sans-serif", fontSize: 13, color: '#595959', textDecoration: 'underline' }}
+                  >
+                    Clear
+                  </button>
+                )}
+              </div>
               <div style={{ display: 'flex', gap: 20 }}>
                 {CONDITIONS.map(c => (
                   <RadioButton key={c} label={c} checked={condition === c} onChange={() => setCondition(c)} disabled={isStock} />
@@ -576,48 +688,29 @@ export default function InventoryFormScreen() {
               <div style={{ flex: 1 }}>
                 <FieldLabel required>Price</FieldLabel>
                 <div style={{ ...styles.priceRow, background: isStock ? '#f0f0f0' : undefined, cursor: isStock ? 'not-allowed' : undefined }}>
-                  <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: isStock ? '#a0a0a0' : '#595959', paddingLeft: 10 }}>$</span>
+                  <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 16, color: isStock ? '#a0a0a0' : '#595959', paddingLeft: 10 }}>$</span>
                   <input
                     type="number"
                     value={price}
                     onChange={e => setPrice(e.target.value)}
                     placeholder="0.00"
                     disabled={isStock}
-                    style={{ flex: 1, border: 'none', outline: 'none', background: 'transparent', fontFamily: "'Inter', sans-serif", fontSize: 14, color: isStock ? '#a0a0a0' : '#000', cursor: isStock ? 'not-allowed' : undefined }}
+                    style={{ flex: 1, border: 'none', outline: 'none', background: 'transparent', fontFamily: "'Inter', sans-serif", fontSize: 16, color: isStock ? '#a0a0a0' : '#000', cursor: isStock ? 'not-allowed' : undefined }}
                   />
                 </div>
               </div>
               {/* Quantity */}
-              <div style={{ flex: 1 }}>
+              <div style={{ flex: 'none' }}>
                 <FieldLabel required>Quantity</FieldLabel>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 44, width: 64, border: '0.558px solid #d9d9d9', borderRadius: 8, background: isStock ? '#f0f0f0' : '#fff', cursor: isStock ? 'not-allowed' : undefined }}>
-                      <input
-                        type="number"
-                        value={qty}
-                        onChange={e => setQty(e.target.value)}
-                        min="1"
-                        disabled={isStock}
-                        style={{ width: 44, border: 'none', outline: 'none', background: 'transparent', fontFamily: "'Inter', sans-serif", fontSize: 16, fontWeight: 500, color: isStock ? '#a0a0a0' : '#000', textAlign: 'center', cursor: isStock ? 'not-allowed' : undefined }}
-                      />
-                    </div>
-                    <span style={{ fontSize: 10, color: '#595959', fontFamily: "'Inter', sans-serif" }}>count</span>
-                  </div>
-                  <span style={{ fontSize: 16, color: '#d9d9d9', lineHeight: 1, paddingBottom: 16 }}>/</span>
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 44, width: 64, border: '0.558px solid #d9d9d9', borderRadius: 8, background: isStock ? '#f0f0f0' : '#fff', cursor: isStock ? 'not-allowed' : undefined }}>
-                      <input
-                        type="number"
-                        value={qtyOf}
-                        onChange={e => setQtyOf(e.target.value)}
-                        min="1"
-                        disabled={isStock}
-                        style={{ width: 44, border: 'none', outline: 'none', background: 'transparent', fontFamily: "'Inter', sans-serif", fontSize: 16, fontWeight: 500, color: isStock ? '#a0a0a0' : '#000', textAlign: 'center', cursor: isStock ? 'not-allowed' : undefined }}
-                      />
-                    </div>
-                    <span style={{ fontSize: 10, color: '#595959', fontFamily: "'Inter', sans-serif" }}>total</span>
-                  </div>
+                <div style={{ display: 'flex', alignItems: 'center', height: 44, width: 96, border: '0.558px solid #d9d9d9', borderRadius: 8, background: isStock ? '#f0f0f0' : '#fff' }}>
+                  <input
+                    type="number"
+                    value={qty}
+                    onChange={e => setQty(e.target.value)}
+                    min="1"
+                    disabled={isStock}
+                    style={{ width: '100%', border: 'none', outline: 'none', background: 'transparent', fontFamily: "'Inter', sans-serif", fontSize: 16, fontWeight: 500, color: isStock ? '#a0a0a0' : '#000', textAlign: 'left', cursor: isStock ? 'not-allowed' : undefined, padding: '0 12px' }}
+                  />
                 </div>
               </div>
               {/* Units */}
@@ -631,16 +724,40 @@ export default function InventoryFormScreen() {
 
         {/* ── Additional Details (collapsible) ── */}
         <CollapsibleSection title="Additional Details" open={showAdditional} onToggle={() => setShowAdditional(p => !p)}>
-          <div style={{ display: 'flex', gap: 12 }}>
+          <div style={{ display: 'flex', gap: 8 }}>
             {[
-              ['Weight', weight, setWeight],
-              ['Length', length, setLength],
-              ['Width', width, setWidth],
-              ['Height', height, setHeight],
-            ].map(([label, val, setter]) => (
-              <div key={label} style={{ flex: 1 }}>
+              ['Weight', weight, setWeight, 'lbs', 'Enter pounds'],
+              ['Length', length, setLength, 'in', 'Enter inches'],
+              ['Width', width, setWidth, 'in', 'Enter inches'],
+              ['Height', height, setHeight, 'in', 'Enter inches'],
+            ].map(([label, val, setter, unit, placeholder]) => (
+              <div key={label} style={{ flex: 1, minWidth: 0 }}>
                 <FieldLabel>{label}</FieldLabel>
-                <InputField value={val} onChange={e => setter(e.target.value)} placeholder="N/A" disabled={isStock} />
+                <div style={{
+                  display: 'flex', alignItems: 'center',
+                  height: 44, border: '0.558px solid #d9d9d9', borderRadius: 8,
+                  background: isStock ? '#f0f0f0' : '#fff', overflow: 'hidden',
+                }}>
+                  <input
+                    type="number"
+                    value={val}
+                    onChange={e => setter(e.target.value)}
+                    placeholder={placeholder}
+                    disabled={isStock}
+                    style={{
+                      flex: 1, border: 'none', outline: 'none', background: 'transparent',
+                      padding: '0 8px', fontFamily: "'Inter', sans-serif", fontSize: 14,
+                      color: isStock ? '#a0a0a0' : '#000', cursor: isStock ? 'not-allowed' : undefined,
+                      minWidth: 0,
+                    }}
+                  />
+                  <div style={{ width: 1, height: 24, background: '#d9d9d9', flexShrink: 0 }} />
+                  <span style={{
+                    fontFamily: "'Inter', sans-serif", fontSize: 13, fontWeight: 600,
+                    color: isStock ? '#a0a0a0' : '#424242',
+                    padding: '0 7px', flexShrink: 0,
+                  }}>{unit}</span>
+                </div>
               </div>
             ))}
           </div>
@@ -680,6 +797,14 @@ export default function InventoryFormScreen() {
           </button>
         </div>
       </div>
+
+      {/* Cancel confirmation */}
+      {showCancelModal && (
+        <CancelConfirmModal
+          onStay={() => setShowCancelModal(false)}
+          onLeave={() => navigate(-1)}
+        />
+      )}
 
       {/* Wizard overlay */}
       {showWizard && (
