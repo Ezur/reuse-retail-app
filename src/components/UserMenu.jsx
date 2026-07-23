@@ -4,7 +4,7 @@ import { useDevice } from '../context/DeviceContext';
 function ChevronUp({ style }) {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={style}>
-      <path d="M18 15L12 9L6 15" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M18 15L12 9L6 15" stroke="rgba(255,255,255,0.75)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   );
 }
@@ -30,16 +30,11 @@ export default function UserMenu({ initials, onSignOut }) {
         position: 'absolute',
         top: 0,
         right: 0,
-        border: '1.27px solid #d9d9d9',
-        borderRadius: 12,
-        background: '#ffffff',
-        overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
+        alignItems: 'flex-end',
         minWidth: 120,
         zIndex: 20,
-        maxHeight: open ? 280 : 56,
-        transition: 'max-height 0.22s cubic-bezier(0.4, 0, 0.2, 1)',
       }}
     >
       <button
@@ -47,21 +42,22 @@ export default function UserMenu({ initials, onSignOut }) {
         aria-label="User menu"
         aria-expanded={open}
         style={{
-          height: 56,
+          height: 44,
+          marginTop: 6,
           background: 'transparent',
-          border: 'none',
+          border: '1.5px solid rgba(255,255,255,0.55)',
+          borderRadius: 10,
           fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
-          fontSize: 18,
-          fontWeight: 400,
-          color: '#000000',
+          fontSize: 15,
+          fontWeight: 500,
+          color: '#ffffff',
           cursor: 'pointer',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: 6,
-          paddingLeft: 16,
-          paddingRight: 12,
-          width: '100%',
+          gap: 4,
+          paddingLeft: 14,
+          paddingRight: 10,
           flexShrink: 0,
         }}
       >
@@ -74,34 +70,18 @@ export default function UserMenu({ initials, onSignOut }) {
 
       <div style={{
         opacity: open ? 1 : 0,
-        transition: 'opacity 0.15s ease',
-        transitionDelay: open ? '0.08s' : '0s',
+        pointerEvents: open ? 'auto' : 'none',
+        transition: 'opacity 0.18s ease, transform 0.18s cubic-bezier(0.4, 0, 0.2, 1)',
+        transform: open ? 'translateY(0)' : 'translateY(-6px)',
+        marginTop: 6,
+        background: '#ffffff',
+        border: '1px solid #e5e7eb',
+        borderRadius: 10,
+        overflow: 'hidden',
+        boxShadow: '0 4px 16px rgba(0,0,0,0.12)',
         display: 'flex',
         flexDirection: 'column',
       }}>
-        <div style={{ height: 1, background: '#f3f4f6', marginLeft: 8, marginRight: 8, marginBottom: 4 }} />
-        <button
-          onClick={() => { setOpen(false); openSettings(); }}
-          style={{
-            width: '100%',
-            height: 44,
-            background: 'transparent',
-            border: 'none',
-            fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
-            fontSize: 16,
-            fontWeight: 400,
-            color: '#000000',
-            cursor: 'pointer',
-            textAlign: 'center',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            paddingLeft: 12,
-            paddingRight: 12,
-          }}
-        >
-          Settings
-        </button>
         <div style={{ height: 1, background: '#f3f4f6', marginLeft: 8, marginRight: 8, marginBottom: 4 }} />
         <button
           onClick={() => { setOpen(false); onSignOut(); }}

@@ -222,7 +222,6 @@ function ItemRow({ item, onClick, isMobile }) {
           background: 'transparent', cursor: 'pointer', textAlign: 'left', gap: 20,
         }}
       >
-        <CameraPlaceholder />
         <div style={{ flex: 1, minWidth: 0 }}>
           <p style={{ fontFamily: "'Helvetica Neue', sans-serif", fontSize: 14, fontWeight: 700, color: '#000', margin: 0, lineHeight: 1.35, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {item.name}
@@ -254,21 +253,18 @@ function ItemRow({ item, onClick, isMobile }) {
         gap: 12,
       }}
     >
-      <CameraPlaceholder />
       <div style={{ flex: 1, minWidth: 0, overflow: 'hidden' }}>
         <p style={{ fontFamily: "'Helvetica Neue', sans-serif", fontSize: 14, fontWeight: 700, color: '#000', margin: 0, lineHeight: 1.35, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {item.name}
         </p>
       </div>
       <p style={{ ...styles.cell, width: 48, fontWeight: 700, color: '#000' }}>{item.category}</p>
-      <p style={{ ...styles.cell, width: 90 }}>{item.subcategory}</p>
       <p style={{ ...styles.cell, width: 32, textAlign: 'center' }}>{item.qty}</p>
       <p style={{ ...styles.cell, width: 96 }}>
         <span style={{ fontWeight: 700 }}>${item.price.toFixed(2)}</span>
         <span style={{ color: '#595959' }}>/each</span>
       </p>
       <p style={{ ...styles.cell, width: 80, color: '#424242' }}>{item.created}</p>
-      <p style={{ ...styles.cell, width: 80, color: '#424242' }}>{item.modified}</p>
       <div style={{ flexShrink: 0 }}><ChevronRight /></div>
     </button>
   );
@@ -530,11 +526,9 @@ export default function DonationItemListScreen() {
               {[
                 { label: 'Item Name',   field: 'name',        flex: true },
                 { label: 'Category',    field: 'category',    width: 48  },
-                { label: 'Subcategory', field: 'subcategory', width: 90  },
                 { label: 'Qty',         field: 'qty',         width: 32, center: true },
                 { label: 'Price',       field: 'price',       width: 96  },
                 { label: 'Created',     field: 'created',     width: 80  },
-                { label: 'Modified',    field: 'modified',    width: 80  },
               ].map(col => (
                 <span key={col.field} style={{ ...styles.headerCell, ...(col.flex ? { flex: 1 } : { width: col.width }), textAlign: col.center ? 'center' : undefined, display: 'flex', alignItems: 'center', gap: 4 }}>
                   {col.label}

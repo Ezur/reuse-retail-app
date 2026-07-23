@@ -1,4 +1,6 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, createContext, useContext } from 'react';
+
+const AccentContext = createContext('#085420');
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { useLayout } from '../hooks/useLayout';
 import CJ_LOGO from '../assets/construction_junction_logo_white.svg';
@@ -7,6 +9,7 @@ import UserMenu from '../components/UserMenu';
 import BackButton from '../components/BackButton';
 import NewItemFlow from '../components/NewItemFlow';
 import { supabase } from '../lib/supabase';
+import { Toast, useToast } from '../components/Toast';
 
 const CATEGORY_MAP = {
   APP: 'Appliances', BML: 'Building Material and Lumber', CAB: 'Cabinets and Built-Ins',
@@ -51,12 +54,32 @@ function CopyIcon() {
   );
 }
 
-function SaveIcon() {
+function SaveIcon({ color = 'currentColor' }) {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-      <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/>
-      <polyline points="17 21 17 13 7 13 7 21" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/>
-      <polyline points="7 3 7 8 15 8" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/>
+      <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" stroke={color} strokeWidth="1.8" strokeLinejoin="round"/>
+      <polyline points="17 21 17 13 7 13 7 21" stroke={color} strokeWidth="1.8" strokeLinejoin="round"/>
+      <polyline points="7 3 7 8 15 8" stroke={color} strokeWidth="1.8" strokeLinejoin="round"/>
+    </svg>
+  );
+}
+
+function TrashIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+      <polyline points="3 6 5 6 21 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M10 11v6M14 11v6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+      <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+}
+
+function RepriceIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+      <line x1="12" y1="1" x2="12" y2="23" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+      <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   );
 }
@@ -132,10 +155,11 @@ function DonorSummaryCard({ info }) {
 }
 
 function SectionBadge({ n }) {
+  const accent = useContext(AccentContext);
   return (
     <div style={{
       width: 24, height: 24, borderRadius: '50%',
-      background: '#085420', color: '#fff',
+      background: accent, color: '#fff',
       fontFamily: "'Inter', sans-serif", fontSize: 13, fontWeight: 700,
       display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
     }}>{n}</div>
@@ -163,7 +187,7 @@ function CardHeader({ badge, title, required, requiredNote, right }) {
         {required && <span style={{ color: '#DC0000' }}>*</span>}
       </span>
       {requiredNote && (
-        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: '#DC0000', marginLeft: 2 }}>
+        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: '#DC0000', marginLeft: 0 }}>
           {requiredNote}
         </span>
       )}
@@ -232,21 +256,21 @@ function SelectField({ value, onChange, options, placeholder, disabled }) {
 }
 
 function CheckboxPill({ label, checked, onChange, disabled }) {
+  const accent = useContext(AccentContext);
   return (
     <label style={{
       display: 'flex', alignItems: 'center', gap: 6,
       cursor: disabled ? 'not-allowed' : 'pointer',
-      border: `0.558px solid ${disabled ? '#e0e0e0' : checked ? '#085420' : '#d9d9d9'}`,
+      border: `0.558px solid ${disabled ? '#e0e0e0' : checked ? accent : '#d9d9d9'}`,
       borderRadius: 6, padding: '5px 10px', minHeight: 44,
       background: disabled ? '#f0f0f0' : checked ? '#e8f5e9' : '#fff',
-      opacity: disabled ? 0.6 : 1,
     }}>
       <input
         type="checkbox"
         checked={checked}
         onChange={onChange}
         disabled={disabled}
-        style={{ width: 14, height: 14, accentColor: '#085420', cursor: disabled ? 'not-allowed' : 'pointer' }}
+        style={{ width: 14, height: 14, accentColor: accent, cursor: disabled ? 'not-allowed' : 'pointer' }}
       />
       <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: disabled ? '#a0a0a0' : '#000', whiteSpace: 'nowrap' }}>{label}</span>
     </label>
@@ -254,18 +278,19 @@ function CheckboxPill({ label, checked, onChange, disabled }) {
 }
 
 function RadioButton({ label, checked, onChange, disabled }) {
+  const accent = useContext(AccentContext);
   return (
     <label style={{
       display: 'flex', alignItems: 'center', gap: 6,
       cursor: disabled ? 'not-allowed' : 'pointer',
-      minHeight: 44, opacity: disabled ? 0.5 : 1,
+      minHeight: 44,
     }}>
       <input
         type="radio"
         checked={checked}
         onChange={onChange}
         disabled={disabled}
-        style={{ width: 16, height: 16, accentColor: '#085420', cursor: disabled ? 'not-allowed' : 'pointer' }}
+        style={{ width: 16, height: 16, accentColor: accent, cursor: disabled ? 'not-allowed' : 'pointer' }}
       />
       <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: disabled ? '#a0a0a0' : '#000' }}>{label}</span>
     </label>
@@ -336,6 +361,7 @@ function buildItemName({ type, subcategory, stockItem, brand, modelStyle, color 
 // ── Cancel confirmation modal ─────────────────────────────────────────────────
 
 function CancelConfirmModal({ onStay, onLeave }) {
+  const accent = useContext(AccentContext);
   return (
     <div
       onClick={onStay}
@@ -403,7 +429,7 @@ function CancelConfirmModal({ onStay, onLeave }) {
             onClick={onLeave}
             style={{
               width: 172.5, height: 52,
-              background: '#085420',
+              background: accent,
               border: 'none', borderRadius: 10,
               fontFamily: "'Inter', sans-serif",
               fontSize: 14, fontWeight: 500, color: '#ffffff',
@@ -428,6 +454,7 @@ export default function InventoryFormScreen() {
 
   const existingItem = state?.item || null;
   const isEditing = !!existingItem;
+  const isManageMode = state?.mode === 'manage';
 
   const initType = state?.type || (existingItem ? 'donated' : 'empty');
   const initCategory = state?.category || (existingItem?.category ? { code: existingItem.category, name: CATEGORY_MAP[existingItem.category] ?? existingItem.category } : null);
@@ -470,6 +497,17 @@ export default function InventoryFormScreen() {
   const [printState, setPrintState] = useState(null); // null | 'printing' | 'done'
   const printTimers = useRef([]);
 
+  const { toast, show: showToast, hide: hideToast } = useToast();
+  const [showCloneModal, setShowCloneModal] = useState(false);
+  const [showRemoveModal, setShowRemoveModal] = useState(false);
+
+  const handleClone = () => {
+    setShowCloneModal(false);
+    setPrice('');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    showToast('Item cloned — price cleared');
+  };
+
   const handlePrint = async () => {
     setPrintState('printing');
 
@@ -486,7 +524,10 @@ export default function InventoryFormScreen() {
     await supabase.from('items').insert(payload);
 
     const t1 = setTimeout(() => setPrintState('done'), 2000);
-    const t2 = setTimeout(() => setPrintState(null), 3500);
+    const t2 = setTimeout(() => {
+      setPrintState(null);
+      navigate(id && id !== 'new' ? `/donor/${id}` : -1);
+    }, 3500);
     printTimers.current = [t1, t2];
   };
 
@@ -517,10 +558,13 @@ export default function InventoryFormScreen() {
     return base;
   };
 
+  const accent = isManageMode ? '#D65737' : '#085420';
+
   return (
+    <AccentContext.Provider value={accent}>
     <div style={styles.page}>
       {/* Header */}
-      <header style={{ ...styles.header, height: headerHeight, paddingLeft: px, paddingRight: px }}>
+      <header style={{ ...styles.header, height: headerHeight, paddingLeft: px, paddingRight: px, background: isManageMode ? '#D65737' : '#085420' }}>
         <BackButton onClick={() => setShowCancelModal(true)} variant="cancel" />
         <img src={CJ_LOGO} alt="Construction Junction" style={styles.logo} />
         <div style={{ width: 120, height: 56, flexShrink: 0, position: 'relative' }}>
@@ -572,7 +616,7 @@ export default function InventoryFormScreen() {
             badge={2}
             title="Item Photos"
             required
-            requiredNote="At least 1 photo required"
+            requiredNote="At least 1 photo recommended"
             right={
               <button style={styles.photoTipsBtn} disabled={isStock}>
                 <LightbulbIcon />
@@ -587,14 +631,14 @@ export default function InventoryFormScreen() {
               <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, fontWeight: 600, color: isStock ? '#a0a0a0' : '#424242', margin: '8px 0 4px' }}>
                 Add Photos
               </p>
-              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: isStock ? '#c0c0c0' : '#595959', margin: 0, textAlign: 'center' }}>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: isStock ? '#a0a0a0' : '#595959', margin: 0, textAlign: 'center' }}>
                 Click to take new images to this item.
               </p>
             </div>
             {/* Tips panel */}
             <div style={{ ...styles.tipsPanel, background: isStock ? '#f0f0f0' : '#f5f5f5' }}>
               {['Use good lighting', 'Take the photo in horizontal mode', 'Capture the entire item', 'Highlight special or unique features'].map(tip => (
-                <p key={tip} style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: isStock ? '#c0c0c0' : '#424242', margin: '0 0 6px' }}>
+                <p key={tip} style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: isStock ? '#a0a0a0' : '#424242', margin: '0 0 6px' }}>
                   {tip}
                 </p>
               ))}
@@ -702,14 +746,13 @@ export default function InventoryFormScreen() {
               {/* Quantity */}
               <div style={{ flex: 'none' }}>
                 <FieldLabel required>Quantity</FieldLabel>
-                <div style={{ display: 'flex', alignItems: 'center', height: 44, width: 96, border: '0.558px solid #d9d9d9', borderRadius: 8, background: isStock ? '#f0f0f0' : '#fff' }}>
+                <div style={{ display: 'flex', alignItems: 'center', height: 44, width: 96, border: '0.558px solid #d9d9d9', borderRadius: 8, background: '#fff' }}>
                   <input
                     type="number"
                     value={qty}
                     onChange={e => setQty(e.target.value)}
                     min="1"
-                    disabled={isStock}
-                    style={{ width: '100%', border: 'none', outline: 'none', background: 'transparent', fontFamily: "'Inter', sans-serif", fontSize: 16, fontWeight: 500, color: isStock ? '#a0a0a0' : '#000', textAlign: 'left', cursor: isStock ? 'not-allowed' : undefined, padding: '0 12px' }}
+                    style={{ width: '100%', border: 'none', outline: 'none', background: 'transparent', fontFamily: "'Inter', sans-serif", fontSize: 16, fontWeight: 500, color: '#000', textAlign: 'left', padding: '0 12px' }}
                   />
                 </div>
               </div>
@@ -779,24 +822,126 @@ export default function InventoryFormScreen() {
       {/* Bottom nav */}
       <div style={styles.bottomNav}>
         <div style={{ ...styles.bottomNavInner, maxWidth, padding: `10px ${px}px` }}>
-          <button onClick={() => navigate('/mode-select')} style={styles.navBtn}>
-            <HomeIcon />
-            <span style={styles.navBtnLabel}>Home</span>
-          </button>
-          <button style={styles.navBtn}>
-            <CopyIcon />
-            <span style={styles.navBtnLabel}>Copy</span>
-          </button>
-          <button style={styles.navBtn}>
-            <SaveIcon />
-            <span style={styles.navBtnLabel}>Save</span>
-          </button>
-          <button onClick={handlePrint} style={{ ...styles.navBtn, background: '#085420', border: '1px solid #085420', color: '#fff' }}>
-            <PrintIcon />
-            <span style={{ ...styles.navBtnLabel, color: '#fff' }}>Print & Save</span>
-          </button>
+          {isManageMode ? (
+            <>
+              <button style={styles.navBtn} onClick={() => setShowRemoveModal(true)}>
+                <TrashIcon />
+                <span style={styles.navBtnLabel}>Remove</span>
+              </button>
+              <button style={styles.navBtn} onClick={() => showToast('Reprice coming soon', 'manage')}>
+                <RepriceIcon />
+                <span style={styles.navBtnLabel}>Reprice</span>
+              </button>
+              <button onClick={() => { showToast('Item saved successfully', 'manage'); }} style={{ ...styles.navBtn, background: '#D65737', border: '1px solid #D65737', color: '#fff' }}>
+                <SaveIcon color="#fff" />
+                <span style={{ ...styles.navBtnLabel, color: '#fff' }}>Save</span>
+              </button>
+            </>
+          ) : (
+            <>
+              <button onClick={() => navigate('/mode-select')} style={styles.navBtn}>
+                <HomeIcon />
+                <span style={styles.navBtnLabel}>Home</span>
+              </button>
+              <button style={styles.navBtn} onClick={() => setShowCloneModal(true)}>
+                <CopyIcon />
+                <span style={styles.navBtnLabel}>Clone</span>
+              </button>
+              <button style={styles.navBtn} onClick={() => showToast('Item saved successfully')}>
+                <SaveIcon />
+                <span style={styles.navBtnLabel}>Save</span>
+              </button>
+              <button onClick={handlePrint} style={{ ...styles.navBtn, background: '#085420', border: '1px solid #085420', color: '#fff' }}>
+                <PrintIcon />
+                <span style={{ ...styles.navBtnLabel, color: '#fff' }}>Print & Save</span>
+              </button>
+            </>
+          )}
         </div>
       </div>
+
+      {/* Clone confirmation */}
+      {showCloneModal && (
+        <div
+          onClick={() => setShowCloneModal(false)}
+          style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)', zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        >
+          <div
+            onClick={e => e.stopPropagation()}
+            style={{ background: '#ffffff', borderRadius: 16, width: 619, maxWidth: 'calc(100vw - 48px)', padding: '24px 32px 32px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+          >
+            <div style={{ marginTop: 16, marginBottom: 24, width: 86, height: 86, borderRadius: '50%', background: '#f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
+                <rect x="9" y="9" width="13" height="13" rx="2" stroke="#595959" strokeWidth="1.8"/>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="#595959" strokeWidth="1.8"/>
+              </svg>
+            </div>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 20, fontWeight: 700, color: '#000', margin: '0 0 12px', textAlign: 'center' }}>
+              Clone this item?
+            </p>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 15, fontWeight: 400, color: '#595959', margin: '0 0 32px', textAlign: 'center', lineHeight: 1.5, maxWidth: 395 }}>
+              All item details will be duplicated. The price will be cleared so you can enter a new one.
+            </p>
+            <div style={{ display: 'flex', gap: 21, justifyContent: 'center' }}>
+              <button
+                onClick={() => setShowCloneModal(false)}
+                style={{ width: 172.5, height: 52, background: '#ffffff', border: '1px solid #d9d9d9', borderRadius: 10, fontFamily: "'Inter', sans-serif", fontSize: 14, fontWeight: 500, color: '#000', cursor: 'pointer' }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleClone}
+                style={{ width: 172.5, height: 52, background: '#085420', border: 'none', borderRadius: 10, fontFamily: "'Inter', sans-serif", fontSize: 14, fontWeight: 500, color: '#ffffff', cursor: 'pointer' }}
+              >
+                Yes, Clone
+              </button>
+              {/* Clone modal is only shown in intake mode, so accent is always green here */}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Remove confirmation */}
+      {showRemoveModal && (
+        <div
+          onClick={() => setShowRemoveModal(false)}
+          style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)', zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        >
+          <div
+            onClick={e => e.stopPropagation()}
+            style={{ background: '#ffffff', borderRadius: 16, width: 619, maxWidth: 'calc(100vw - 48px)', padding: '24px 32px 32px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+          >
+            <div style={{ marginTop: 16, marginBottom: 24, width: 86, height: 86, borderRadius: '50%', background: '#fff0ed', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
+                <polyline points="3 6 5 6 21 6" stroke="#D65737" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke="#D65737" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M10 11v6M14 11v6" stroke="#D65737" strokeWidth="1.8" strokeLinecap="round"/>
+                <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" stroke="#D65737" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 20, fontWeight: 700, color: '#000', margin: '0 0 12px', textAlign: 'center' }}>
+              Are you sure you want to remove this item?
+            </p>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 15, fontWeight: 400, color: '#595959', margin: '0 0 32px', textAlign: 'center', lineHeight: 1.5, maxWidth: 395 }}>
+              This item will be permanently removed from inventory and cannot be undone.
+            </p>
+            <div style={{ display: 'flex', gap: 21, justifyContent: 'center' }}>
+              <button
+                onClick={() => setShowRemoveModal(false)}
+                style={{ width: 172.5, height: 52, background: '#ffffff', border: '1px solid #d9d9d9', borderRadius: 10, fontFamily: "'Inter', sans-serif", fontSize: 14, fontWeight: 500, color: '#000', cursor: 'pointer' }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => { setShowRemoveModal(false); showToast('Item removed', 'error'); }}
+                style={{ width: 172.5, height: 52, background: '#D65737', border: 'none', borderRadius: 10, fontFamily: "'Inter', sans-serif", fontSize: 14, fontWeight: 500, color: '#ffffff', cursor: 'pointer' }}
+              >
+                Yes, Remove
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Cancel confirmation */}
       {showCancelModal && (
@@ -818,6 +963,8 @@ export default function InventoryFormScreen() {
         />
       )}
 
+      <Toast message={toast.message} visible={toast.visible} onHide={hideToast} type={toast.type} />
+
       {printState && (
         <>
           <style>{`
@@ -829,7 +976,7 @@ export default function InventoryFormScreen() {
               {printState === 'printing' ? (
                 <div style={{ width: 72, height: 72, borderRadius: '50%', border: '5px solid rgba(255,255,255,0.2)', borderTopColor: '#fff', animation: 'cj-spin 0.75s linear infinite' }} />
               ) : (
-                <div style={{ width: 72, height: 72, borderRadius: '50%', background: '#085420', display: 'flex', alignItems: 'center', justifyContent: 'center', animation: 'cj-pop 0.35s ease-out both' }}>
+                <div style={{ width: 72, height: 72, borderRadius: '50%', background: isManageMode ? '#D65737' : '#085420', display: 'flex', alignItems: 'center', justifyContent: 'center', animation: 'cj-pop 0.35s ease-out both' }}>
                   <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
                     <path d="M5 13l4 4L19 7" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
@@ -843,6 +990,7 @@ export default function InventoryFormScreen() {
         </>
       )}
     </div>
+    </AccentContext.Provider>
   );
 }
 

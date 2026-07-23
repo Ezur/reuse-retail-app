@@ -207,7 +207,7 @@ function NewDonorModal({ onClose, onConfirm, loading }) {
           fontSize: 20, fontWeight: 700, color: '#000',
           margin: '0 0 12px', textAlign: 'center',
         }}>
-          Want to create a new Donor?
+          Want to create a New Anonymous Dock Donation?
         </p>
 
         {/* Body */}
