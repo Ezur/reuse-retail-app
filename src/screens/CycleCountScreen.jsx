@@ -66,7 +66,9 @@ export default function CycleCountScreen() {
       {/* Header */}
       <header style={{ height: headerHeight, background: '#D65737', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', paddingLeft: 26, paddingRight: 26, paddingBottom: 16, flexShrink: 0, position: 'sticky', top: 0, zIndex: 10 }}>
         <BackButton onClick={() => navigate('/retail')} />
-        <img src="/src/assets/construction_junction_logo_white.svg" alt="Construction Junction" style={{ height: 52, width: 'auto', objectFit: 'contain' }} />
+        <button onClick={() => navigate('/mode-select')} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+          <img src="/src/assets/construction_junction_logo_white.svg" alt="Construction Junction" style={{ height: 52, width: 'auto', objectFit: 'contain' }} />
+        </button>
         <div style={{ width: 120, height: 56, flexShrink: 0, position: 'relative' }}>
           <UserMenu initials="JS" onSignOut={() => navigate('/login')} />
         </div>

@@ -566,7 +566,9 @@ export default function ManageInventoryScreen() {
       {/* ── Header ── */}
       <header style={{ ...s.header, height: headerHeight, paddingLeft: px, paddingRight: px }}>
         <BackButton onClick={() => navigate('/mode-select')} />
-        <img src={CJ_LOGO} alt="Construction Junction" style={s.logo} />
+        <button onClick={() => navigate('/mode-select')} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+          <img src={CJ_LOGO} alt="Construction Junction" style={s.logo} />
+        </button>
         <div style={{ width: 120, height: 56, flexShrink: 0, position: 'relative' }}>
           <UserMenu initials="JS" onSignOut={() => navigate('/login')} />
         </div>
