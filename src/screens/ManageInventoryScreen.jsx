@@ -520,7 +520,6 @@ export default function ManageInventoryScreen() {
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const [filterCategories, setFilterCategories] = useState(new Set());
-  const [filterHasStock, setFilterHasStock] = useState(false);
 
   const [activeModal, setActiveModal] = useState(null);
   const [showFilterModal, setShowFilterModal] = useState(false);
@@ -533,8 +532,7 @@ export default function ManageInventoryScreen() {
       item.category.toLowerCase().includes(search.toLowerCase()) ||
       item.subcategory.toLowerCase().includes(search.toLowerCase());
     const matchCat = filterCategories.size === 0 || filterCategories.has(item.category);
-    const matchStock = !filterHasStock || item.qty > 0;
-    return matchSearch && matchCat && matchStock;
+    return matchSearch && matchCat && item.qty > 0;
   });
 
   const sorted = sortField ? [...filtered].sort((a, b) => {
@@ -554,13 +552,12 @@ export default function ManageInventoryScreen() {
   const handleSearch = (val) => { setSearch(val); setPage(1); };
   const handlePage = (n) => setPage(Math.max(1, Math.min(n, totalPages)));
 
-  const activeFilterCount = filterCategories.size + (filterHasStock ? 1 : 0);
+  const activeFilterCount = filterCategories.size;
   const activeFilters = [
     ...[...filterCategories].map(v => ({ key: v, label: CATEGORIES.find(c => c.code === v)?.label || v, onClear: () => { const s = new Set(filterCategories); s.delete(v); setFilterCategories(s); setPage(1); } })),
-    ...(filterHasStock ? [{ key: 'stock', label: 'In stock', onClear: () => { setFilterHasStock(false); setPage(1); } }] : []),
   ];
 
-  const clearAllFilters = () => { setFilterCategories(new Set()); setFilterHasStock(false); setPage(1); };
+  const clearAllFilters = () => { setFilterCategories(new Set()); setPage(1); };
   const toggleCat = v => setFilterCategories(prev => { const s = new Set(prev); s.has(v) ? s.delete(v) : s.add(v); return s; });
 
   return (
@@ -692,7 +689,6 @@ export default function ManageInventoryScreen() {
           onApply={() => { setPage(1); setShowFilterModal(false); }}
           sections={[
             { type: 'pills', label: 'Category', options: CATEGORIES.map(c => ({ value: c.code, label: c.label })), selected: filterCategories, onToggle: toggleCat },
-            { type: 'toggle', label: 'In stock only', description: 'Hide items with zero quantity', value: filterHasStock, onChange: setFilterHasStock },
           ]}
         />
       )}
