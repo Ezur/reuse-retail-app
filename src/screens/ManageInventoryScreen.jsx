@@ -11,26 +11,26 @@ import FilterModal from '../components/FilterModal';
 // ── Mock data ─────────────────────────────────────────────────────────────────
 
 const ITEMS = [
-  { id: '1',  name: 'Countertop Microwave - Small - Used, ASIS',     category: 'APP', subcategory: 'Microwave',    qty: 5,  price: 15.99,  created: '05/31/2026', modified: '05/31/2026' },
-  { id: '2',  name: 'Electric Cooktop - 30 in. - Good, ASIS',        category: 'APP', subcategory: 'Cooktop',      qty: 2,  price: 49.99,  created: '05/29/2026', modified: '05/31/2026' },
-  { id: '3',  name: 'Gas Cooktop - Stainless Steel - Best, ASIS',    category: 'APP', subcategory: 'Cooktop',      qty: 1,  price: 79.99,  created: '05/28/2026', modified: '05/31/2026' },
-  { id: '4',  name: 'Refrigerator - Top Freezer - White',            category: 'APP', subcategory: 'Refrigerator', qty: 2,  price: 149.99, created: '05/27/2026', modified: '05/31/2026' },
-  { id: '5',  name: 'Electric Range - 30 in. - White',               category: 'APP', subcategory: 'Range',        qty: 1,  price: 179.99, created: '05/26/2026', modified: '05/31/2026' },
-  { id: '6',  name: 'Front Load Washer - White',                     category: 'APP', subcategory: 'Washer',       qty: 2,  price: 199.99, created: '05/25/2026', modified: '05/31/2026' },
-  { id: '8',  name: 'Wall Cabinet - 30 in. - Oak',                   category: 'CAB', subcategory: 'Cabinet',      qty: 4,  price: 39.99,  created: '05/23/2026', modified: '05/31/2026' },
-  { id: '9',  name: 'Bathroom Vanity - 24 in. - White',              category: 'PLB', subcategory: 'Vanity',       qty: 1,  price: 89.99,  created: '05/22/2026', modified: '05/31/2026' },
-  { id: '10', name: 'Single Basin Sink - Stainless',                 category: 'PLB', subcategory: 'Sink',         qty: 3,  price: 59.99,  created: '05/21/2026', modified: '05/31/2026' },
-  { id: '11', name: 'Ceiling Fan - 52 in. - Bronze',                 category: 'ELC', subcategory: 'Fan',          qty: 2,  price: 74.99,  created: '05/20/2026', modified: '05/31/2026' },
-  { id: '12', name: 'Light Fixture - Pendant - Black',               category: 'ELC', subcategory: 'Lighting',     qty: 6,  price: 29.99,  created: '05/19/2026', modified: '05/31/2026' },
-  { id: '13', name: 'Exterior Door - 36 in. - Steel',                category: 'DOR', subcategory: 'Exterior',     qty: 1,  price: 189.99, created: '05/18/2026', modified: '05/31/2026' },
-  { id: '14', name: 'Interior Door - 30 in. - Pine',                 category: 'DOR', subcategory: 'Interior',     qty: 3,  price: 34.99,  created: '05/17/2026', modified: '05/31/2026' },
-  { id: '15', name: 'Hardwood Flooring - Oak - 20 sq ft',            category: 'FLR', subcategory: 'Hardwood',     qty: 5,  price: 24.99,  created: '05/16/2026', modified: '05/31/2026' },
-  { id: '16', name: 'Storm Door - 32 in. - White',                   category: 'DOR', subcategory: 'Storm',        qty: 2,  price: 54.99,  created: '05/15/2026', modified: '05/31/2026' },
-  { id: '17', name: 'Bathtub - Standard - White',                    category: 'PLB', subcategory: 'Tub',          qty: 1,  price: 119.99, created: '05/14/2026', modified: '05/31/2026' },
-  { id: '18', name: 'Toilet - Round - White',                        category: 'PLB', subcategory: 'Toilet',       qty: 2,  price: 64.99,  created: '05/13/2026', modified: '05/31/2026' },
-  { id: '19', name: 'Laminate Flooring - Grey - 30 sq ft',           category: 'FLR', subcategory: 'Laminate',     qty: 3,  price: 19.99,  created: '05/12/2026', modified: '05/31/2026' },
-  { id: '20', name: 'Paint - Interior Latex - White - 1 Gal',        category: 'PNT', subcategory: 'Paint',        qty: 8,  price: 12.99,  created: '05/11/2026', modified: '05/31/2026' },
-  { id: '21', name: 'Upper Cabinet - 12 in. - White',                category: 'CAB', subcategory: 'Cabinet',      qty: 6,  price: 29.99,  created: '05/10/2026', modified: '05/31/2026' },
+  { id: '1',  name: 'Countertop Microwave - Small - Used, ASIS',     category: 'APP', subcategory: 'Microwave',    qty: 5,  price: 15.99,  upc: '012345678901', created: '05/31/2026', modified: '05/31/2026' },
+  { id: '2',  name: 'Electric Cooktop - 30 in. - Good, ASIS',        category: 'APP', subcategory: 'Cooktop',      qty: 2,  price: 49.99,  upc: '012345678902', created: '05/29/2026', modified: '05/31/2026' },
+  { id: '3',  name: 'Gas Cooktop - Stainless Steel - Best, ASIS',    category: 'APP', subcategory: 'Cooktop',      qty: 1,  price: 79.99,  upc: '012345678903', created: '05/28/2026', modified: '05/31/2026' },
+  { id: '4',  name: 'Refrigerator - Top Freezer - White',            category: 'APP', subcategory: 'Refrigerator', qty: 2,  price: 149.99, upc: '012345678904', created: '05/27/2026', modified: '05/31/2026' },
+  { id: '5',  name: 'Electric Range - 30 in. - White',               category: 'APP', subcategory: 'Range',        qty: 1,  price: 179.99, upc: '012345678905', created: '05/26/2026', modified: '05/31/2026' },
+  { id: '6',  name: 'Front Load Washer - White',                     category: 'APP', subcategory: 'Washer',       qty: 2,  price: 199.99, upc: '012345678906', created: '05/25/2026', modified: '05/31/2026' },
+  { id: '8',  name: 'Wall Cabinet - 30 in. - Oak',                   category: 'CAB', subcategory: 'Cabinet',      qty: 4,  price: 39.99,  upc: '012345678908', created: '05/23/2026', modified: '05/31/2026' },
+  { id: '9',  name: 'Bathroom Vanity - 24 in. - White',              category: 'PLB', subcategory: 'Vanity',       qty: 1,  price: 89.99,  upc: '012345678909', created: '05/22/2026', modified: '05/31/2026' },
+  { id: '10', name: 'Single Basin Sink - Stainless',                 category: 'PLB', subcategory: 'Sink',         qty: 3,  price: 59.99,  upc: '012345678910', created: '05/21/2026', modified: '05/31/2026' },
+  { id: '11', name: 'Ceiling Fan - 52 in. - Bronze',                 category: 'ELC', subcategory: 'Fan',          qty: 2,  price: 74.99,  upc: '012345678911', created: '05/20/2026', modified: '05/31/2026' },
+  { id: '12', name: 'Light Fixture - Pendant - Black',               category: 'ELC', subcategory: 'Lighting',     qty: 6,  price: 29.99,  upc: '012345678912', created: '05/19/2026', modified: '05/31/2026' },
+  { id: '13', name: 'Exterior Door - 36 in. - Steel',                category: 'DOR', subcategory: 'Exterior',     qty: 1,  price: 189.99, upc: '012345678913', created: '05/18/2026', modified: '05/31/2026' },
+  { id: '14', name: 'Interior Door - 30 in. - Pine',                 category: 'DOR', subcategory: 'Interior',     qty: 3,  price: 34.99,  upc: '012345678914', created: '05/17/2026', modified: '05/31/2026' },
+  { id: '15', name: 'Hardwood Flooring - Oak - 20 sq ft',            category: 'FLR', subcategory: 'Hardwood',     qty: 5,  price: 24.99,  upc: '012345678915', created: '05/16/2026', modified: '05/31/2026' },
+  { id: '16', name: 'Storm Door - 32 in. - White',                   category: 'DOR', subcategory: 'Storm',        qty: 2,  price: 54.99,  upc: '012345678916', created: '05/15/2026', modified: '05/31/2026' },
+  { id: '17', name: 'Bathtub - Standard - White',                    category: 'PLB', subcategory: 'Tub',          qty: 1,  price: 119.99, upc: '012345678917', created: '05/14/2026', modified: '05/31/2026' },
+  { id: '18', name: 'Toilet - Round - White',                        category: 'PLB', subcategory: 'Toilet',       qty: 2,  price: 64.99,  upc: '012345678918', created: '05/13/2026', modified: '05/31/2026' },
+  { id: '19', name: 'Laminate Flooring - Grey - 30 sq ft',           category: 'FLR', subcategory: 'Laminate',     qty: 3,  price: 19.99,  upc: '012345678919', created: '05/12/2026', modified: '05/31/2026' },
+  { id: '20', name: 'Paint - Interior Latex - White - 1 Gal',        category: 'PNT', subcategory: 'Paint',        qty: 8,  price: 12.99,  upc: '012345678920', created: '05/11/2026', modified: '05/31/2026' },
+  { id: '21', name: 'Upper Cabinet - 12 in. - White',                category: 'CAB', subcategory: 'Cabinet',      qty: 6,  price: 29.99,  upc: '012345678921', created: '05/10/2026', modified: '05/31/2026' },
 ];
 
 const CATEGORIES = [
@@ -220,6 +220,7 @@ function ItemRow({ item, onClick, isMobile }) {
         </p>
       </div>
       <p style={{ ...s.cell, width: 48, fontWeight: 700, color: '#000' }}>{item.category}</p>
+      <p style={{ ...s.cell, width: 110, color: '#595959', fontFamily: "'Helvetica Neue', sans-serif", fontSize: 12 }}>{item.upc || '—'}</p>
       <p style={{ ...s.cell, width: 32, textAlign: 'center' }}>{item.qty}</p>
       <p style={{ ...s.cell, width: 96 }}>
         <span style={{ fontWeight: 700 }}>${item.price.toFixed(2)}</span>
@@ -594,7 +595,7 @@ export default function ManageInventoryScreen() {
             <div style={{ display: 'flex', gap: 8, width: isMobile ? '100%' : undefined, flexShrink: 0 }}>
               <button style={{ ...s.toolBtn, flex: isMobile ? 1 : undefined }}>
                 <QrIcon size={18} color="#424242" />
-                {!isMobile && <span style={s.toolBtnLabel}>Scan QR Code</span>}
+                {!isMobile && <span style={s.toolBtnLabel}>Scan Barcode</span>}
               </button>
               <button
                 style={{ ...s.toolBtn, flex: isMobile ? 1 : undefined, borderColor: activeFilterCount > 0 ? '#D65737' : '#d9d9d9', background: activeFilterCount > 0 ? '#fff8f6' : '#f0f0f0' }}
@@ -638,6 +639,7 @@ export default function ManageInventoryScreen() {
               {[
                 { label: 'Item Name',   field: 'name',        flex: true },
                 { label: 'Category',    field: 'category',    width: 48  },
+                { label: 'UPC',         field: 'upc',         width: 110 },
                 { label: 'Qty',         field: 'qty',         width: 32 },
                 { label: 'Price',       field: 'price',       width: 96  },
                 { label: 'Created',     field: 'created',     width: 80  },
