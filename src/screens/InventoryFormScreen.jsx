@@ -499,6 +499,7 @@ export default function InventoryFormScreen() {
 
   const { toast, show: showToast, hide: hideToast } = useToast();
   const [showCloneModal, setShowCloneModal] = useState(false);
+  const [showRemoveModal, setShowRemoveModal] = useState(false);
 
   const handleClone = () => {
     setShowCloneModal(false);
@@ -823,15 +824,15 @@ export default function InventoryFormScreen() {
         <div style={{ ...styles.bottomNavInner, maxWidth, padding: `10px ${px}px` }}>
           {isManageMode ? (
             <>
-              <button style={styles.navBtn} onClick={() => showToast('Item removed', 'error')}>
+              <button style={styles.navBtn} onClick={() => setShowRemoveModal(true)}>
                 <TrashIcon />
                 <span style={styles.navBtnLabel}>Remove</span>
               </button>
-              <button style={styles.navBtn} onClick={() => showToast('Reprice coming soon')}>
+              <button style={styles.navBtn} onClick={() => showToast('Reprice coming soon', 'manage')}>
                 <RepriceIcon />
                 <span style={styles.navBtnLabel}>Reprice</span>
               </button>
-              <button onClick={() => { showToast('Item saved successfully'); }} style={{ ...styles.navBtn, background: '#D65737', border: '1px solid #D65737', color: '#fff' }}>
+              <button onClick={() => { showToast('Item saved successfully', 'manage'); }} style={{ ...styles.navBtn, background: '#D65737', border: '1px solid #D65737', color: '#fff' }}>
                 <SaveIcon color="#fff" />
                 <span style={{ ...styles.navBtnLabel, color: '#fff' }}>Save</span>
               </button>
@@ -895,6 +896,48 @@ export default function InventoryFormScreen() {
                 Yes, Clone
               </button>
               {/* Clone modal is only shown in intake mode, so accent is always green here */}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Remove confirmation */}
+      {showRemoveModal && (
+        <div
+          onClick={() => setShowRemoveModal(false)}
+          style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)', zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        >
+          <div
+            onClick={e => e.stopPropagation()}
+            style={{ background: '#ffffff', borderRadius: 16, width: 619, maxWidth: 'calc(100vw - 48px)', padding: '24px 32px 32px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+          >
+            <div style={{ marginTop: 16, marginBottom: 24, width: 86, height: 86, borderRadius: '50%', background: '#fff0ed', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
+                <polyline points="3 6 5 6 21 6" stroke="#D65737" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke="#D65737" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M10 11v6M14 11v6" stroke="#D65737" strokeWidth="1.8" strokeLinecap="round"/>
+                <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" stroke="#D65737" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 20, fontWeight: 700, color: '#000', margin: '0 0 12px', textAlign: 'center' }}>
+              Are you sure you want to remove this item?
+            </p>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 15, fontWeight: 400, color: '#595959', margin: '0 0 32px', textAlign: 'center', lineHeight: 1.5, maxWidth: 395 }}>
+              This item will be permanently removed from inventory and cannot be undone.
+            </p>
+            <div style={{ display: 'flex', gap: 21, justifyContent: 'center' }}>
+              <button
+                onClick={() => setShowRemoveModal(false)}
+                style={{ width: 172.5, height: 52, background: '#ffffff', border: '1px solid #d9d9d9', borderRadius: 10, fontFamily: "'Inter', sans-serif", fontSize: 14, fontWeight: 500, color: '#000', cursor: 'pointer' }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => { setShowRemoveModal(false); showToast('Item removed', 'error'); }}
+                style={{ width: 172.5, height: 52, background: '#D65737', border: 'none', borderRadius: 10, fontFamily: "'Inter', sans-serif", fontSize: 14, fontWeight: 500, color: '#ffffff', cursor: 'pointer' }}
+              >
+                Yes, Remove
+              </button>
             </div>
           </div>
         </div>

@@ -8,6 +8,7 @@ export function Toast({ message, visible, onHide, type = 'success' }) {
   }, [visible, onHide]);
 
   const bg = type === 'success' ? '#085420' : '#D65737';
+  const showCheck = type === 'success' || type === 'manage';
 
   return (
     <div style={{
@@ -25,7 +26,7 @@ export function Toast({ message, visible, onHide, type = 'success' }) {
       boxShadow: '0 4px 16px rgba(0,0,0,0.18)',
       whiteSpace: 'nowrap',
     }}>
-      {type === 'success' && (
+      {showCheck && (
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
           <path d="M20 6L9 17l-5-5" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
