@@ -7,6 +7,7 @@ import UserMenu from '../components/UserMenu';
 import BackButton from '../components/BackButton';
 import NewItemFlow from '../components/NewItemFlow';
 import { supabase } from '../lib/supabase';
+import { Toast, useToast } from '../components/Toast';
 
 const CATEGORY_MAP = {
   APP: 'Appliances', BML: 'Building Material and Lumber', CAB: 'Cabinets and Built-Ins',
@@ -470,6 +471,8 @@ export default function InventoryFormScreen() {
   const [printState, setPrintState] = useState(null); // null | 'printing' | 'done'
   const printTimers = useRef([]);
 
+  const { toast, show: showToast, hide: hideToast } = useToast();
+
   const handlePrint = async () => {
     setPrintState('printing');
 
@@ -787,7 +790,7 @@ export default function InventoryFormScreen() {
             <CopyIcon />
             <span style={styles.navBtnLabel}>Copy</span>
           </button>
-          <button style={styles.navBtn}>
+          <button style={styles.navBtn} onClick={() => showToast('Item saved successfully')}>
             <SaveIcon />
             <span style={styles.navBtnLabel}>Save</span>
           </button>
@@ -817,6 +820,8 @@ export default function InventoryFormScreen() {
           onComplete={handleWizardComplete}
         />
       )}
+
+      <Toast message={toast.message} visible={toast.visible} onHide={hideToast} type={toast.type} />
 
       {printState && (
         <>
