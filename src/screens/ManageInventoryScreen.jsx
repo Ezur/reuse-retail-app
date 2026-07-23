@@ -664,7 +664,7 @@ export default function ManageInventoryScreen() {
           <div>
             {pageRows.length === 0
               ? <p style={s.emptyText}>No items match your search or filters.</p>
-              : pageRows.map(item => <ItemRow key={item.id} item={item} isMobile={isMobile} onClick={() => {}} />)
+              : pageRows.map(item => <ItemRow key={item.id} item={item} isMobile={isMobile} onClick={() => navigate(`/donor/${item.donorId ?? 'retail'}/item/${item.id}`, { state: { item, mode: 'manage' } })} />)
             }
           </div>
 

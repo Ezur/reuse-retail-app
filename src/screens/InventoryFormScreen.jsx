@@ -52,12 +52,32 @@ function CopyIcon() {
   );
 }
 
-function SaveIcon() {
+function SaveIcon({ color = 'currentColor' }) {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-      <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/>
-      <polyline points="17 21 17 13 7 13 7 21" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/>
-      <polyline points="7 3 7 8 15 8" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/>
+      <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" stroke={color} strokeWidth="1.8" strokeLinejoin="round"/>
+      <polyline points="17 21 17 13 7 13 7 21" stroke={color} strokeWidth="1.8" strokeLinejoin="round"/>
+      <polyline points="7 3 7 8 15 8" stroke={color} strokeWidth="1.8" strokeLinejoin="round"/>
+    </svg>
+  );
+}
+
+function TrashIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+      <polyline points="3 6 5 6 21 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M10 11v6M14 11v6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+      <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+}
+
+function RepriceIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+      <line x1="12" y1="1" x2="12" y2="23" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+      <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   );
 }
@@ -429,6 +449,7 @@ export default function InventoryFormScreen() {
 
   const existingItem = state?.item || null;
   const isEditing = !!existingItem;
+  const isManageMode = state?.mode === 'manage';
 
   const initType = state?.type || (existingItem ? 'donated' : 'empty');
   const initCategory = state?.category || (existingItem?.category ? { code: existingItem.category, name: CATEGORY_MAP[existingItem.category] ?? existingItem.category } : null);
@@ -793,22 +814,41 @@ export default function InventoryFormScreen() {
       {/* Bottom nav */}
       <div style={styles.bottomNav}>
         <div style={{ ...styles.bottomNavInner, maxWidth, padding: `10px ${px}px` }}>
-          <button onClick={() => navigate('/mode-select')} style={styles.navBtn}>
-            <HomeIcon />
-            <span style={styles.navBtnLabel}>Home</span>
-          </button>
-          <button style={styles.navBtn} onClick={() => setShowCloneModal(true)}>
-            <CopyIcon />
-            <span style={styles.navBtnLabel}>Clone</span>
-          </button>
-          <button style={styles.navBtn} onClick={() => showToast('Item saved successfully')}>
-            <SaveIcon />
-            <span style={styles.navBtnLabel}>Save</span>
-          </button>
-          <button onClick={handlePrint} style={{ ...styles.navBtn, background: '#085420', border: '1px solid #085420', color: '#fff' }}>
-            <PrintIcon />
-            <span style={{ ...styles.navBtnLabel, color: '#fff' }}>Print & Save</span>
-          </button>
+          {isManageMode ? (
+            <>
+              <button style={styles.navBtn} onClick={() => showToast('Item removed', 'error')}>
+                <TrashIcon />
+                <span style={styles.navBtnLabel}>Remove</span>
+              </button>
+              <button style={styles.navBtn} onClick={() => showToast('Reprice coming soon')}>
+                <RepriceIcon />
+                <span style={styles.navBtnLabel}>Reprice</span>
+              </button>
+              <button onClick={() => { showToast('Item saved successfully'); }} style={{ ...styles.navBtn, background: '#085420', border: '1px solid #085420', color: '#fff' }}>
+                <SaveIcon color="#fff" />
+                <span style={{ ...styles.navBtnLabel, color: '#fff' }}>Save</span>
+              </button>
+            </>
+          ) : (
+            <>
+              <button onClick={() => navigate('/mode-select')} style={styles.navBtn}>
+                <HomeIcon />
+                <span style={styles.navBtnLabel}>Home</span>
+              </button>
+              <button style={styles.navBtn} onClick={() => setShowCloneModal(true)}>
+                <CopyIcon />
+                <span style={styles.navBtnLabel}>Clone</span>
+              </button>
+              <button style={styles.navBtn} onClick={() => showToast('Item saved successfully')}>
+                <SaveIcon />
+                <span style={styles.navBtnLabel}>Save</span>
+              </button>
+              <button onClick={handlePrint} style={{ ...styles.navBtn, background: '#085420', border: '1px solid #085420', color: '#fff' }}>
+                <PrintIcon />
+                <span style={{ ...styles.navBtnLabel, color: '#fff' }}>Print & Save</span>
+              </button>
+            </>
+          )}
         </div>
       </div>
 
