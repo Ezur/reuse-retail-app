@@ -247,10 +247,10 @@ function ItemRow({ item, onClick, isMobile }) {
       style={{
         width: '100%',
         display: 'flex', alignItems: 'center',
-        paddingLeft: 8, paddingRight: 8, paddingTop: 12, paddingBottom: 12,
+        paddingLeft: 16, paddingRight: 16, paddingTop: 14, paddingBottom: 14,
         border: 'none', borderBottom: '0.558px solid #f3f4f6',
         background: 'transparent', cursor: 'pointer', textAlign: 'left',
-        gap: 12,
+        gap: 16,
       }}
     >
       <div style={{ flex: 1, minWidth: 0, overflow: 'hidden' }}>
@@ -258,13 +258,13 @@ function ItemRow({ item, onClick, isMobile }) {
           {item.name}
         </p>
       </div>
-      <p style={{ ...styles.cell, width: 48, fontWeight: 700, color: '#000' }}>{item.category}</p>
-      <p style={{ ...styles.cell, width: 32, textAlign: 'center' }}>{item.qty}</p>
-      <p style={{ ...styles.cell, width: 96 }}>
+      <p style={{ ...styles.cell, width: 72, fontWeight: 700, color: '#000' }}>{item.category}</p>
+      <p style={{ ...styles.cell, width: 48, textAlign: 'center' }}>{item.qty}</p>
+      <p style={{ ...styles.cell, width: 110 }}>
         <span style={{ fontWeight: 700 }}>${item.price.toFixed(2)}</span>
         <span style={{ color: '#595959' }}>/each</span>
       </p>
-      <p style={{ ...styles.cell, width: 80, color: '#424242' }}>{item.created}</p>
+      <p style={{ ...styles.cell, width: 96, color: '#424242' }}>{item.created}</p>
       <div style={{ flexShrink: 0 }}><ChevronRight /></div>
     </button>
   );
@@ -521,10 +521,10 @@ export default function DonationItemListScreen() {
             <div style={styles.tableHeader}>
               {[
                 { label: 'Item Name',   field: 'name',        flex: true },
-                { label: 'Category',    field: 'category',    width: 48  },
-                { label: 'Qty',         field: 'qty',         width: 32, center: true },
-                { label: 'Price',       field: 'price',       width: 96  },
-                { label: 'Created',     field: 'created',     width: 80  },
+                { label: 'Category',    field: 'category',    width: 72  },
+                { label: 'Qty',         field: 'qty',         width: 48, center: true },
+                { label: 'Price',       field: 'price',       width: 110 },
+                { label: 'Created',     field: 'created',     width: 96  },
               ].map(col => (
                 <span key={col.field} style={{ ...styles.headerCell, ...(col.flex ? { flex: 1 } : { width: col.width }), textAlign: col.center ? 'center' : undefined, display: 'flex', alignItems: 'center', gap: 4 }}>
                   {col.label}
@@ -535,7 +535,7 @@ export default function DonationItemListScreen() {
                   )}
                 </span>
               ))}
-              <span style={{ width: 14, flexShrink: 0 }} />
+              <span style={{ width: 16, flexShrink: 0 }} />
             </div>
           )}
 
@@ -666,7 +666,7 @@ const styles = {
   },
   toolbar: {
     display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap',
-    padding: '12px 8px',
+    padding: '12px 16px',
     borderBottom: '0.558px solid #f3f4f6',
   },
   searchWrapper: {
@@ -691,9 +691,9 @@ const styles = {
   },
   tableHeader: {
     display: 'flex', alignItems: 'center',
-    padding: '8px 8px 8px 8px',
+    padding: '10px 16px',
     background: '#fafafa', borderBottom: '0.558px solid #f3f4f6',
-    gap: 12,
+    gap: 16,
   },
   headerCell: {
     fontFamily: "'Helvetica Neue', sans-serif",
