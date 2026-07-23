@@ -555,7 +555,7 @@ export default function InventoryFormScreen() {
   return (
     <div style={styles.page}>
       {/* Header */}
-      <header style={{ ...styles.header, height: headerHeight, paddingLeft: px, paddingRight: px }}>
+      <header style={{ ...styles.header, height: headerHeight, paddingLeft: px, paddingRight: px, background: isManageMode ? '#D65737' : '#085420' }}>
         <BackButton onClick={() => setShowCancelModal(true)} variant="cancel" />
         <img src={CJ_LOGO} alt="Construction Junction" style={styles.logo} />
         <div style={{ width: 120, height: 56, flexShrink: 0, position: 'relative' }}>

@@ -220,7 +220,6 @@ function ItemRow({ item, onClick, isMobile }) {
         </p>
       </div>
       <p style={{ ...s.cell, width: 48, fontWeight: 700, color: '#000' }}>{item.category}</p>
-      <p style={{ ...s.cell, width: 90 }}>{item.subcategory}</p>
       <p style={{ ...s.cell, width: 32, textAlign: 'center' }}>{item.qty}</p>
       <p style={{ ...s.cell, width: 96 }}>
         <span style={{ fontWeight: 700 }}>${item.price.toFixed(2)}</span>
@@ -642,7 +641,6 @@ export default function ManageInventoryScreen() {
               {[
                 { label: 'Item Name',   field: 'name',        flex: true },
                 { label: 'Category',    field: 'category',    width: 48  },
-                { label: 'Subcategory', field: 'subcategory', width: 90  },
                 { label: 'Qty',         field: 'qty',         width: 32 },
                 { label: 'Price',       field: 'price',       width: 96  },
                 { label: 'Created',     field: 'created',     width: 80  },
