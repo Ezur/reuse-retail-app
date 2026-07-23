@@ -320,7 +320,7 @@ function TableControls({ total, page, totalPages, rowsPerPage, onPage }) {
 
 // ── Bottom nav ────────────────────────────────────────────────────────────────
 
-function BottomNav({ onHome, onScanQr, onNewDonation, maxWidth }) {
+function BottomNav({ onHome, onNewDonation, maxWidth }) {
   return (
     <div style={styles.bottomNav}>
       <div style={{ ...styles.bottomNavInner, maxWidth }}>
@@ -328,16 +328,10 @@ function BottomNav({ onHome, onScanQr, onNewDonation, maxWidth }) {
           <HomeIcon />
           <span style={styles.navBtnLabel}>Home</span>
         </button>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 21 }}>
-          <button onClick={onScanQr} style={styles.navBtn}>
-            <QrIcon size={16} />
-            <span style={styles.navBtnLabel}>Scan QR Code</span>
-          </button>
-          <button onClick={onNewDonation} style={{ ...styles.navBtn, background: '#085420', border: '1px solid #085420' }}>
-            <PlusIcon />
-            <span style={{ ...styles.navBtnLabel, color: '#ffffff' }}>Add Item</span>
-          </button>
-        </div>
+        <button onClick={onNewDonation} style={{ ...styles.navBtn, background: '#085420', border: '1px solid #085420' }}>
+          <PlusIcon />
+          <span style={{ ...styles.navBtnLabel, color: '#ffffff' }}>Add Item</span>
+        </button>
       </div>
     </div>
   );
@@ -579,7 +573,6 @@ export default function DonationItemListScreen() {
       {/* ── Bottom nav ── */}
       <BottomNav
         onHome={() => navigate('/mode-select')}
-        onScanQr={() => {}}
         onNewDonation={() => setShowNewItemFlow(true)}
         maxWidth={maxWidth}
       />
@@ -700,7 +693,7 @@ const styles = {
     display: 'flex', alignItems: 'center',
     padding: '8px 8px 8px 8px',
     background: '#fafafa', borderBottom: '0.558px solid #f3f4f6',
-    gap: 20,
+    gap: 12,
   },
   headerCell: {
     fontFamily: "'Helvetica Neue', sans-serif",
