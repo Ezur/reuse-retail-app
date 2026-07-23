@@ -249,7 +249,7 @@ function NewDonorModal({ onClose, onConfirm, loading }) {
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
             }}
           >
-            {loading ? 'Creating…' : <><PlusIcon />Add Donor</>}
+            {loading ? 'Creating…' : <><PlusIcon />Create New Day</>}
           </button>
         </div>
       </div>
