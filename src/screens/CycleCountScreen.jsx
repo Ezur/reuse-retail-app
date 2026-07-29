@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLayout } from '../hooks/useLayout';
 import UserMenu from '../components/UserMenu';
 import BackButton from '../components/BackButton';
+import CJ_LOGO from '../assets/construction_junction_logo_white.svg';
 
 const STAFF = [
   { id: 1, name: 'Aiden' },
@@ -67,7 +68,7 @@ export default function CycleCountScreen() {
       <header style={{ height: headerHeight, background: '#D65737', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', paddingLeft: 26, paddingRight: 26, paddingBottom: 16, flexShrink: 0, position: 'sticky', top: 0, zIndex: 10 }}>
         <BackButton onClick={() => navigate('/retail')} />
         <button onClick={() => navigate('/mode-select')} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
-          <img src="/src/assets/construction_junction_logo_white.svg" alt="Construction Junction" style={{ height: 52, width: 'auto', objectFit: 'contain' }} />
+          <img src={CJ_LOGO} alt="Construction Junction" style={{ height: 52, width: 'auto', objectFit: 'contain' }} />
         </button>
         <div style={{ width: 120, height: 56, flexShrink: 0, position: 'relative' }}>
           <UserMenu initials="JS" onSignOut={() => navigate('/login')} />
