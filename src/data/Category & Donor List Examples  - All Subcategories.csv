@@ -1,0 +1,373 @@
+Category,Subcategory,Sub-Subcategory (Stock Item)
+Appliances (APP),"APP, Cooktop",
+,"APP, Dishwasher",
+,"APP, Freezer",
+,"APP, Microwave",
+,,"APP, Microwave, Built-In"
+,,"APP, Microwave, Countertop"
+,"APP, Other APP",
+,"APP, Range",
+,,"APP, Range Exhaust Hood"
+,,"APP, Range, Freestanding"
+,,"APP, Range, Slide-In"
+,"APP, Refrigerator",
+,,"APP, Refrigerator, Bottom Freezer Refrigerator"
+,,"APP, Refrigerator, Side by Side Refrigerator"
+,,"APP, Refrigerator, Top Freezer Refrigerator"
+,"APP, Small Appliance",
+,"APP, Small Appliances",
+,"APP, Smalls/Not for Erply",
+,"APP, Trash Compactor",
+,"APP, Wall Oven",
+,"APP, Washers and Dryers",
+,,"APP, Washers and Dryers, Dryer"
+,,"APP, Washers and Dryers, Washer"
+,,"APP, Washers and Dryers, Washer and Dryer Set"
+,,
+Building Material and Lumber (BML),"BML, Adhesives, Powders and Mixes",
+,"BML, Ceiling Tile",
+,"BML, Ceiling Tin",
+,"BML, Column",
+,"BML, Dimensional Lumber",
+,,"BML, Dimensional Lumber, Dimensional Hardwood"
+,,"BML, Dimensional Lumber, Dimensional Softwood"
+,,"BML, Dimensional Lumber, Treated Lumber"
+,,"BML, Dimensional Lumber, Trial Lumber"
+,"BML, Downspouts and Gutters",
+,"BML, Glass Block",
+,"BML, Insulation",
+,,"BML, Insulation, Pipe Insulation"
+,,"BML, Insulation, Rigid Insulation"
+,,"BML, Insulation, Roll Insulation"
+,,"BML, Insulation, Wrap Insulation"
+,"BML, Mantel",
+,"BML, Moulding and Trim",
+,"BML, Other BML",
+,"BML, Roofing",
+,,"BML, Roofing, Roof Flashing"
+,,"BML, Roofing, Roof Tile"
+,,"BML, Roofing, Roofing Hardware and Accessories"
+,,"BML, Roofing, Shingles"
+,"BML, Salvaged Lumber",
+,,"BML, Salvaged Lumber, Flooring"
+,,"BML, Salvaged Lumber, Millwork"
+,"BML, Sheet Goods",
+,,"BML, Sheet Goods, Drywall"
+,,"BML, Sheet Goods, Fiberboard"
+,,"BML, Sheet Goods, Lattice"
+,,"BML, Sheet Goods, Orientated Strand Board (OSB)"
+,,"BML, Sheet Goods, Pegboard"
+,,"BML, Sheet Goods, Plywood"
+,,"BML, Sheet Goods, Rigid Plastic, Polycarbonate, Acrylic"
+,,"BML, Sheet Goods, Sheet Metal"
+,"BML, Siding",
+,"BML, Smalls/Not for Erply",
+,"BML, Stairs and Railings",
+,,"BML, Stairs and Railings, Spindles and Balusters"
+,,"BML, Stairs and Railings, Stair Handrail Metal"
+,,"BML, Stairs and Railings, Stair Handrail Wood"
+,,"BML, Stairs and Railings, Stair Newel Post"
+,,"BML, Stairs and Railings, Stair Railing Set"
+,,"BML, Stairs and Railings, Stair Stringer"
+,,"BML, Stairs and Railings, Stair Tread"
+,,"BML, Stairs and Railings, Staircase Assembled"
+,"BML, Structural Metal",
+,"BML, Urban Lumber",
+,"BML, Wallpaper",
+,,
+Cabinets and Built-Ins (CAB),"CAB, Built-In Cabinet",
+,"CAB, Cabinet Door",
+,"CAB, Commercial Cabinet",
+,"CAB, Kitchen Cabinet",
+,,"CAB, Kitchen Cabinet, Base Cabinet"
+,,"CAB, Kitchen Cabinet, Corner Cabinet"
+,,"CAB, Kitchen Cabinet, Pantry/Tall Cabinet"
+,,"CAB, Kitchen Cabinet, Wall Cabinet"
+,"CAB, Other CAB",
+,"CAB, Smalls/Not for Erply",
+,,
+Junction Made (CJM),"CJM, Other CJM",
+,"CJM, Planed Lumber",
+,,
+Clothing (CLO),"CLO, Accessories",
+,"CLO, Mens",
+,"CLO, Other",
+,"CLO, Unisex",
+,"CLO, Womens",
+,,
+Countertops and Tabletops (CNT),"CNT, Countertop",
+,,"CNT, Countertop, Butcher Block Countertop"
+,,"CNT, Countertop, Concrete Countertop"
+,,"CNT, Countertop, Granite Countertop"
+,,"CNT, Countertop, Laminate Countertop"
+,,"CNT, Countertop, Marble Countertop"
+,,"CNT, Countertop, Quartz Countertop"
+,,"CNT, Countertop, Resin Countertop"
+,,"CNT, Countertop, Solid Surface Countertop"
+,,"CNT, Countertop, Stainless Steel Countertop"
+,"CNT, Other CNT",
+,"CNT, Smalls/Not for Erply",
+,"CNT, Tabletop",
+,,
+Doors (DOR),"DOR, Bifold Door",
+,,"DOR, Bifold Door, Bifold Flush/Slab Door"
+,,"DOR, Bifold Door, Bifold Louvre Door"
+,,"DOR, Bifold Door, Bifold Panel Door"
+,"DOR, Exterior Door",
+,,"DOR, Exterior Door, Cellar"
+,,"DOR, Exterior Door, Entryway"
+,,"DOR, Exterior Door, Flush"
+,,"DOR, Exterior Door, Panel"
+,,"DOR, Exterior Door, Patio Hinged"
+,,"DOR, Exterior Door, Patio Sliding"
+,,"DOR, Exterior Door, Security"
+,,"DOR, Exterior Door, Storm"
+,"DOR, Farmhouse Door",
+,"DOR, Garage Door",
+,"DOR, Interior Door",
+,,"DOR, Interior Door, Accordion"
+,,"DOR, Interior Door, Bifold"
+,,"DOR, Interior Door, Cafe Swing"
+,,"DOR, Interior Door, Flush"
+,,"DOR, Interior Door, Interior French Door"
+,,"DOR, Interior Door, Interior Louvre Door"
+,,"DOR, Interior Door, Interior Panel Door"
+,,"DOR, Interior Door, Pocket"
+,,"DOR, Interior Door, Sliding"
+,,"DOR, Interior Door, Swinging Traffic"
+,"DOR, Other DOR",
+,"DOR, Pet Door",
+,"DOR, Screen Door",
+,"DOR, Smalls/Not for Erply",
+,,
+Flooring and Accessories (FLR),"FLR, Carpet",
+,,"FLR, Carpet Pad"
+,,"FLR, Carpet, Area Rug"
+,,"FLR, Carpet, Carpet Roll"
+,,"FLR, Carpet, Carpet Tile/Squares"
+,"FLR, Laminate Flooring",
+,,"FLR, Laminate Flooring, Laminate Plank Flooring"
+,,"FLR, Laminate Flooring, Laminate Roll/Sheet Flooring"
+,,"FLR, Laminate Flooring, Laminate Strip Flooring"
+,,"FLR, Laminate Flooring, Laminate Tile/Squares Flooring"
+,"FLR, Other FLR",
+,"FLR, Smalls/Not for Erply",
+,"FLR, Wood Flooring",
+,,"FLR, Wood Flooring, Engineered"
+,,"FLR, Wood Flooring, Hardwood"
+,,
+Garden and Outdoor (GDN),"GDN, Fence",
+,,"GDN, Fence, Chain Link Fence"
+,"GDN, Fence Gate",
+,"GDN, Gardening Supplies",
+,"GDN, Lawn and Garden Tools",
+,"GDN, Other GDN",
+,"GDN, Outdoor Cooking Grills",
+,"GDN, Outdoor Furniture",
+,"GDN, Planter",
+,"GDN, Smalls/Not for Erply",
+,,
+"Glass, Mirrors and Glass Block (GLS)","GLS, Finished Glass",
+,"GLS, Other GLS",
+,"GLS, Sheet Glass",
+,"GLS, Smalls/Not for Erply",
+,"GLS, Specialty Glass",
+,,
+"Hardware, Tools, Electrical and Misc (HDW)","HDW, Cabinet Hardware",
+,,"HDW, Cabinet Hardware, Hinges and Slides"
+,,"HDW, Cabinet Hardware, Knobs and Pulls"
+,"HDW, Appliance Parts and Accessories",
+,"HDW, Building Material/Parts and Accessories",
+,"HDW, Electrical Parts and Accessories",
+,"HDW, Garden Parts and Accessories",
+,"HDW, Home/Office Parts and Accessories",
+,"HDW, Other HDW",
+,"HDW, Painting Accessories",
+,"HDW, Plumbing/Bath Parts and Accessories",
+,"HDW, Smalls/Not for Erply",
+,"HDW, Tools",
+,"HDW, Window/Shutter Parts and Accessories",
+,,
+"Heating, Ventilation, A/C and Rads (HVA)","HVA, Ductwork",
+,,"HVA, Ductwork, Flexible Ductwork"
+,,"HVA, Ductwork, Rigid Ductwork"
+,,"HVA, Ductwork, Stove Pipe"
+,"HVA, Fan",
+,"HVA, Fireplace and Stoves",
+,,"HVA, Fireplace and Stoves, Fireplace Accessories"
+,,"HVA, Fireplace and Stoves, Fireplace Andirons"
+,,"HVA, Fireplace and Stoves, Fireplace Front or Screen"
+,,"HVA, Fireplace and Stoves, Fireplace Log Holder"
+,"HVA, Other HVA",
+,"HVA, Portable Heaters",
+,"HVA, Radiator",
+,"HVA, Radiator Cover",
+,"HVA, Smalls/Not for Erply",
+,"HVA, Vent Cover",
+,,
+"Home, Office and Commercial Furnishings (HOF)","HOF, Art and Frames, Mirror",
+,"HOF, Baker's Rack",
+,"HOF, Bed Parts",
+,"HOF, Bench",
+,"HOF, Bookcase or Shelves",
+,,"HOF, Bookcase or Shelves, Bookcase"
+,,"HOF, Bookcase or Shelves, Shelf Accessories"
+,,"HOF, Bookcase or Shelves, Shelves"
+,"HOF, Cart or Stand",
+,"HOF, Chair",
+,"HOF, Chest (e.g. Cedar)",
+,"HOF, China Cabinet/Hutch/Hoosier",
+,"HOF, Credenza",
+,"HOF, Desk",
+,,"HOF, Desk, Drafting Table"
+,"HOF, Dining Set",
+,,"HOF, Dining Room Buffet, Sideboard or Server Cabinet"
+,"HOF, Display Cabinet or Fixture",
+,"HOF, Display or Writing Board",
+,,"HOF, Display or Writing Board, Bulletin Board"
+,,"HOF, Display or Writing Board, Chalkboard"
+,,"HOF, Display or Writing Board, Dry Erase Board"
+,"HOF, Dresser or Chest of drawers",
+,"HOF, File Cabinet",
+,,"HOF, File Cabinet, Flat"
+,,"HOF, File Cabinet, Lateral"
+,,"HOF, File Cabinet, Vertical"
+,"HOF, Home Decor and Art",
+,"HOF, Housewares",
+,"HOF, Other HOF",
+,"HOF, Podium or Lectern",
+,"HOF, Sewing Machine or Table",
+,"HOF, Smalls/Not for Erply",
+,"HOF, Storage and Organization",
+,,"HOF, Storage and Organization, Bedroom Nightstand"
+,,"HOF, Storage and Organization, Locker Unit"
+,,"HOF, Storage and Organization, Sorting Cabinet"
+,,"HOF, Storage and Organization, Wardrobe or Armoire cabinet"
+,"HOF, Table",
+,"HOF, Table, End Table",
+,"HOF, Wall Unit/Entertainment Center",
+,,
+Kitchen Sets and Accessories (KIT),"KIT, Kitchen Cabinet Set",
+,,
+Lighting and Ceiling Fans (LIG),"LIG, Ceiling Fan or Blades",
+,,"LIG, Ceiling Fan or Blades, Ceiling Fan"
+,"LIG, Ceiling Light",
+,"LIG, Chandelier",
+,"LIG, Flood or Security Light",
+,"LIG, Globes and Shades",
+,"LIG, Industrial or Shop Light",
+,,"LIG, Industrial or Shop Light, Fluorescent Industrial/Shop Light"
+,"LIG, Lamp",
+,"LIG, Landscape or Deck Lighting",
+,"LIG, Other LIG",
+,"LIG, Post Light",
+,"LIG, Recessed Lighting",
+,"LIG, Smalls/Not for Erply",
+,"LIG, Specialty or Accent Lighting",
+,"LIG, Track Light",
+,"LIG, Wall Light/Sconce",
+,,"LIG, Wall Light/Sconce, Indoor Wall Light/Sconce"
+,,"LIG, Wall Light/Sconce, Outdoor Wall Light/Sconce"
+,,
+Magic Gift Shop (MGS),"MGS, CJ Products",
+,"MGS, Consignment",
+,,
+Masonry and Finished Stone (MAS),"MAS, Block",
+,"MAS, Brick",
+,"MAS, Cut Stone",
+,"MAS, Finished/Polished Stone",
+,,"MAS, Finished/Polished Stone, Granite Slab"
+,,"MAS, Finished/Polished Stone, Marble Slab"
+,,"MAS, Finished/Polished Stone, Slate Slab"
+,"MAS, Formed Concrete",
+,"MAS, Other MAS",
+,"MAS, Salvaged Brick",
+,"MAS, Smalls/Not for Erply",
+,"MAS, Stone",
+,,
+Magic Test Grouping (ZZZ),,
+,,
+Paint (PNT),"PNT, Amazon Paint",
+,,
+Plumbing and Bath (PLB),"PLB, Bidet",
+,"PLB, Faucet",
+,"PLB, Medicine Cabinet",
+,"PLB, Other PLB",
+,"PLB, Pipe",
+,,"PLB, Pipe, ABS Pipe"
+,,"PLB, Pipe, Black Steel Pipe"
+,,"PLB, Pipe, Copper Pipe"
+,,"PLB, Pipe, Drain Pipe"
+,,"PLB, Pipe, PVC Pipe"
+,"PLB, Shower",
+,,"PLB, Shower, Shower Base"
+,,"PLB, Shower, Shower Door"
+,,"PLB, Shower, Shower Surround"
+,"PLB, Sink",
+,,"PLB, Sink, Bar Sink"
+,,"PLB, Sink, Drop In Bath Sink"
+,,"PLB, Sink, Farm Sink"
+,,"PLB, Sink, Kitchen Sink"
+,,"PLB, Sink, Pedestal Sink"
+,,"PLB, Sink, Utility Sink"
+,,"PLB, Sink, Vanity Sink Top"
+,,"PLB, Sink, Wall Mount Bath Sink"
+,"PLB, Smalls/Not for Erply",
+,"PLB, Toilet",
+,,"PLB, Toilet Tank Lid"
+,,"PLB, Toilet, High Flow Toilet (3.0gpf or more)"
+,,"PLB, Toilet, Low Flow Toilet (1.6gpf or less)"
+,,"PLB, Toilet, Premium Toilet"
+,"PLB, Tub",
+,,"PLB, Tub, Clawfoot Tub"
+,,"PLB, Tub, Drop In Tub"
+,,"PLB, Tub, Jetted"
+,,"PLB, Tub, Skirted Tub"
+,"PLB, Urinal",
+,"PLB, Vanity",
+,,"PLB, Vanity, Complete Vanity Cabinet w/ Sink"
+,,"PLB, Vanity, Vanity Base"
+,,
+Specialty Hardware and Lighting (SHL),"SHL, Cabinet Hardware",
+,"SHL, Collectibles",
+,"SHL, Door Hardware Trim Plate or Rosette",
+,"SHL, Door Hinge",
+,"SHL, Door Knob",
+,"SHL, Door Knob Set",
+,"SHL, Door Pull (Handle)",
+,"SHL, Lighting Fixtures",
+,"SHL, Other SHL",
+,"SHL, Plumbing Fixtures",
+,"SHL, Sliding/Pocket Door Hardware",
+,"SHL, Smalls/Not for Erply",
+,,
+Tile and Accessories (TIL),"TIL, Ceramic Tile (DO NOT USE for Goodwill tile)",
+,"TIL, Other TIL",
+,"TIL, Smalls/Not for Erply (USE for Goodwill tile)",
+,"TIL, Specialty Tile",
+,,"TIL, Specialty Tile, Fireplace Tile"
+,,"TIL, Specialty Tile, Glass Tile"
+,,"TIL, Specialty Tile, Porcelain Tile"
+,,"TIL, Specialty Tile, Stone Tile"
+,,"TIL, Specialty Tile, Subway Tile"
+,"TIL, Tile Accessories",
+,"TIL, Vinyl Tile",
+,,
+"Windows, Shutters and Skylights (WIN)","WIN, Awnings",
+,"WIN, Blinds",
+,"WIN, Curtain Rod",
+,"WIN, Leaded Glass",
+,"WIN, Other WIN",
+,"WIN, Screen",
+,"WIN, Shutters",
+,"WIN, Skylight",
+,"WIN, Smalls/Not for Erply",
+,"WIN, Stained Glass",
+,"WIN, Valence",
+,"WIN, Window",
+,,"WIN, Window, Bay Window"
+,,"WIN, Window, Casement Window"
+,,"WIN, Window, Double Hung Window"
+,,"WIN, Window, Fixed/Picture Window"
+,,"WIN, Window, Vintage Wood Frame Window Sash"
+"UNK, Other UNK",,

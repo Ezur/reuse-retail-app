@@ -541,31 +541,33 @@ export default function DonationItemListScreen() {
               ].map(col => {
                 const active = sortField === col.field;
                 return (
-                  <button
-                    key={col.field}
-                    onClick={() => handleColSort(col.field)}
-                    style={{
-                      ...(col.flex ? { flex: 1 } : { width: col.width, flexShrink: 0 }),
-                      display: 'flex', alignItems: 'center', gap: 4,
-                      textAlign: col.center ? 'center' : undefined,
-                      background: active ? 'rgba(8,84,32,0.07)' : 'transparent',
-                      border: 'none', borderRadius: 6, padding: '3px 6px', cursor: 'pointer',
-                      fontFamily: "'Helvetica Neue', sans-serif", fontSize: 14,
-                      color: active ? '#085420' : '#595959',
-                      fontWeight: active ? 700 : 500,
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    {col.label}
-                    {active && (
-                      sortDir === 'asc'
-                        ? <svg width="11" height="11" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}><path d="M12 19V5M5 12l7-7 7 7" stroke="#085420" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                        : <svg width="11" height="11" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}><path d="M12 5v14M5 12l7 7 7-7" stroke="#085420" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                    )}
-                  </button>
+                  /* Fixed-width wrapper matches the row cell exactly; the button's
+                     highlight bleeds 6px left via negative margin so the label text
+                     stays perfectly aligned with the column data. */
+                  <div key={col.field} style={col.flex ? { flex: 1, minWidth: 0 } : { width: col.width, flexShrink: 0 }}>
+                    <button
+                      onClick={() => handleColSort(col.field)}
+                      style={{
+                        display: 'flex', alignItems: 'center', gap: 4,
+                        background: active ? 'rgba(8,84,32,0.07)' : 'transparent',
+                        border: 'none', borderRadius: 6, padding: '3px 6px', margin: '0 0 0 -6px', cursor: 'pointer',
+                        fontFamily: "'Helvetica Neue', sans-serif", fontSize: 14,
+                        color: active ? '#085420' : '#595959',
+                        fontWeight: active ? 700 : 500,
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {col.label}
+                      {active && (
+                        sortDir === 'asc'
+                          ? <svg width="11" height="11" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}><path d="M12 19V5M5 12l7-7 7 7" stroke="#085420" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                          : <svg width="11" height="11" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}><path d="M12 5v14M5 12l7 7 7-7" stroke="#085420" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      )}
+                    </button>
+                  </div>
                 );
               })}
-              <span style={{ width: 16, flexShrink: 0 }} />
+              <span style={{ width: 14, flexShrink: 0 }} />
             </div>
           )}
 
