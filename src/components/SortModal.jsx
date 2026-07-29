@@ -43,7 +43,11 @@ export default function SortModal({ title = 'Sort Items', options, selected, onS
             Clear sort
           </button>
           <p style={{ fontFamily: "'Helvetica Neue', sans-serif", fontSize: 17, fontWeight: 700, color: '#000', margin: 0 }}>{title}</p>
-          <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4, display: 'flex', alignItems: 'center', minWidth: 64, justifyContent: 'flex-end' }}>
+          <button
+            onClick={onClose}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4, minWidth: 64, display: 'flex', justifyContent: 'flex-end' }}
+            aria-label="Close"
+          >
             <CloseIcon />
           </button>
         </div>
